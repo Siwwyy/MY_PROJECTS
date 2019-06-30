@@ -31,6 +31,7 @@ time) e-mail with logs.
 
 You need to configure the destination e-mail in config.in file,
 Examplary file:
+
 e-mail: xyz@zyx.com
 
 ------------------------------------------------------
