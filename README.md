@@ -12,7 +12,7 @@ Repository contains following projects:
 with my algorithms created during my ASD I and ASD II
 lectures and IT classes. Description of Algorithms enrolled to 
 library below:
-1. Bubble_Sort and Coctail_Sort
+1. Bubble_Sort and Shake_Sort
 2. Euqlides Algorithm
 3. Linear Serach
 4. Binary Serach
