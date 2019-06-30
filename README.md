@@ -6,7 +6,6 @@ I hope so that these projects will be helpful and make
 a good job with daily programming.
 
 Repository contains following projects:
-
 ------------------------------------------------------
 
 1. Algorithms_Library -> I created own "Library" 
