@@ -1,4 +1,5 @@
-<======================================================> \n
+<================================================================>
+
 HELLO, My name is Damian and here I created a little
 repository with my own ideas. Enjoy, check this out!
 I hope so that these projects will be helpful and make
@@ -38,8 +39,11 @@ e-mail: xyz@zyx.com
 *README is updating all the time
 
 Contact:
-Linkedin -> https://www.linkedin.com/in/damian-andrysiak-7b7bb2145/ \n
+
+Linkedin -> https://www.linkedin.com/in/damian-andrysiak-7b7bb2145/
+
 E-mail -> andrydamian@gmail.com
 
 Greetings for everyone !
+
 DA
