@@ -55,7 +55,7 @@ namespace Algorithms
 					const void * ptr_right = &array[j + 1];*/
 					//std::cout << &array[j] << ' '<< ptr << std::endl;
 					//if (compare_function_operator((const void*)(&array[j]), (const void *)(&array[j + 1])) == true)
-					if (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&array[j + 1])) == true)
+					if (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&array[j + 1])) != true)
 					{
 						Algorithms::__swap(array[j], array[j + 1]);
 					}
@@ -141,90 +141,76 @@ namespace Algorithms
 
 	//Quick Sort
 	template<typename _Ty>
-	const _Ty partition(_Ty * array, const size_t p, const size_t r) // dzielimy tablice na dwie czesci, w pierwszej wszystkie liczby sa mniejsze badz rowne x, w drugiej wieksze lub rowne od x
+	void Quick_Sort(_Ty * array , const __int64 _Left, const __int64 _Right)
 	{
-		_Ty x = array[p]; // obieramy x
-		__int64 i = p, j = r, w = {}; // i, j - indeksy w tabeli
-		while (true) // petla nieskonczona - wychodzimy z niej tylko przez return j
+		_Ty v = array[(_Left + _Right) / 2];
+		_Ty x = {};
+		__int64 i = {}, j = {};
+		i = _Left;
+		j = _Right;
+		do
 		{
-			while (array[j] > x)
+			while (array[i] < v)
 			{
-				// dopoki elementy sa wieksze od x
-				j--;
-			}
-			while (array[i] < x)
-			{// dopoki elementy sa mniejsze od x
 				i++;
 			}
-			if (i < j) // zamieniamy miejscami gdy i < j
+			while (array[j] > v)
 			{
-				w = array[i];
+				j--;
+			}
+			if (i <= j)
+			{
+				x = array[i];
 				array[i] = array[j];
-				array[j] = w;
+				array[j] = x;
 				i++;
 				j--;
 			}
-			else // gdy i >= j zwracamy j jako punkt podzialu tablicy
-			{
-				return j;
-			}
+		} while (i <= j);
+		if (j > _Left)
+		{
+			Quick_Sort(array, _Left, j);
+		}
+		if (i < _Right)
+		{
+			Quick_Sort(array, i, _Right);
 		}
 	}
 
+	//SELF ORDERING, less key
 	template<typename _Ty>
-	void Quick_Sort(_Ty * array, const size_t p, const size_t r) noexcept
+	void Quick_Sort(_Ty * array, const __int64 _Left, const __int64 _Right, const bool(*compare_function_operator)(const void *, const void *))
 	{
-		__int64 q = {};
-		if (p < r)
+		_Ty v = array[(_Left + _Right) / 2], x = {};
+		__int64 i = {}, j = {};
+		i = _Left;
+		j = _Right;
+		do
 		{
-			q = partition(array, p, r); // dzielimy tablice na dwie czesci; q oznacza punkt podzialu
-			Quick_Sort(array, p, q); // wywolujemy rekurencyjnie quicksort dla pierwszej czesci tablicy
-			Quick_Sort(array, q + 1, r); // wywolujemy rekurencyjnie quicksort dla drugiej czesci tablicy
-		}
-	}
-
-	//QUICK SORT FOR SELF ORDERING
-
-	template<typename _Ty>
-	const _Ty partition(_Ty * array, const size_t p, const size_t r, const bool(*compare_function_operator)(const void *, const void *)) // dzielimy tablice na dwie czesci, w pierwszej wszystkie liczby sa mniejsze badz rowne x, w drugiej wieksze lub rowne od x
-	{
-		_Ty x = array[p]; // obieramy x
-		__int64 i = p, j = r, w = {}; // i, j - indeksy w tabeli
-		while (true) // petla nieskonczona - wychodzimy z niej tylko przez return j
-		{
-			while (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&x)) != true)
+			while (compare_function_operator(static_cast<const void*>(&array[i]), static_cast<const void*>(&v)) == true)
 			{
-				// dopoki elementy sa wieksze od x
-				j--;
-			}
-			while (compare_function_operator(static_cast<const void*>(&array[i]), static_cast<const void*>(&x)) == true)
-			{// dopoki elementy sa mniejsze od x
 				i++;
 			}
-			if (i < j) // zamieniamy miejscami gdy i < j
+			while (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&v)) != true)
 			{
-				w = array[i];
+				j--;
+			}
+			if (i <= j)
+			{
+				x = array[i];
 				array[i] = array[j];
-				array[j] = w;
+				array[j] = x;
 				i++;
 				j--;
 			}
-			else // gdy i >= j zwracamy j jako punkt podzialu tablicy
-			{
-				return j;
-			}
-		}
-	}
-
-	template<typename _Ty>
-	void Quick_Sort(_Ty * array, const size_t p, const size_t r, const bool(*compare_function_operator)(const void *, const void *)) noexcept
-	{
-		__int64 q = {};
-		if (p < r)
+		} while (i <= j);
+		if (compare_function_operator(static_cast<const void*>(&j), static_cast<const void*>(&_Left)) != true)
 		{
-			q = partition(array, p, r, compare_function_operator); // dzielimy tablice na dwie czesci; q oznacza punkt podzialu
-			Quick_Sort(array, p, q); // wywolujemy rekurencyjnie quicksort dla pierwszej czesci tablicy
-			Quick_Sort(array, q + 1, r); // wywolujemy rekurencyjnie quicksort dla drugiej czesci tablicy
+			Quick_Sort(array, _Left, j);
+		}
+		if (compare_function_operator(static_cast<const void*>(&i), static_cast<const void*>(&_Right)) == true)
+		{
+			Quick_Sort(array, i, _Right);
 		}
 	}
 
@@ -250,7 +236,8 @@ namespace Algorithms
 	}
 
 	//Linear Serach
-	constexpr size_t Linear_Serach(const std::string & array, const size_t size, char && _to_serach)
+	template<typename _Ty>
+	constexpr size_t Linear_Serach(_Ty * array, const size_t size, _Ty && _to_serach)
 	{
 		size_t counter = 0;
 		for (size_t i = 0; i < size; ++i)
@@ -265,7 +252,26 @@ namespace Algorithms
 	}
 
 	//Binary Serach
-	//zmien quick sorta !!!
+	template<typename _Ty>
+	const size_t Binary_Serach(_Ty * array, const size_t size, _Ty && _to_serach)
+	{
+		for (size_t i = 0; i < size; ++i)
+		{
+			std::cout << array[i] << ' ';
+		}
+		Quick_Sort(const_cast<char *>(array), 0, size - 1);
+		
+		size_t counter = 0;
+		for (size_t i = 0; i < size; ++i)
+		{
+			if (_to_serach == array[i])
+			{
+				break;
+			}
+			counter++;
+		}
+		return counter;
+	}
 
 	/*
 		HELPFUL FUNCTIONS

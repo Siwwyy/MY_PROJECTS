@@ -31,22 +31,25 @@ int main(int argc, char * argv[])
 	using Algorithms::Bubble_Sort;
 	using Algorithms::Shake_Sort;
 	using Algorithms::Euqlides_Algorithm;
-	using Algorithms::Linear_Serach;
 	using Algorithms::Quick_Sort;
-	const size_t size = 5;
-	int tab[size] = { 5,7,2,3,8 };
-	Quick_Sort(tab, 0, size - 1,&comparator);
+	using Algorithms::Linear_Serach;
+	using Algorithms::Binary_Serach;
+	/*const size_t size = 8;
+	int tab[size] = { 5,7,2,3,8,20,-2,4 };
+	Shake_Sort(tab, size, comparator);
 	for (size_t i = 0; i < size; ++i)
 	{
 		std::cout << tab[i] << ' ';
-	}
+	}*/
 	//std::cout << endl;
 	//std::cout << a << ' ' << b << endl;
 	//__int64 a = 12, b = 18;
 	//std::cout << a << ' ' << b << endl;
 	//std::cout << Euqlides_Algorithm(a,b) << endl;
-	//std::string name = "Damian";
-	//std::cout << Linear_Serach(name, name.size(), 'n');
+	char  name[] = "Damian";
+	//std::cout << name[4];
+	//std::cout << Linear_Serach(name, 7, 'n');
+	std::cout << Binary_Serach(name, 6, 'n');
 	system("pause");
 	return 0;
 }
