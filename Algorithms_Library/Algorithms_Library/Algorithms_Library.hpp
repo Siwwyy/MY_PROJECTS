@@ -54,7 +54,8 @@ namespace Algorithms
 					/*const void * ptr_left = &array[j];
 					const void * ptr_right = &array[j + 1];*/
 					//std::cout << &array[j] << ' '<< ptr << std::endl;
-					if (compare_function_operator((const void*)(&array[j]), (const void *)(&array[j + 1])) == true)
+					//if (compare_function_operator((const void*)(&array[j]), (const void *)(&array[j + 1])) == true)
+					if (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&array[j + 1])) == true)
 					{
 						Algorithms::__swap(array[j], array[j + 1]);
 					}
@@ -101,24 +102,49 @@ namespace Algorithms
 		}
 	}
 
-	//Quick Sort
 	template<typename _Ty>
-	void Quick_Sort(_Ty * array, const __int64 & p, const __int64 & r) noexcept
+	//sorting in self-made order
+	void Shake_Sort(_Ty * array, const size_t size, const bool(*compare_function_operator)(const void *, const void *)) noexcept
 	{
-		__int64 q = {};
-		if (p < r)
+		if (size <= 1)
 		{
-			q = partition(array, p, r); // dzielimy tablice na dwie czesci; q oznacza punkt podzialu
-			quicksort(array, p, q); // wywolujemy rekurencyjnie quicksort dla pierwszej czesci tablicy
-			quicksort(array, q + 1, r); // wywolujemy rekurencyjnie quicksort dla drugiej czesci tablicy
+			std::cerr << "ERROR::SIZE IS TOO SMALL \n";
+		}
+		else
+		{
+			size_t bottom = 0, top = size - 1;
+			bool replace = true;
+			while (replace == true)
+			{
+				replace = false;
+				for (size_t i = 0; i < top; ++i)
+				{
+					if (compare_function_operator(static_cast<const void*>(&array[i]), static_cast<const void*>(&array[i + 1])) != true)
+					{
+						Algorithms::__swap(array[i], array[i + 1]);
+						replace = true;
+					}
+				}
+				top--;
+				for (size_t i = top; i > bottom; i--)
+				{
+					if (compare_function_operator(static_cast<const void*>(&array[i]), static_cast<const void*>(&array[i - 1])) == true)
+					{
+						Algorithms::__swap(array[i], array[i - 1]);
+						replace = true;
+					}
+				}
+				bottom++;
+			}
 		}
 	}
 
+	//Quick Sort
 	template<typename _Ty>
-	int partition(_Ty * array, __int64 & p, __int64 & r) // dzielimy tablice na dwie czesci, w pierwszej wszystkie liczby sa mniejsze badz rowne x, w drugiej wieksze lub rowne od x
+	const _Ty partition(_Ty * array, const size_t p, const size_t r) // dzielimy tablice na dwie czesci, w pierwszej wszystkie liczby sa mniejsze badz rowne x, w drugiej wieksze lub rowne od x
 	{
-		__int64 x = array[p]; // obieramy x
-		__int64 i = p, j = r, w; // i, j - indeksy w tabeli
+		_Ty x = array[p]; // obieramy x
+		__int64 i = p, j = r, w = {}; // i, j - indeksy w tabeli
 		while (true) // petla nieskonczona - wychodzimy z niej tylko przez return j
 		{
 			while (array[j] > x)
@@ -144,6 +170,64 @@ namespace Algorithms
 			}
 		}
 	}
+
+	template<typename _Ty>
+	void Quick_Sort(_Ty * array, const size_t p, const size_t r) noexcept
+	{
+		__int64 q = {};
+		if (p < r)
+		{
+			q = partition(array, p, r); // dzielimy tablice na dwie czesci; q oznacza punkt podzialu
+			Quick_Sort(array, p, q); // wywolujemy rekurencyjnie quicksort dla pierwszej czesci tablicy
+			Quick_Sort(array, q + 1, r); // wywolujemy rekurencyjnie quicksort dla drugiej czesci tablicy
+		}
+	}
+
+	//QUICK SORT FOR SELF ORDERING
+
+	template<typename _Ty>
+	const _Ty partition(_Ty * array, const size_t p, const size_t r, const bool(*compare_function_operator)(const void *, const void *)) // dzielimy tablice na dwie czesci, w pierwszej wszystkie liczby sa mniejsze badz rowne x, w drugiej wieksze lub rowne od x
+	{
+		_Ty x = array[p]; // obieramy x
+		__int64 i = p, j = r, w = {}; // i, j - indeksy w tabeli
+		while (true) // petla nieskonczona - wychodzimy z niej tylko przez return j
+		{
+			while (compare_function_operator(static_cast<const void*>(&array[j]), static_cast<const void*>(&x)) != true)
+			{
+				// dopoki elementy sa wieksze od x
+				j--;
+			}
+			while (compare_function_operator(static_cast<const void*>(&array[i]), static_cast<const void*>(&x)) == true)
+			{// dopoki elementy sa mniejsze od x
+				i++;
+			}
+			if (i < j) // zamieniamy miejscami gdy i < j
+			{
+				w = array[i];
+				array[i] = array[j];
+				array[j] = w;
+				i++;
+				j--;
+			}
+			else // gdy i >= j zwracamy j jako punkt podzialu tablicy
+			{
+				return j;
+			}
+		}
+	}
+
+	template<typename _Ty>
+	void Quick_Sort(_Ty * array, const size_t p, const size_t r, const bool(*compare_function_operator)(const void *, const void *)) noexcept
+	{
+		__int64 q = {};
+		if (p < r)
+		{
+			q = partition(array, p, r, compare_function_operator); // dzielimy tablice na dwie czesci; q oznacza punkt podzialu
+			Quick_Sort(array, p, q); // wywolujemy rekurencyjnie quicksort dla pierwszej czesci tablicy
+			Quick_Sort(array, q + 1, r); // wywolujemy rekurencyjnie quicksort dla drugiej czesci tablicy
+		}
+	}
+
 
 	//Euqlides Algorithm
 	constexpr __int64 Euqlides_Algorithm(__int64 & a, __int64 & b)
@@ -181,7 +265,7 @@ namespace Algorithms
 	}
 
 	//Binary Serach
-
+	//zmien quick sorta !!!
 
 	/*
 		HELPFUL FUNCTIONS

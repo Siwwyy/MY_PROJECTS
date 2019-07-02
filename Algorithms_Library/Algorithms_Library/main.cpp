@@ -16,7 +16,6 @@ const bool comparator(const void * left, const void * right)
 	{
 		return true;
 	}
-	//std::cout << *(int *)left;
 	return false;
 }
 
@@ -33,9 +32,10 @@ int main(int argc, char * argv[])
 	using Algorithms::Shake_Sort;
 	using Algorithms::Euqlides_Algorithm;
 	using Algorithms::Linear_Serach;
+	using Algorithms::Quick_Sort;
 	const size_t size = 5;
 	int tab[size] = { 5,7,2,3,8 };
-	Bubble_Sort(tab, size,&comparator);
+	Quick_Sort(tab, 0, size - 1,&comparator);
 	for (size_t i = 0; i < size; ++i)
 	{
 		std::cout << tab[i] << ' ';
