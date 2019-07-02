@@ -13,13 +13,14 @@ with my algorithms created during my ASD I and ASD II
 lectures and IT classes. Description of Algorithms enrolled to 
 library below:
 1. Bubble_Sort and Shake_Sort
-2. Euqlides Algorithm
-3. Linear Serach
-4. Binary Serach
-5. Hash Table
-6. Heap Sort
-7. MST graph (Prim's method)
-8. Pattern Seeking (Karp Rabin's method)
+2. Quick_Sort
+3. Euqlides Algorithm
+4. Linear Serach
+5. Binary Serach
+6. Hash Table
+7. Heap Sort
+8. MST graph (Prim's method)
+9. Pattern Seeking (Karp Rabin's method)
 
 ------------------------------------------------------
 
