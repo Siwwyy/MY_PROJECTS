@@ -23,5 +23,8 @@
     <ClInclude Include="Algorithms_Library.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hash_Table.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

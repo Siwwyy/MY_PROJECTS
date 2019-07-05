@@ -1,13 +1,21 @@
+/*
+ *			   Copyright (c) by Damian Andrysiak. All rights reserved.
+ *							Greetings for everyone!
+*/
 #pragma once
-#ifndef _ALGORITHMS_LIBRARY
-#define _ALGORITHMS_LIBRARY
+#ifndef _ALGORITHMS_LIBRARY_HPP_
+#define _ALGORITHMS_LIBRARY_HPP_
 
 namespace Algorithms
 {
 	#include <iostream>
 	#include <windows.h>
 	#include <string>
-	#include <vector>
+
+	using std::cerr;
+	using std::cout;
+	using std::endl;
+
 
 	/*
 		FUNCTIONS CASE
@@ -237,7 +245,7 @@ namespace Algorithms
 
 	//Linear Serach
 	template<typename _Ty>
-	constexpr size_t Linear_Serach(_Ty * array, const size_t size, _Ty && _to_serach)
+	constexpr size_t Linear_Serach(_Ty * array, const size_t size, const _Ty && _to_serach)
 	{
 		size_t counter = 0;
 		for (size_t i = 0; i < size; ++i)
@@ -253,14 +261,9 @@ namespace Algorithms
 
 	//Binary Serach
 	template<typename _Ty>
-	const size_t Binary_Serach(_Ty * array, const size_t size, _Ty && _to_serach)
+	constexpr size_t Binary_Serach(_Ty * array, const size_t size, const _Ty && _to_serach)
 	{
-		for (size_t i = 0; i < size; ++i)
-		{
-			std::cout << array[i] << ' ';
-		}
 		Quick_Sort(const_cast<char *>(array), 0, size - 1);
-		
 		size_t counter = 0;
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -294,5 +297,4 @@ namespace Algorithms
 	}
 }
 
-
-#endif /* _ALGORITHMS_LIBRARY */
+#endif /* _ALGORITHMS_LIBRARY_HPP_ */
