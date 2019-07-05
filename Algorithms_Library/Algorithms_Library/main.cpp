@@ -5,6 +5,7 @@
 #include <numeric>
 #include <algorithm>
 
+
 #include "Algorithms_Library.hpp"
 #include "Hash_Table.hpp"
 
@@ -24,19 +25,22 @@ const bool comparator(const void * left, const void * right)
 int main(int argc, char * argv[])
 {
 	//std::vector<int> a();
-	int a = 5;
-	int b = 5;
-	//a ^= b;
-	//b ^= a;
-	//b = a;
-	//a = b;
-	std::cout << std::boolalpha << (a == b) << std::endl;
+	//int a = 5;
+	//int b = 5;
+	//decltype(b) c = 5;
+	//std::cout << typeid(c).name() << endl;
+	////a ^= b;
+	////b ^= a;
+	////b = a;
+	////a = b;
+	//std::cout << std::boolalpha << (a == b) << std::endl;
 	using Algorithms::Bubble_Sort;
 	using Algorithms::Shake_Sort;
 	using Algorithms::Euqlides_Algorithm;
 	using Algorithms::Quick_Sort;
 	using Algorithms::Linear_Serach;
 	using Algorithms::Binary_Serach;
+	Algorithms_Hash_Table::Hash_Table<int, 10> HT;
 	/*const size_t size = 8;
 	int tab[size] = { 5,7,2,3,8,20,-2,4 };
 	Shake_Sort(tab, size, comparator);
