@@ -41,9 +41,10 @@ int main(int argc, char * argv[])
 	using Algorithms::Linear_Serach;
 	using Algorithms::Binary_Serach;
 	Algorithms_Hash_Table::Hash_Table<int, 10> HT;
+	Algorithms_Hash_Table::Hash_Table<int, 20> HT3;
 	Algorithms_Hash_Table::Hash_Table<int, 20> HT1;
 	Algorithms_Hash_Table::Hash_Table<int, 20> HT2(HT1);
-	HT = HT1;
+	//HT = HT3;
 	/*const size_t size = 8;
 	int tab[size] = { 5,7,2,3,8,20,-2,4 };
 	Shake_Sort(tab, size, comparator);
