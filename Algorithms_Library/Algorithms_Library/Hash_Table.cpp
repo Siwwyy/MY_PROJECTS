@@ -36,8 +36,14 @@
 //{
 //	return *this;
 //}
-template<typename _Ty, size_t _Size>
-typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & operator+(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
-{
-	return *this;
-}
+//template<typename _Ty, size_t _Size>
+//typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & operator+(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
+//{
+//	return *this;
+//}
+//
+//template<typename _Ty, size_t _Size>
+//typename std::ostream & operator<<(std::ostream & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
+//{
+//	return lhs;
+//}

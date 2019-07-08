@@ -51,15 +51,14 @@ namespace Algorithms_Hash_Table
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			void Set_Key(const __int64 Key);
 			void Set_Value(const _Ty & Value);
-			/*void Set_Value(_Ty Value);*/
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			/*
 				GETTERS
 			*/
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			constexpr __int64 Get_Key() const;
+			constexpr size_t Get_Index(const size_t & array_length) const;
 			constexpr _Ty Get_Value() const;
-			//const _Ty & Get_Value();
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			/*
 				OPERATORS
@@ -75,12 +74,6 @@ namespace Algorithms_Hash_Table
 				lhs << "[ "<< rhs.Get_Value() << ' ' << rhs.Get_Key() << " ]\n";
 				return lhs;
 			}
-			/*template<typename _Ty, size_t _Size>
-			friend std::ostream & operator<<(std::ostream & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs);*/
-			//std::ostream & operator<<(const _Hash_Element & Object) const;
-			//std::ostream & operator<<(const _Hash_Element & Object) const;
-			//template<typename _Ty, size_t _Size>
-			//friend typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & operator+(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs);
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			/*
 				DESTRUCTOR
@@ -88,7 +81,13 @@ namespace Algorithms_Hash_Table
 			virtual ~_Hash_Element();
 			/////////////////////////////////////////////////////////////////////////////////////////////
 		};
-
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+			PRIVATE FUNCTIONS
+		*/
+		const bool operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const;
+		const bool operator()(const size_t & position) const;
+		/////////////////////////////////////////////////////////////////////////////////////////////
 	private:
 		/*
 			PRIVATE VARIABLES
@@ -106,7 +105,6 @@ namespace Algorithms_Hash_Table
 		*/
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		Hash_Table();
-	/*	Hash_Table(const _Ty & Value, _CRT_GUARDOVERFLOW const size_t Key);*/
 		Hash_Table(const Hash_Table & Object);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -139,14 +137,13 @@ namespace Algorithms_Hash_Table
 		template<typename _Left_Ty>
 		Hash_Table & operator=(const Hash_Table<_Left_Ty, _Size> & Object);
 
-		/*template<typename _Left_Ty, size_t _Other>
-		Hash_Table & operator=(const Hash_Table<_Left_Ty, _Other> & Object);*/
+		template<typename _Left_Ty, size_t _Other>
+		Hash_Table & operator=(const Hash_Table<_Left_Ty, _Other> & Object);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 			DESTRUCTOR
 		*/
 		virtual ~Hash_Table();
-		/*friend std::ostream & operator<<(std::ostream & lhs, const typename Hash_Table<_Ty, _Size>::_Hash_Element & rhs);*/
 		/////////////////////////////////////////////////////////////////////////////////////////////
 	};
 
@@ -215,12 +212,6 @@ namespace Algorithms_Hash_Table
 		this->Value = Value;
 	}
 
-	/*template<typename _Ty, size_t _Size>
-	__forceinline void Hash_Table<_Ty, _Size>::_Hash_Element::Set_Value(_Ty Value)
-	{
-		this->Value = Value;
-	}*/
-
 	template<typename _Ty, size_t _Size>
 	__forceinline constexpr __int64 Hash_Table<_Ty, _Size>::_Hash_Element::Get_Key() const
 	{
@@ -228,22 +219,16 @@ namespace Algorithms_Hash_Table
 	}
 
 	template<typename _Ty, size_t _Size>
+	__forceinline constexpr size_t Hash_Table<_Ty, _Size>::_Hash_Element::Get_Index(const size_t & array_length) const
+	{
+		return (this->Key % array_length);
+	}
+
+	template<typename _Ty, size_t _Size>
 	__forceinline constexpr _Ty Hash_Table<_Ty, _Size>::_Hash_Element::Get_Value() const
 	{
 		return this->Value;
 	}
-
-	/*template<typename _Ty, size_t _Size>
-	__forceinline const _Ty & Hash_Table<_Ty, _Size>::_Hash_Element::Get_Value()
-	{
-		return this->Value;
-	}*/
-
-	//template<typename _Ty, size_t _Size>
-	//__forceinline const _Ty & Hash_Table<_Ty, _Size>::_Hash_Element::Get_Value() const
-	//{
-	//	return this->Value;
-	//}
 
 	template<typename _Ty, size_t _Size>
 	__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size>::template _Hash_Element::operator=(const _Hash_Element & Object)
@@ -281,13 +266,6 @@ namespace Algorithms_Hash_Table
 		return !(*this == Object);
 	}
 
-	/*template<typename _Ty, size_t _Size>
-	__forceinline std::ostream & Hash_Table<_Ty, _Size>::_Hash_Element::operator<<(const _Hash_Element & Object) const
-	{
-		std::cout << Object.Key;
-		return *this;
-	}*/
-
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::_Hash_Element::~_Hash_Element()
 	{
@@ -305,24 +283,27 @@ namespace Algorithms_Hash_Table
 
 
 	template<typename _Ty, size_t _Size>
+	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const
+	{
+		return _STD tie(rhs) == _STD tie(lhs);
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const size_t & position) const
+	{
+		//if (Hash_Table_Array[position] == nullptr)
+		if (&Hash_Table_Array[position])
+		{
+			return true;
+		}
+		return false;
+	}
+
+	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::Hash_Table()
 	{
 		this->Hash_Table_Size = _Size;
 		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
-		for (size_t i{}; i < this->Hash_Table_Size; ++i)
-		{
-//			Hash_Table_Array[i];
-			//std::string a = "dsad";
-			//operator<<(std::cout,Hash_Table_Array[i]);
-			//Hash_Table_Array[i].Set_Value(a);
-			//std::cout << Hash_Table_Array[i];
-			//Hash_Table_Array[i] = Hash_Table_Array[i] + Hash_Table_Array[i+1];
-			/*if (Hash_Table_Array[i] == Hash_Table_Array[i + 1])
-			{
-				std::cout << "dsadd" << endl;
-			}*/
-		}
-		std::cout << '\n';
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -339,10 +320,21 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	__forceinline void __fastcall Hash_Table<_Ty, _Size>::push(const _Ty & Value, const __int64 Key)
 	{
-		static int counter = 0;
+		//currently basic pushing
+		//size_t counter = 0;
+		//if (operator()((Key % Hash_Table_Size)) == true)
+		//{
+		//	Hash_Table_Array[counter].Set_Value(Value);
+		//	Hash_Table_Array[counter].Set_Key(Key);
+		//}
+		//else /*if(operator()((Key % Hash_Table_Size)))*/
+		//{
+
+		//}
+		/*static int counter = 0;
 		Hash_Table_Array[counter].Set_Value(Value);
 		Hash_Table_Array[counter].Set_Key(Key);
-		counter++;
+		counter++;*/
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -383,10 +375,6 @@ namespace Algorithms_Hash_Table
 		delete[] Hash_Table_Array;
 		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
 		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
-		for (size_t i{}; i < this->Hash_Table_Size; ++i)
-		{
-			this->Hash_Table_Array[i] = Object.Hash_Table_Array[i];
-		}
 		return *this;
 	}
 
@@ -397,57 +385,25 @@ namespace Algorithms_Hash_Table
 		delete[] Hash_Table_Array;
 		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
 		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
-		for (size_t i{}; i < this->Hash_Table_Size; ++i)
-		{
-			this->Hash_Table_Array[i] = Object.Hash_Table_Array[i];
-		}
 		return *this;
 	}
 
-	//template<typename _Ty, size_t _Size>
-	//template<typename _Left_Ty, size_t _Other>
-	//__forceinline typename Hash_Table<_Ty, _Size> & Hash_Table<_Ty, _Size>::operator=(const Hash_Table<_Left_Ty, _Other> & Object)
-	//{
-	//	delete[] Hash_Table_Array;
-	//	this->Hash_Table_Size = Object.Get_Hash_Table_Size();
-	//	this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
-	//	for (size_t i{}; i < this->Hash_Table_Size; ++i)
-	//	{
-	//		this->Hash_Table_Array[i] = Object.Hash_Table_Array[i];
-	//	}
-	//	return *this;
-	//}
+	template<typename _Ty, size_t _Size>
+	template<typename _Left_Ty, size_t _Other>
+	__forceinline typename Hash_Table<_Ty, _Size> & Hash_Table<_Ty, _Size>::operator=(const Hash_Table<_Left_Ty, _Other> & Object)
+	{
+		delete[] Hash_Table_Array;
+		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
+		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		return *this;
+	}
 
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::~Hash_Table()
 	{
 		std::cout << "Destruct" << std::endl;
 		delete[] Hash_Table_Array;
-		//delete Hash_Table_Array;
 	}
-
-	/*template<typename _Ty, size_t _Size>
-	typename std::ostream & operator<<(std::ostream & lhs, const typename Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
-	{
-		return lhs;
-	}*/
-
-	//template<typename _Ty, size_t _Size>
-	//std::ostream & operator<<(std::ostream & lhs, const typename Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
-	//{
-	//	return lhs;
-	//}
-
-	//std::ostream & operator<<(std::ostream & lhs, const _Hash_Element & rhs)
-	//{
-	//	return lhs;
-	//}
-
-	/*template<typename _Ty, size_t _Size>
-	std::ostream & operator<<(std::ostream & lhs, const typename Hash_Table<_Ty, _Size>:: _Hash_Element & rhs)
-	{
-		return lhs;
-	}*/
 
 }
 
