@@ -37,6 +37,12 @@ e-mail: xyz@zyx.com
 
 ------------------------------------------------------
 
+3. Chat_Java -> My own messenger wrote in Java (Window Builder Swift).
+Basic messenger with for example your friend cause it is a client server
+application. Maybe in future I will add some extra features.
+
+------------------------------------------------------
+
 
 *README is updating all the time
 
