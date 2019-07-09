@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+Chat_Java/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
