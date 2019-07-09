@@ -337,21 +337,6 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	__forceinline void __fastcall Hash_Table<_Ty, _Size>::push(const _Ty & Value, const __int64 Key)
 	{
-		//currently basic pushing
-		//size_t counter = 0;
-		//if (operator()((Key % Hash_Table_Size)) == true)
-		//{
-		//	Hash_Table_Array[counter].Set_Value(Value);
-		//	Hash_Table_Array[counter].Set_Key(Key);
-		//}
-		//else /*if(operator()((Key % Hash_Table_Size)))*/
-		//{
-
-		//}
-		/*static int counter = 0;
-		Hash_Table_Array[counter].Set_Value(Value);
-		Hash_Table_Array[counter].Set_Key(Key);
-		counter++;*/
 		_Hash_Element temporary(Value, Key);
 		if (if_same_value_exist(&temporary) == true || operator()(temporary.Get_Index(this->Hash_Table_Size)) == true)
 		{
@@ -391,6 +376,7 @@ namespace Algorithms_Hash_Table
 			if (Hash_Table_Array[i].Get_Key() == Key)
 			{
 				Hash_Table_Array[i].~_Hash_Element();
+				break;
 			}
 		}
 	}
