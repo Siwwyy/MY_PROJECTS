@@ -85,8 +85,9 @@ namespace Algorithms_Hash_Table
 		/*
 			PRIVATE FUNCTIONS
 		*/
-		const bool operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const;
+		//const bool operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const;
 		const bool operator()(const size_t & position) const;
+		const bool if_same_value_exist(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element * Object) const;
 		/////////////////////////////////////////////////////////////////////////////////////////////
 	private:
 		/*
@@ -111,7 +112,8 @@ namespace Algorithms_Hash_Table
 			PUBLIC FUNCTIONS
 		*/
 		void __fastcall push(const _Ty & Value, const __int64 Key);
-		void show_object() const;
+		void delete_element(const __int64 Key);
+		void show_elements() const;
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 			SETTERS
@@ -180,7 +182,7 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::_Hash_Element::_Hash_Element(const _Ty & Value, const __int64 Key) :
 		Value(Value),
-		Key(NULL)
+		Key(Key)
 	{
 		//
 	}
@@ -257,7 +259,8 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	__forceinline constexpr bool Hash_Table<_Ty, _Size>::_Hash_Element::operator==(const _Hash_Element & Object) const
 	{
-		return !(*this < Object) && !(Object < *this);
+		return _STD tie(this->Value, this->Key) == _STD tie(Object.Value, Object.Key);
+		//return !(*this < Object) && !(Object < *this);
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -269,6 +272,7 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::_Hash_Element::~_Hash_Element()
 	{
+		/*std::cout << "Destruct" << std::endl;*/
 		Key = NULL;
 	}
 
@@ -282,19 +286,32 @@ namespace Algorithms_Hash_Table
 	////////////////////////////////////////////////////
 
 
-	template<typename _Ty, size_t _Size>
+	/*template<typename _Ty, size_t _Size>
 	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const
 	{
 		return _STD tie(rhs) == _STD tie(lhs);
-	}
+	}*/
 
 	template<typename _Ty, size_t _Size>
 	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const size_t & position) const
 	{
 		//if (Hash_Table_Array[position] == nullptr)
-		if (&Hash_Table_Array[position])
+		if (Hash_Table_Array[position].Get_Key() == 0)
 		{
 			return true;
+		}
+		return false;
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline const bool Hash_Table<_Ty, _Size>::if_same_value_exist(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element * Object) const
+	{
+		for (size_t i{}; i < this->Hash_Table_Size; ++i)
+		{
+			if ((this->Hash_Table_Array[i]) == *(Object))
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -335,15 +352,58 @@ namespace Algorithms_Hash_Table
 		Hash_Table_Array[counter].Set_Value(Value);
 		Hash_Table_Array[counter].Set_Key(Key);
 		counter++;*/
+		_Hash_Element temporary(Value, Key);
+		if (if_same_value_exist(&temporary) == true || operator()(temporary.Get_Index(this->Hash_Table_Size)) == true)
+		{
+			Hash_Table_Array[temporary.Get_Index(this->Hash_Table_Size)] = temporary;
+		}
+		else
+		{
+			bool found_slot = false;
+			for (size_t i{ temporary.Get_Index(this->Hash_Table_Size) }; i < this->Hash_Table_Size; ++i)
+			{
+				if (operator()(i) == true)
+				{
+					Hash_Table_Array[i] = temporary;
+					found_slot = true;
+					break;
+				}
+			}
+			if (found_slot == false)
+			{
+				for (size_t i{}; i < this->Hash_Table_Size; ++i)
+				{
+					if (operator()(i) == true)
+					{
+						Hash_Table_Array[i] = temporary;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline void Hash_Table<_Ty, _Size>::show_object() const
+	__forceinline void Hash_Table<_Ty, _Size>::delete_element(const __int64 Key)
 	{
 		for (size_t i{}; i < this->Hash_Table_Size; ++i)
 		{
-			operator<<(std::cout, Hash_Table_Array[i]);
+			if (Hash_Table_Array[i].Get_Key() == Key)
+			{
+				Hash_Table_Array[i].~_Hash_Element();
+			}
 		}
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline void Hash_Table<_Ty, _Size>::show_elements() const
+	{
+		for (size_t i{}; i < this->Hash_Table_Size; ++i)
+		{
+			//operator<<(std::cout, Hash_Table_Array[i]);
+			std::cout << (i) << ' ' << Hash_Table_Array[i];
+		}
+		std::cout << "--------------------------------------------- \n";
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -403,8 +463,39 @@ namespace Algorithms_Hash_Table
 	{
 		std::cout << "Destruct" << std::endl;
 		delete[] Hash_Table_Array;
+		Hash_Table_Size = NULL;
 	}
 
 }
+
+typedef Algorithms_Hash_Table::Hash_Table<int, 10> int_10;
+typedef Algorithms_Hash_Table::Hash_Table<int, 20> int_20;
+typedef Algorithms_Hash_Table::Hash_Table<int, 30> int_30;
+typedef Algorithms_Hash_Table::Hash_Table<int, 40> int_40;
+
+typedef Algorithms_Hash_Table::Hash_Table<float, 10> float_10;
+typedef Algorithms_Hash_Table::Hash_Table<float, 20> float_20;
+typedef Algorithms_Hash_Table::Hash_Table<float, 30> float_30;
+typedef Algorithms_Hash_Table::Hash_Table<float, 40> float_40;
+
+typedef Algorithms_Hash_Table::Hash_Table<char, 10> char_10;
+typedef Algorithms_Hash_Table::Hash_Table<char, 20> char_20;
+typedef Algorithms_Hash_Table::Hash_Table<char, 30> char_30;
+typedef Algorithms_Hash_Table::Hash_Table<char, 40> char_40;
+
+typedef Algorithms_Hash_Table::Hash_Table<const char, 10> const_char_10;
+typedef Algorithms_Hash_Table::Hash_Table<const char, 20> const_char_20;
+typedef Algorithms_Hash_Table::Hash_Table<const char, 30> const_char_30;
+typedef Algorithms_Hash_Table::Hash_Table<const char, 40> const_char_40;
+
+typedef Algorithms_Hash_Table::Hash_Table<const char *, 10> const_char_astrix_10;
+typedef Algorithms_Hash_Table::Hash_Table<const char *, 20> const_char_astrix_20;
+typedef Algorithms_Hash_Table::Hash_Table<const char *, 30> const_char_astrix_30;
+typedef Algorithms_Hash_Table::Hash_Table<const char *, 40> const_char_astrix_40;
+
+typedef Algorithms_Hash_Table::Hash_Table<std::string, 10> string_10;
+typedef Algorithms_Hash_Table::Hash_Table<std::string, 20> string_20;
+typedef Algorithms_Hash_Table::Hash_Table<std::string, 30> string_30;
+typedef Algorithms_Hash_Table::Hash_Table<std::string, 40> string_40;
 
 #endif /* _ALGORITHMS_LIBRARY_HASH_TABLE_HPP_ */

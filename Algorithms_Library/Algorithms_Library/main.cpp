@@ -4,6 +4,7 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <fstream>
 
 
 #include "Algorithms_Library.hpp"
@@ -21,6 +22,8 @@ const bool comparator(const void * left, const void * right)
 	}
 	return false;
 }
+
+void inserter(const std::string & file_in_path);
 
 int main(int argc, char * argv[])
 {
@@ -41,41 +44,47 @@ int main(int argc, char * argv[])
 	using Algorithms::Linear_Serach;
 	using Algorithms::Binary_Serach;
 	Algorithms_Hash_Table::Hash_Table<std::string, 10> HT;
-	HT.push("ddswd",12);
-	HT.push("ddsd",142);
-	HT.push("ddwssdd",32);
-	HT.push("ddds",382);
-	HT.push("ddsdasddd",128);
-	HT.push("de123dd",4472);
-	HT.push("dddqwed",172);
-	HT.push("ddd13d",152);
-	HT.push("ddcgg57765rgd",162332);
-	HT.push("ddcggrgd",162);
+	inserter("hashtable.in");
+	system("pause");
+	//std::string a = "dasd";
+	//const_char_astrix_10 hehe;
+	//hehe.push("ddswd", 12);
+	/*HT.push("ddswd",12);
+	HT.push("ddsd",13);
+	HT.push("ddwssdd",14);
+	HT.push("ddds",11);
+	HT.push("ddsdasddd",10);
+	HT.push("de123dd",25);
+	HT.push("dddqwed",36);
+	HT.push("ddd13d",37);
+	HT.push("ddcgg57765rgd",138);
+	HT.push("ddcggrgd",69);
 	HT.show_object();
-	Algorithms_Hash_Table::Hash_Table<int, 20> HT3;
-	HT3.push(1, 12);
-	HT3.push(2, 142);
-	HT3.push(3, 32);
-	HT3.push(3, 382);
-	HT3.push(2, 128);
-	HT3.push(3, 4472);
-	HT3.push(4, 172);
-	HT3.push(5, 152);
-	HT3.push(6, 162332);
-	HT3.push(7, 162);
-	HT3.push(1, 12);
-	HT3.push(2, 142);
-	HT3.push(3, 32);
-	HT3.push(3, 382);
-	HT3.push(2, 128);
-	HT3.push(3, 4472);
-	HT3.push(4, 172);
-	HT3.push(5, 152);
-	HT3.push(6, 162332);
-	HT3.push(7, 162);
-	HT3.show_object();
-	Algorithms_Hash_Table::Hash_Table<std::string, 20> HT1;
-	Algorithms_Hash_Table::Hash_Table<int, 20> HT2(HT3);
+	system("pause");*/
+	//Algorithms_Hash_Table::Hash_Table<int, 20> HT3;
+	///*HT3.push(1, 12);
+	//HT3.push(2, 142);
+	//HT3.push(3, 32);
+	//HT3.push(3, 382);
+	//HT3.push(2, 128);
+	//HT3.push(3, 4472);
+	//HT3.push(4, 172);
+	//HT3.push(5, 152);
+	//HT3.push(6, 162332);
+	//HT3.push(7, 162);
+	//HT3.push(1, 12);
+	//HT3.push(2, 142);
+	//HT3.push(3, 32);
+	//HT3.push(3, 382);
+	//HT3.push(2, 128);
+	//HT3.push(3, 4472);
+	//HT3.push(4, 172);
+	//HT3.push(5, 152);
+	//HT3.push(6, 162332);
+	//HT3.push(7, 162);
+	//HT3.show_object();*/
+	//Algorithms_Hash_Table::Hash_Table<std::string, 20> HT1;
+	//Algorithms_Hash_Table::Hash_Table<int, 20> HT2(HT3);
 	/*HT = HT2;
 	std::cout << HT.Get_Hash_Table_Size();*/
 	/*const size_t size = 8;
@@ -96,4 +105,61 @@ int main(int argc, char * argv[])
 	//std::cout << Binary_Serach(const_cast<char *>(name), 6, 'n');
 	system("pause");
 	return 0;
+}
+
+
+void inserter(const std::string & file_in_path)
+{
+	std::fstream file_in;
+	std::string data_reader = "";		//czyta dane z pliku
+	std::string Value = "";
+	__int64 Element_Key = 0;
+	size_t Element_Key_Delete = 0;
+	file_in.open(file_in_path.c_str(), std::ios_base::in);
+	if (file_in.good() == false)
+	{
+		exit(0);
+	}
+	else
+	{
+		file_in >> data_reader;
+		unsigned int loop_range = static_cast<unsigned int>(stoi(data_reader));
+		for (unsigned int i = 0; i < loop_range; ++i)
+		{
+			file_in >> data_reader;
+			if (data_reader == "size")
+			{
+				file_in >> data_reader;
+				unsigned int object_array_size = static_cast<unsigned int>(stoi(data_reader));
+				string_10 Object;
+				while (true)
+				{
+					file_in >> data_reader;
+					if (data_reader == "add")
+					{
+						file_in >> Element_Key;
+						file_in >> Value;
+						Object.push(Value, Element_Key);
+					}
+					else if (data_reader == "print")	//print
+					{
+						Object.show_elements(); //uncomment
+					}
+					else if (data_reader == "delete")	//delete
+					{
+						file_in >> Element_Key_Delete;
+						Object.delete_element(Element_Key_Delete);
+					}
+					else if (data_reader == "stop")		//stop
+					{
+						break;
+					}
+					data_reader = "";
+					Value = "";
+					Element_Key = 0;
+				}
+			}
+		}
+		file_in.close();
+	}
 }
