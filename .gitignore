@@ -7,6 +7,8 @@
 *.userosscache
 *.sln.docstates
 Algorithms_Library/
+Algorithms_Library/*
+Algorithms_Library
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
