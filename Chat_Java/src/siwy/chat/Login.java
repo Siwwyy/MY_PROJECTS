@@ -171,7 +171,6 @@ public class Login extends JFrame
 				
 			}
 
-		
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNewButton.setBounds(110, 358, 113, 36);
@@ -184,9 +183,6 @@ public class Login extends JFrame
 		lblImage.setBounds(0, 0, 334, 421);
 		contentPane.add(lblImage);
 		
-		
-	
-		
 	}
 	
 	/*
@@ -196,7 +192,8 @@ public class Login extends JFrame
 	private void login(String name, String address, int port) 
 	{
 		// TODO Auto-generated method stub
-		dispose();
-		System.out.println(name + " " + address + " " + port);
+		dispose();	//turning off the window
+		new Client(name, address, port);
+		//System.out.println(name + " " + address + " " + port);
 	}
 }
