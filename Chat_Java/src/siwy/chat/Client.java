@@ -20,6 +20,8 @@ import java.awt.Insets;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Client extends JFrame 
 {
@@ -29,6 +31,9 @@ public class Client extends JFrame
 	private String username ,address;
 	private int port;
 	private JTextField txtMessage;
+	private JTextArea txtrHistory;
+	
+	private boolean is_clear_txtrHistory;
 	
 	/*public Client() 
 	{
@@ -50,7 +55,10 @@ public class Client extends JFrame
 		this.username = name;
 		this.address = address;
 		this.port = port;
+		this.is_clear_txtrHistory = false;
 		Create_Window();
+		Console("Successfully Connected!! \n Username: " + this.username + "\n Ip Adrress: " + this.address + "\n Port: " + this.port);
+		Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
 	}
 	
 	
@@ -86,19 +94,39 @@ public class Client extends JFrame
 		setLocationRelativeTo(null);
 		setTitle("Chat Client " + this.username);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 820, 800);
+		setBounds(100, 100, 820, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{600,120};	//SUM = 730
-		gbl_contentPane.rowHeights = new int[]{500, 200};	//SUM = 700 	730x700
+		gbl_contentPane.rowHeights = new int[]{550, 100};	//SUM = 700 	730x700
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JTextArea txtrHistory = new JTextArea();
+		txtrHistory = new JTextArea();
+		txtrHistory.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				//static bool is_pressed = false;
+				if(is_clear_txtrHistory == false)
+				{
+					txtrHistory.setText("");
+					is_clear_txtrHistory = true;
+				}
+				else
+				{
+					//MAYBE IN FUTURE
+				}
+			
+			}
+		});
+		
+		txtrHistory.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		txtrHistory.setBackground(new Color(191, 205, 219));
 		GridBagConstraints gbc_txtrHistory = new GridBagConstraints();
 		gbc_txtrHistory.insets = new Insets(20, 20, 5, 20);
@@ -110,7 +138,7 @@ public class Client extends JFrame
 		contentPane.add(txtrHistory, gbc_txtrHistory);
 		
 		txtMessage = new JTextField();
-		txtMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMessage.setHorizontalAlignment(SwingConstants.LEFT);
 		txtMessage.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		GridBagConstraints gbc_txtMessage = new GridBagConstraints();
 		gbc_txtMessage.insets = new Insets(0, 0, 5, 5);
@@ -130,7 +158,14 @@ public class Client extends JFrame
 		contentPane.add(btnSend, gbc_btnSend);
 		
 		
-		
+		//requestFocus();
+		//txtMessage.requestFocus();
+		txtMessage.requestFocusInWindow();
 		setVisible(true);
+	}
+	
+	public void Console(String Message)
+	{
+		txtrHistory.append(Message + "\n\r");
 	}
 }
