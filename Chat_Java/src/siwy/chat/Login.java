@@ -7,6 +7,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -14,7 +17,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class Login extends JFrame 
 {
@@ -23,11 +31,14 @@ public class Login extends JFrame
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JLabel lblIpAddress;
-	private JTextField textIPAddress;
+	private JTextField txtIPAddress;
 	private JLabel lblPort;
-	private JTextField textPort;
+	private JTextField txtPort;
 	private JLabel lblNewLabel_1;
 	private JLabel lbleg;
+	private JLabel lblImage;
+	
+	//private LoginButton login_handler = new LoginButton();
 	
 	//MAIN
 	public static void main(String[] args)
@@ -51,6 +62,7 @@ public class Login extends JFrame
 
 	public Login() 
 	{
+		setIconImage(Toolkit.getDefaultToolkit().getImage("E:\\!!Projects VS\\!!C++&JAVA\\!MY_PROJECTS\\Chat_Java\\GRAPHICS\\logo_dym.png"));
 		//this try catch block is for avoid problems connected with the vary platforms
 		try 
 		{
@@ -112,12 +124,12 @@ public class Login extends JFrame
 		lblIpAddress.setBounds(30, 120, 274, 36);
 		contentPane.add(lblIpAddress);
 		
-		textIPAddress = new JTextField();
-		textIPAddress.setHorizontalAlignment(SwingConstants.CENTER);
-		textIPAddress.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textIPAddress.setColumns(10);
-		textIPAddress.setBounds(30, 156, 274, 36);
-		contentPane.add(textIPAddress);
+		txtIPAddress = new JTextField();
+		txtIPAddress.setHorizontalAlignment(SwingConstants.CENTER);
+		txtIPAddress.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtIPAddress.setColumns(10);
+		txtIPAddress.setBounds(30, 156, 274, 36);
+		contentPane.add(txtIPAddress);
 		
 		lblPort = new JLabel("Port:");
 		lblPort.setHorizontalAlignment(SwingConstants.CENTER);
@@ -125,12 +137,12 @@ public class Login extends JFrame
 		lblPort.setBounds(30, 227, 274, 36);
 		contentPane.add(lblPort);
 		
-		textPort = new JTextField();
-		textPort.setHorizontalAlignment(SwingConstants.CENTER);
-		textPort.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textPort.setColumns(10);
-		textPort.setBounds(30, 265, 274, 36);
-		contentPane.add(textPort);
+		txtPort = new JTextField();
+		txtPort.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPort.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtPort.setColumns(10);
+		txtPort.setBounds(30, 265, 274, 36);
+		contentPane.add(txtPort);
 		
 		lblNewLabel_1 = new JLabel("(eg. 192.168.1.4)");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -145,8 +157,46 @@ public class Login extends JFrame
 		contentPane.add(lbleg);
 		
 		JButton btnNewButton = new JButton("Login");
+		//btnNewButton.addActionListener(login_handler);
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				//System.out.println("dsadsd");
+				String username = txtUsername.getText();
+				String ip_address = txtIPAddress.getText();
+				int port = Integer.parseInt(txtPort.getText());
+				login(username, ip_address, port);
+				
+			}
+
+		
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNewButton.setBounds(110, 358, 113, 36);
 		contentPane.add(btnNewButton);
+		
+		lblImage = new JLabel("");
+		Image img = new ImageIcon(this.getClass().getResource("/background.png")).getImage();
+		Image newImage = img.getScaledInstance(334, 421, Image.SCALE_DEFAULT);
+		lblImage.setIcon(new ImageIcon(newImage));
+		lblImage.setBounds(0, 0, 334, 421);
+		contentPane.add(lblImage);
+		
+		
+	
+		
+	}
+	
+	/*
+	 * Login stuff
+	 */
+	
+	private void login(String name, String address, int port) 
+	{
+		// TODO Auto-generated method stub
+		dispose();
+		System.out.println(name + " " + address + " " + port);
 	}
 }
