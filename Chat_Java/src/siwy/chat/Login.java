@@ -1,7 +1,5 @@
 package siwy.chat;
 
-//IMPORTS BELOW
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
