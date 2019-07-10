@@ -5,7 +5,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.Toolkit;
 import java.awt.GridBagLayout;
 import javax.swing.JTextArea;
@@ -35,7 +38,8 @@ public class Client extends JFrame
 	private String username ,address;
 	private int port;
 	private JTextField txtMessage;
-	private JTextArea txtrHistory;
+	private JTextArea history;
+	private DefaultCaret caret;
 	
 	private boolean is_clear_txtrHistory;
 	
@@ -110,8 +114,8 @@ public class Client extends JFrame
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 		
-		txtrHistory = new JTextArea();
-		txtrHistory.addMouseListener(new MouseAdapter() 
+		history = new JTextArea();
+		history.addMouseListener(new MouseAdapter() 
 		{
 			@Override
 			public void mouseClicked(MouseEvent e) 
@@ -119,7 +123,7 @@ public class Client extends JFrame
 				//static bool is_pressed = false;
 				if(is_clear_txtrHistory == false)
 				{ 
-					txtrHistory.setText("");
+					history.setText("");
 					is_clear_txtrHistory = true;
 				}
 				else
@@ -129,17 +133,21 @@ public class Client extends JFrame
 			
 			}
 		});
+		history.setEditable(false);
+		history.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		history.setBackground(new Color(191, 205, 219));
+		//caret = (DefaultCaret)history.getCaret();
+		caret = (DefaultCaret)history.getCaret();	//for updating the scroll
+		JScrollPane scroll = new JScrollPane(history);
 		
-		txtrHistory.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		txtrHistory.setBackground(new Color(191, 205, 219));
-		GridBagConstraints gbc_txtrHistory = new GridBagConstraints();
-		gbc_txtrHistory.insets = new Insets(20, 20, 5, 20);
-		gbc_txtrHistory.fill = GridBagConstraints.BOTH;
-		gbc_txtrHistory.gridx = 0;
-		gbc_txtrHistory.gridy = 0;
-		gbc_txtrHistory.gridwidth = 0;
-		gbc_txtrHistory.insets = new Insets(0,0,0,0);
-		contentPane.add(txtrHistory, gbc_txtrHistory);
+		GridBagConstraints scrollConstraints = new GridBagConstraints();
+		scrollConstraints.insets = new Insets(20, 20, 5, 20);
+		scrollConstraints.fill = GridBagConstraints.BOTH;
+		scrollConstraints.gridx = 0;
+		scrollConstraints.gridy = 0;
+		scrollConstraints.gridwidth = 0;
+		scrollConstraints.insets = new Insets(0,0,0,0);
+		contentPane.add(scroll, scrollConstraints);
 		
 		txtMessage = new JTextField();
 		txtMessage.addKeyListener(new KeyAdapter() 
@@ -176,7 +184,7 @@ public class Client extends JFrame
 			{
 				if(is_clear_txtrHistory == false)
 				{ 
-					txtrHistory.setText("");
+					history.setText("");
 					is_clear_txtrHistory = true;
 				}
 				send(txtMessage.getText());
@@ -200,7 +208,7 @@ public class Client extends JFrame
 	public void Console(String Message)
 	{
 		//txtrHistory.append(this.username + ": "+Message + "\n\r");
-		txtrHistory.append(Message + "\n\r");
+		history.append(Message + "\n\r");
 	}
 	
 	public void send(String message)
