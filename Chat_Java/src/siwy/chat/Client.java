@@ -22,6 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Client extends JFrame 
 {
@@ -92,7 +96,7 @@ public class Client extends JFrame
 		}
 		
 		setLocationRelativeTo(null);
-		setTitle("Chat Client " + this.username);
+		setTitle("Chat! Client null");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 820, 700);
 		contentPane = new JPanel();
@@ -114,7 +118,7 @@ public class Client extends JFrame
 			{
 				//static bool is_pressed = false;
 				if(is_clear_txtrHistory == false)
-				{
+				{ 
 					txtrHistory.setText("");
 					is_clear_txtrHistory = true;
 				}
@@ -138,6 +142,23 @@ public class Client extends JFrame
 		contentPane.add(txtrHistory, gbc_txtrHistory);
 		
 		txtMessage = new JTextField();
+		txtMessage.addKeyListener(new KeyAdapter() 
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+//					if(is_clear_txtrHistory == false)
+//					{ 
+//						txtrHistory.setText("");
+//						is_clear_txtrHistory = true;
+//					}
+					send(txtMessage.getText());
+				}
+			}
+		});
 		txtMessage.setHorizontalAlignment(SwingConstants.LEFT);
 		txtMessage.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		GridBagConstraints gbc_txtMessage = new GridBagConstraints();
@@ -149,6 +170,18 @@ public class Client extends JFrame
 		txtMessage.setColumns(10);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(is_clear_txtrHistory == false)
+				{ 
+					txtrHistory.setText("");
+					is_clear_txtrHistory = true;
+				}
+				send(txtMessage.getText());
+			}
+		});
 		btnSend.setFont(new Font("Tahoma", Font.BOLD, 16));
 		GridBagConstraints gbc_btnSend = new GridBagConstraints();
 		gbc_btnSend.insets = new Insets(0, 0, 5, 0);
@@ -166,6 +199,19 @@ public class Client extends JFrame
 	
 	public void Console(String Message)
 	{
+		//txtrHistory.append(this.username + ": "+Message + "\n\r");
 		txtrHistory.append(Message + "\n\r");
 	}
+	
+	public void send(String message)
+	{
+		if(message.length() > 0) //or message.equals("") == true | my idea is easier :))
+		{
+			message = this.username + ": " + message;
+			Console(message);
+			txtMessage.setText("");
+		}
+	}
+	
+	
 }

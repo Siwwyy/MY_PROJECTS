@@ -91,7 +91,7 @@ public class Login extends JFrame
 		
 		
 		setFont(new Font("Dialog", Font.PLAIN, 13));
-		setTitle("Siwy Chat");
+		setTitle("Chat!");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 300, 450);
