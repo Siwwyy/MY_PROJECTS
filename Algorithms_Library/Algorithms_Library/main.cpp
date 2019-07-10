@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 	using Algorithms::Binary_Serach;
 	Algorithms_Hash_Table::Hash_Table<std::string, 10> HT;
 	inserter("hashtable.in");
-	system("pause");
+	//system("pause");
 	//std::string a = "dasd";
 	//const_char_astrix_10 hehe;
 	//hehe.push("ddswd", 12);
