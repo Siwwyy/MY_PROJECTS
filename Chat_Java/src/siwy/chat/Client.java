@@ -25,6 +25,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -42,6 +48,17 @@ public class Client extends JFrame
 	private DefaultCaret caret;
 	
 	private boolean is_clear_txtrHistory;
+	
+	/*
+	 * Connection classes
+	 * VERY IMPORTANT
+	 */
+	
+	private DatagramSocket socket;
+	private InetAddress ip;	//IP Address
+	private Thread send_thread; //Thread for sending
+	
+	///////////////////////////////////////////////////////////////////////
 	
 	/*public Client() 
 	{
@@ -64,11 +81,78 @@ public class Client extends JFrame
 		this.address = address;
 		this.port = port;
 		this.is_clear_txtrHistory = false;
+		boolean connect = Open_Connection(this.address, this.port);
 		Create_Window();
-		Console("Successfully Connected!! \n Username: " + this.username + "\n Ip Adrress: " + this.address + "\n Port: " + this.port);
-		Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
+		if(connect == false)
+		{
+			System.err.println("Connection Failed!! \n");
+			Console("Connection Failed!! \n");
+		}
+		else
+		{
+			Console("Successfully Connected!! \n Username: " + this.username + "\n Ip Adrress: " + this.address + "\n Port: " + this.port);
+			Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
+		}
 	}
 	
+	
+	private boolean Open_Connection(String Address, int port)
+	{
+		try 
+		{
+			socket = new DatagramSocket(this.port);
+			ip = InetAddress.getByName(Address);
+		} 
+		catch (UnknownHostException e) 
+		{
+			e.printStackTrace();
+			return false;
+		} 
+		catch (SocketException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	private String Receive()
+	{
+		byte[] data = new byte[1024];
+		DatagramPacket packet = new DatagramPacket(data,data.length);
+		
+		try 
+		{
+			socket.receive(packet);
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		String message = new  String(packet.getData());
+		return message;
+	}
+	
+	private void Send(final byte[] data)
+	{
+		send_thread = new Thread("send")
+		{
+			public void run()
+			{
+				DatagramPacket packet = new DatagramPacket(data,data.length, ip, port);
+				try 
+				{
+					socket.send(packet);
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+		send_thread.start();
+	}
 	
 	private void Create_Window()
 	{
@@ -137,9 +221,10 @@ public class Client extends JFrame
 		history.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		history.setBackground(new Color(191, 205, 219));
 		//caret = (DefaultCaret)history.getCaret();
-		caret = (DefaultCaret)history.getCaret();	//for updating the scroll
+	
 		JScrollPane scroll = new JScrollPane(history);
-		
+		caret = (DefaultCaret)history.getCaret();	//for updating the scroll
+		//caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		GridBagConstraints scrollConstraints = new GridBagConstraints();
 		scrollConstraints.insets = new Insets(20, 20, 5, 20);
 		scrollConstraints.fill = GridBagConstraints.BOTH;
@@ -155,7 +240,6 @@ public class Client extends JFrame
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
-				
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 //					if(is_clear_txtrHistory == false)
@@ -209,6 +293,7 @@ public class Client extends JFrame
 	{
 		//txtrHistory.append(this.username + ": "+Message + "\n\r");
 		history.append(Message + "\n\r");
+		history.setCaretPosition(history.getDocument().getLength());
 	}
 	
 	public void send(String message)
