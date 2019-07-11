@@ -148,7 +148,7 @@ public class Login extends JFrame
 		lblNewLabel_1.setBounds(30, 191, 274, 27);
 		contentPane.add(lblNewLabel_1);
 		
-		lbleg = new JLabel("(eg. 3360)");
+		lbleg = new JLabel("(eg. 8192)");
 		lbleg.setHorizontalAlignment(SwingConstants.CENTER);
 		lbleg.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lbleg.setBounds(30, 304, 274, 27);

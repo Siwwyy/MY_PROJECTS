@@ -39,10 +39,8 @@ import java.awt.event.KeyEvent;
 public class Client extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	
-	private String username ,address;
-	private int port;
+	private JPanel contentPane;
 	private JTextField txtMessage;
 	private JTextArea history;
 	private DefaultCaret caret;
@@ -54,6 +52,8 @@ public class Client extends JFrame
 	 * VERY IMPORTANT
 	 */
 	
+	private String username ,address;
+	private int port;
 	private DatagramSocket socket;
 	private InetAddress ip;	//IP Address
 	private Thread send_thread; //Thread for sending
@@ -81,7 +81,7 @@ public class Client extends JFrame
 		this.address = address;
 		this.port = port;
 		this.is_clear_txtrHistory = false;
-		boolean connect = Open_Connection(this.address, this.port);
+		boolean connect = Open_Connection(this.address);
 		Create_Window();
 		if(connect == false)
 		{
@@ -92,15 +92,16 @@ public class Client extends JFrame
 		{
 			Console("Successfully Connected!! \n Username: " + this.username + "\n Ip Adrress: " + this.address + "\n Port: " + this.port);
 			Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
+			//Send(" ");
 		}
 	}
 	
 	
-	private boolean Open_Connection(String Address, int port)
+	private boolean Open_Connection(String Address)
 	{
 		try 
 		{
-			socket = new DatagramSocket(this.port);
+			socket = new DatagramSocket();
 			ip = InetAddress.getByName(Address);
 		} 
 		catch (UnknownHostException e) 
@@ -115,6 +116,7 @@ public class Client extends JFrame
 		}
 		return true;
 	}
+	
 	
 	private String Receive()
 	{
@@ -132,6 +134,7 @@ public class Client extends JFrame
 		String message = new  String(packet.getData());
 		return message;
 	}
+	
 	
 	private void Send(final byte[] data)
 	{
@@ -153,6 +156,7 @@ public class Client extends JFrame
 		};
 		send_thread.start();
 	}
+	
 	
 	private void Create_Window()
 	{
@@ -184,7 +188,7 @@ public class Client extends JFrame
 		}
 		
 		setLocationRelativeTo(null);
-		setTitle("Chat! Client null");
+		setTitle("Chat! Client " + this.username);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 820, 700);
 		contentPane = new JPanel();
@@ -247,7 +251,7 @@ public class Client extends JFrame
 //						txtrHistory.setText("");
 //						is_clear_txtrHistory = true;
 //					}
-					send(txtMessage.getText());
+					Send(txtMessage.getText());
 				}
 			}
 		});
@@ -271,7 +275,7 @@ public class Client extends JFrame
 					history.setText("");
 					is_clear_txtrHistory = true;
 				}
-				send(txtMessage.getText());
+				Send(txtMessage.getText());
 			}
 		});
 		btnSend.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -289,6 +293,7 @@ public class Client extends JFrame
 		setVisible(true);
 	}
 	
+	
 	public void Console(String Message)
 	{
 		//txtrHistory.append(this.username + ": "+Message + "\n\r");
@@ -296,12 +301,14 @@ public class Client extends JFrame
 		history.setCaretPosition(history.getDocument().getLength());
 	}
 	
-	public void send(String message)
+	
+	public void Send(String message)
 	{
 		if(message.length() > 0) //or message.equals("") == true | my idea is easier :))
 		{
 			message = this.username + ": " + message;
 			Console(message);
+			Send(message.getBytes());
 			txtMessage.setText("");
 		}
 	}
