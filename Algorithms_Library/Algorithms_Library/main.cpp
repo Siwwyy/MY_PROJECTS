@@ -130,8 +130,11 @@ void inserter(const std::string & file_in_path)
 			if (data_reader == "size")
 			{
 				file_in >> data_reader;
-				unsigned int object_array_size = static_cast<unsigned int>(stoi(data_reader));
-				string_10 Object;
+				const unsigned int object_array_size = static_cast<unsigned int>(stoi(data_reader));
+				//string_10 Object;
+				std::cout << object_array_size << '\n';
+				Algorithms_Hash_Table::Hash_Table<std::string, NULL> Object;
+				Object.resize_array(object_array_size);
 				while (true)
 				{
 					file_in >> data_reader;
