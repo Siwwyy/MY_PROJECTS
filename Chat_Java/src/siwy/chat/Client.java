@@ -92,7 +92,8 @@ public class Client extends JFrame
 		{
 			Console("Successfully Connected!! \n Username: " + this.username + "\n Ip Adrress: " + this.address + "\n Port: " + this.port);
 			Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
-			//Send(" ");
+			String connection = "/c/" + this.username;
+			Send(connection.getBytes());
 		}
 	}
 	
@@ -308,6 +309,7 @@ public class Client extends JFrame
 		{
 			message = this.username + ": " + message;
 			Console(message);
+			message = "/m/" + message;	//cause m means a message from client
 			Send(message.getBytes());
 			txtMessage.setText("");
 		}

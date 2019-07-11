@@ -3,9 +3,12 @@ package siwy.chat;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Server implements Runnable
 {
@@ -65,16 +68,78 @@ public class Server implements Runnable
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					String new_string = new String(packet.getData());
+					//String new_string = new String(packet.getData());
+					process(packet);
 					Clients_List.add(new ServerClient("Ja", packet.getAddress(), packet.getPort(), 50));
 					System.out.println(Clients_List.get(0).address.toString() + ":" + Clients_List.get(0).port);
-					System.out.println(new_string);
+					//System.out.println(new_string);
 				}
 			}
 		};
 		receive_thread.start();
 	}
-
+	
+	
+	private void SendToAll(String message)
+	{
+		for(int i = 0; i < Clients_List.size(); i++)
+		{
+			ServerClient client = Clients_List.get(i);
+			send(message.getBytes(), client.address, client.port);
+		}
+	}
+	
+	
+	private void send(final byte[] data, final InetAddress address, final int port)
+	{
+		send_thread = new Thread("Send")
+		{
+			public void run()
+			{
+				DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
+				try 
+				{
+					socket.send(packet);
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	
+	private void process(DatagramPacket packet)
+	{
+		String from_packet = new String(packet.getData());
+		if(from_packet.startsWith("/c/") == true)	//c means that it is a client
+		{
+			//int random_value = new Random().nextInt();	//for unique ID 
+			//int random_value = new SecureRandom().nextInt();	//for unique ID 
+			//UUID id = UUID.randomUUID();
+			//id.
+			//int random_value = new SecureRandom().nextInt();	//for unique ID 
+			int id = UniqueIdentifier.Get_Identifier();
+			System.out.println("Identifier: " + id);
+			//Clients_List.add(new ServerClient(from_packet.substring(3,from_packet.length()), packet.getAddress(), packet.getPort(), random_value));
+			//Clients_List.add(new ServerClient(from_packet.substring(3,from_packet.length()), packet.getAddress(), packet.getPort(), Integer.parseInt(id.toString())));
+			Clients_List.add(new ServerClient(from_packet.substring(3,from_packet.length()), packet.getAddress(), packet.getPort(), id));
+			System.out.println(from_packet.substring(3,from_packet.length()));
+		}
+		else if(from_packet.startsWith("/m/") == true)
+		{
+			//String message = from_packet.substring(3,from_packet.length());
+			SendToAll(from_packet);
+		}
+		else
+		{
+			System.out.println(from_packet);
+		}
+	}
+	
+	
 	private void Manage_Clients() 
 	{
 		// TODO Auto-generated method stub
