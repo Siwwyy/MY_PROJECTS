@@ -191,7 +191,7 @@ public class Login extends JFrame
 	{
 		// TODO Auto-generated method stub
 		dispose();	//turning off the window
-		new Client(name, address, port);
+		new ClientWindow(name, address, port);
 		//System.out.println(name + " " + address + " " + port);
 	}
 }
