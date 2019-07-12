@@ -117,6 +117,7 @@ namespace Algorithms_Hash_Table
 		void __fastcall push(const _Ty & Value, const __int64 Key);
 		void delete_element(const __int64 Key);
 		void show_elements() const;
+		void show_elements(std::ostream & out) const;
 		void resize_array(const size_t new_size);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -423,6 +424,19 @@ namespace Algorithms_Hash_Table
 			}
 		}
 		std::cout << '\n';
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline void Hash_Table<_Ty, _Size>::show_elements(std::ostream & out) const
+	{
+		for (size_t i{}; i < this->Hash_Table_Size; ++i)
+		{
+			if (Hash_Table_Array[i].Get_Key() >= 0)
+			{
+				out << (i) << ' ' << Hash_Table_Array[i];
+			}
+		}
+		out << '\n';
 	}
 
 	template<typename _Ty, size_t _Size>

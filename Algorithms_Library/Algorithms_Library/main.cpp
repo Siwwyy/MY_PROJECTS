@@ -111,11 +111,13 @@ int main(int argc, char * argv[])
 void inserter(const std::string & file_in_path)
 {
 	std::fstream file_in;
+	std::fstream file_out;
 	std::string data_reader = "";		//czyta dane z pliku
 	std::string Value = "";
 	__int64 Element_Key = 0;
 	size_t Element_Key_Delete = 0;
 	file_in.open(file_in_path.c_str(), std::ios_base::in);
+	file_out.open("temp.out", std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -131,8 +133,6 @@ void inserter(const std::string & file_in_path)
 			{
 				file_in >> data_reader;
 				const unsigned int object_array_size = static_cast<unsigned int>(stoi(data_reader));
-				//string_10 Object;
-				std::cout << object_array_size << '\n';
 				Algorithms_Hash_Table::Hash_Table<std::string, NULL> Object;
 				Object.resize_array(object_array_size);
 				while (true)
@@ -146,7 +146,10 @@ void inserter(const std::string & file_in_path)
 					}
 					else if (data_reader == "print")	//print
 					{
+						//three types of out
 						Object.show_elements(); //uncomment
+						//Object.show_elements(file_out); //uncomment
+						//Object.show_elements(std::cout); //uncomment
 					}
 					else if (data_reader == "delete")	//delete
 					{
@@ -164,5 +167,6 @@ void inserter(const std::string & file_in_path)
 			}
 		}
 		file_in.close();
+		file_out.close();
 	}
 }

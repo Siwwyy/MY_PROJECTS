@@ -27,3 +27,9 @@
 //typedef Algorithms_Hash_Table::Hash_Table<std::string, 20> string_20;
 //typedef Algorithms_Hash_Table::Hash_Table<std::string, 30> string_30;
 //typedef Algorithms_Hash_Table::Hash_Table<std::string, 40> string_40;
+
+//template<typename _Ty, size_t _Size>
+//std::ostream & Algorithms_Hash_Table::operator<<(std::ostream & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs)
+//{
+//	// TODO: insert return statement here
+//}
