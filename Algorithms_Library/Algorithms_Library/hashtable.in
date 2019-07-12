@@ -1,4 +1,28 @@
-1
+3
+size 10
+add 13 ala
+print
+add 23 ola
+print
+delete 13
+print
+stop
+size 10
+add 13 ala
+add 23 ola
+add 14 ula
+add 34 ela
+print
+delete 34
+print
+add 54 ela
+delete 14
+print
+add 74 ula
+print
+delete 13
+print
+stop
 size 11
 add 27 A
 add 38 B
@@ -24,3 +48,4 @@ print
 delete 361
 print
 stop
+

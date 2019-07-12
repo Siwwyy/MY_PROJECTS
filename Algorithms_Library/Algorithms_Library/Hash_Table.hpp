@@ -18,23 +18,6 @@ namespace Algorithms_Hash_Table
 	using std::endl;
 	using std::cout;
 
-	//template<typename _Ty_Left, typename _Ty_Right>
-	//void __stdcall __swap(_Ty_Left & _Left, _Ty_Right & _Right) noexcept
-	//{
-	//	/*
-	//		int x = 10, y = 5;
-	//		// Code to swap 'x' (1010) and 'y' (0101)
-	//		x = x ^ y; // x now becomes 15 (1111)
-	//		y = x ^ y; // y becomes 10 (1010)
-	//		x = x ^ y; // x becomes 5 (0101)
-	//	*/
-	//	//Swapping without the temporary variable
-	//	_Left = _Left ^ _Right;
-	//	_Right = _Left ^ _Right;
-	//	_Left = _Left ^ _Right;
-	//}
-
-
 	template<typename _Ty, size_t _Size>
 	class Hash_Table
 	{
@@ -106,7 +89,6 @@ namespace Algorithms_Hash_Table
 			PRIVATE FUNCTIONS
 		*/
 		void hash_table_organizer(const size_t deleted_element_index, const __int64 deleted_key);
-		//const bool operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const;
 		const bool operator()(const size_t & index) const;
 		const bool if_same_value_exist(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element * Object) const;
 		/////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,11 +167,6 @@ namespace Algorithms_Hash_Table
 	////////////////////////////////////////////////////
 	////////////////////////////////////////////////////
 
-	/*
-		FRIEND METHOD's SPACE
-	*/
-
-
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,7 +222,6 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	__forceinline constexpr size_t Hash_Table<_Ty, _Size>::_Hash_Element::Get_Index(const size_t & array_length) const
 	{
-		//return (this->Key % array_length) % array_length;
 		return (this->Key % array_length);
 	}
 
@@ -256,9 +232,7 @@ namespace Algorithms_Hash_Table
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size>::template _Hash_Element::operator=(const _Hash_Element & Object)
-	//__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size> _Hash_Element::operator=(const _Hash_Element & Object)
-	{
+	__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size>::template _Hash_Element::operator=(const _Hash_Element & Object)	{
 		if (this != _STD addressof(Object))
 		{
 			this->Value = Object.Value;
@@ -283,7 +257,6 @@ namespace Algorithms_Hash_Table
 	__forceinline constexpr bool Hash_Table<_Ty, _Size>::_Hash_Element::operator==(const _Hash_Element & Object) const
 	{
 		return _STD tie(this->Value, this->Key) == _STD tie(Object.Value, Object.Key);
-		//return !(*this < Object) && !(Object < *this);
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -295,7 +268,6 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::_Hash_Element::~_Hash_Element()
 	{
-		/*std::cout << "Destruct" << std::endl;*/
 		Key = -1;
 	}
 
@@ -309,12 +281,6 @@ namespace Algorithms_Hash_Table
 	////////////////////////////////////////////////////
 
 
-	/*template<typename _Ty, size_t _Size>
-	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & lhs, const typename Algorithms_Hash_Table::Hash_Table<_Ty, _Size>::_Hash_Element & rhs) const
-	{
-		return _STD tie(rhs) == _STD tie(lhs);
-	}*/
-
 	template<typename _Ty, size_t _Size>
 	__forceinline void Hash_Table<_Ty, _Size>::hash_table_organizer(const size_t deleted_element_index, const __int64 deleted_key)
 	{
@@ -322,76 +288,42 @@ namespace Algorithms_Hash_Table
 		{	
 			if (Hash_Table_Array[i].Get_Index(Hash_Table_Size) != i && Hash_Table_Array[i].Get_Key() >= 0 /*&& Hash_Table_Array[Hash_Table_Array[i].Get_Index(Hash_Table_Size)].Get_Key() == -1*/)
 			{
-				if (i >= Hash_Table_Array[i].Get_Index(Hash_Table_Size))
+				if (Hash_Table_Array[Hash_Table_Array[i].Get_Index(Hash_Table_Size)].Get_Key() == -1)
 				{
-					//std::cout << Hash_Table_Array[i] << i << '\n';
-				//	bool found_place = false;
-					for (__int32 j{ static_cast<__int32>(i) }; j >= 0; --j)
+					std::swap(Hash_Table_Array[Hash_Table_Array[i].Get_Index(Hash_Table_Size)], Hash_Table_Array[i]);
+				}
+				else
+				{
+					if (i >= Hash_Table_Array[i].Get_Index(Hash_Table_Size))
 					{
-						if (Hash_Table_Array[j].Get_Key() == -1)
+						for (__int32 j{ static_cast<__int32>(i) }; j >= 0; --j)
 						{
-						//	found_place = true;
-							std::swap(Hash_Table_Array[static_cast<size_t>(j)], Hash_Table_Array[i]);
-							break;
+							if (Hash_Table_Array[j].Get_Key() == -1)
+							{
+								std::swap(Hash_Table_Array[static_cast<size_t>(j)], Hash_Table_Array[i]);
+								break;
+							}
 						}
 					}
-					//if(found_place)
-				}
-				else if(i < Hash_Table_Array[i].Get_Index(Hash_Table_Size))
-				{
-					for (size_t j{}; j <= Hash_Table_Array[i].Get_Index(Hash_Table_Size); ++j)
+					else if (i < Hash_Table_Array[i].Get_Index(Hash_Table_Size))
 					{
-						if (Hash_Table_Array[j].Get_Key() == -1)
+						for (size_t j{}; j <= Hash_Table_Array[i].Get_Index(Hash_Table_Size); ++j)
 						{
-							//	found_place = true;
-							std::swap(Hash_Table_Array[static_cast<size_t>(j)], Hash_Table_Array[i]);
-							break;
+							if (Hash_Table_Array[j].Get_Key() == -1)
+							{
+								std::swap(Hash_Table_Array[j], Hash_Table_Array[i]);
+								break;
+							}
 						}
 					}
 				}
 			}
 		}
-		//issue with indexing 230 % 11 isn't equal to 0, but my algorithm says different
-
-		//for (size_t i{}; i < this->Hash_Table_Size; ++i)
-		//{
-		//	if (Hash_Table_Array[i].Get_Index(Hash_Table_Size) != i && Hash_Table_Array[i].Get_Key() >= 0 /*&& Hash_Table_Array[Hash_Table_Array[i].Get_Index(Hash_Table_Size)].Get_Key() == -1*/)
-		//	{
-		//		if (i >= Hash_Table_Array[i].Get_Index(Hash_Table_Size))
-		//		{
-		//			//std::cout << Hash_Table_Array[i] << i << '\n';
-		//		//	bool found_place = false;
-		//			for (__int32 j{ static_cast<__int32>(i) }; j >= 0; --j)
-		//			{
-		//				if (Hash_Table_Array[j].Get_Key() == -1)
-		//				{
-		//					//	found_place = true;
-		//					std::swap(Hash_Table_Array[static_cast<size_t>(j)], Hash_Table_Array[i]);
-		//					break;
-		//				}
-		//			}
-		//			//if(found_place)
-		//		}
-		//		else if (i < Hash_Table_Array[i].Get_Index(Hash_Table_Size))
-		//		{
-		//			for (size_t j{}; j <= Hash_Table_Array[i].Get_Index(Hash_Table_Size); ++j)
-		//			{
-		//				if (Hash_Table_Array[j].Get_Key() == -1)
-		//				{
-		//					//	found_place = true;
-		//					std::swap(Hash_Table_Array[static_cast<size_t>(j)], Hash_Table_Array[i]);
-		//					break;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
 	}
 
 	template<typename _Ty, size_t _Size>
 	__forceinline const bool Hash_Table<_Ty, _Size>::operator()(const size_t & index) const
 	{
-		//if (Hash_Table_Array[position] == nullptr)
 		if (Hash_Table_Array[index].Get_Key() == -1)
 		{
 			return true;
@@ -485,13 +417,11 @@ namespace Algorithms_Hash_Table
 	{
 		for (size_t i{}; i < this->Hash_Table_Size; ++i)
 		{
-			//operator<<(std::cout, Hash_Table_Array[i]);
 			if (Hash_Table_Array[i].Get_Key() >= 0)
 			{
 				std::cout << (i) << ' ' << Hash_Table_Array[i];
 			}
 		}
-		//std::cout << "--------------------------------------------- \n";
 		std::cout << '\n';
 	}
 
@@ -558,7 +488,6 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::~Hash_Table()
 	{
-		//std::cout << "Destruct" << std::endl;
 		delete[] Hash_Table_Array;
 		Hash_Table_Size = NULL;
 	}
