@@ -29,5 +29,8 @@
     <ClInclude Include="Hash_Table.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Heap_Sort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

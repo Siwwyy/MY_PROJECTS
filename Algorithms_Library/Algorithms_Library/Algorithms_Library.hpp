@@ -6,16 +6,22 @@
 #ifndef _ALGORITHMS_LIBRARY_HPP_
 #define _ALGORITHMS_LIBRARY_HPP_
 
+#include <iostream>
+#include <windows.h>
+#include <string>
+
 namespace Algorithms
 {
-	#include <iostream>
-	#include <windows.h>
-	#include <string>
+	/*
+		LIBRARY CONNECTED HEADERS
+	*/
+	#include "Hash_Table.hpp"
+	#include "Heap_Sort.hpp"
+	//////////////////////////////////////////////
 
 	using std::cerr;
 	using std::cout;
 	using std::endl;
-
 
 	/*
 		FUNCTIONS CASE

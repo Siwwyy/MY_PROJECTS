@@ -14,6 +14,7 @@
 
 namespace Algorithms_Hash_Table
 {
+	
 	using std::cerr;
 	using std::endl;
 	using std::cout;
@@ -177,6 +178,7 @@ namespace Algorithms_Hash_Table
 		Key(-1)
 	{
 		//
+		this->Value = {};
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -233,7 +235,8 @@ namespace Algorithms_Hash_Table
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size>::template _Hash_Element::operator=(const _Hash_Element & Object)	{
+	__forceinline typename Hash_Table<_Ty, _Size>::_Hash_Element & Hash_Table<_Ty, _Size>::_Hash_Element::operator=(const _Hash_Element & Object)
+	{
 		if (this != _STD addressof(Object))
 		{
 			this->Value = Object.Value;
@@ -269,7 +272,8 @@ namespace Algorithms_Hash_Table
 	template<typename _Ty, size_t _Size>
 	inline Hash_Table<_Ty, _Size>::_Hash_Element::~_Hash_Element()
 	{
-		Key = -1;
+		this->Key = -1;
+		this->Value = {};
 	}
 
 
@@ -473,9 +477,12 @@ namespace Algorithms_Hash_Table
 	template<size_t _Other>
 	__forceinline typename Hash_Table<_Ty, _Size> & Hash_Table<_Ty, _Size>::operator=(const Hash_Table<_Ty, _Other> & Object)
 	{
-		delete[] Hash_Table_Array;
-		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
-		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		if (this != _STD addressof(Object))
+		{
+			delete[] Hash_Table_Array;
+			this->Hash_Table_Size = Object.Get_Hash_Table_Size();
+			this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		}
 		return *this;
 	}
 
@@ -483,9 +490,12 @@ namespace Algorithms_Hash_Table
 	template<typename _Left_Ty>
 	__forceinline typename Hash_Table<_Ty, _Size> & Hash_Table<_Ty, _Size>::operator=(const Hash_Table<_Left_Ty, _Size> & Object)
 	{
-		delete[] Hash_Table_Array;
-		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
-		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		if (this != _STD addressof(Object))
+		{
+			delete[] Hash_Table_Array;
+			this->Hash_Table_Size = Object.Get_Hash_Table_Size();
+			this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		}
 		return *this;
 	}
 
@@ -493,9 +503,12 @@ namespace Algorithms_Hash_Table
 	template<typename _Left_Ty, size_t _Other>
 	__forceinline typename Hash_Table<_Ty, _Size> & Hash_Table<_Ty, _Size>::operator=(const Hash_Table<_Left_Ty, _Other> & Object)
 	{
-		delete[] Hash_Table_Array;
-		this->Hash_Table_Size = Object.Get_Hash_Table_Size();
-		this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		if (this != _STD addressof(Object))
+		{
+			delete[] Hash_Table_Array;
+			this->Hash_Table_Size = Object.Get_Hash_Table_Size();
+			this->Hash_Table_Array = new _Hash_Element[this->Hash_Table_Size];
+		}
 		return *this;
 	}
 
