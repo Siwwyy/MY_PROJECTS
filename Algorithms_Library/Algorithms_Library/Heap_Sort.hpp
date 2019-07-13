@@ -67,10 +67,11 @@ namespace Algorithms_Heap_Sort
 			constexpr bool operator==(const _Heap_Element & Object) const; // to compare(if the key is the same)
 			friend std::ostream & operator<<(std::ostream & lhs, const typename Algorithms_Heap_Sort::Heap_Sort<_Ty, _Size>::_Heap_Element & rhs)
 			{
-				if (rhs.Get_Value() != 0)
+			/*	if (rhs.Get_Value() != 0)
 				{
 					lhs << rhs.Get_Value() << ' ';
-				}
+				}*/
+				lhs << rhs.Get_Value() << ' ';
 				return lhs;
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,18 +254,25 @@ namespace Algorithms_Heap_Sort
 	{
 		for (size_t i{}; i < this->Array_Size; ++i)
 		{
-			unsigned int distance = static_cast<unsigned int>(i);
-			while (distance != 0)
+			if (Heap_Array[i].Get_Value() == 0)
 			{
-				if (Heap_Array[distance].Get_Value() >= Heap_Array[Heap_Array[distance].Get_Parent(distance)].Get_Value())
+				continue;
+			}
+			else
+			{
+				unsigned int distance = static_cast<unsigned int>(i);
+				while (distance != 0)
 				{
-					std::swap(Heap_Array[Heap_Array[distance].Get_Parent(distance)], Heap_Array[distance]);
+					if (Heap_Array[distance].Get_Value() >= Heap_Array[Heap_Array[distance].Get_Parent(distance)].Get_Value())
+					{
+						std::swap(Heap_Array[Heap_Array[distance].Get_Parent(distance)], Heap_Array[distance]);
+					}
+					else
+					{
+						break;
+					}
+					distance = ((distance - 1) >> 1);
 				}
-				else
-				{
-					break;
-				}
-				distance = ((distance - 1) >> 1);
 			}
 		}
 	}
@@ -330,25 +338,40 @@ namespace Algorithms_Heap_Sort
 	{
 		for (__int32 i{ static_cast<__int32>(this->Array_Size) - 1}; i >= 0; --i)
 		{
+	/*		std::cout << i << ' ' <<(this->Array_Size - i) - 1; 
+			std::cin.get();*/
 			if (Heap_Array[i].Get_Value() == 0)
 			{
 				continue;
 			}
 			else if (Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1]) > 1)
 			{
-				std::swap(Heap_Array[0], Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])]);
-				Heap_Sorted[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])] = Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])];
-				Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])].~_Heap_Element();
+				std::swap(Heap_Array[i], Heap_Array[0]);
+				//std::swap(Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])], Heap_Array[i]);
+			/*	Heap_Sorted[(this->Array_Size - i) - 1)] = Heap_Array[(this->Array_Size - i) - 1)];
+				Heap_Array[(this->Array_Size - i) - 1)].~_Heap_Element();*/
 				Heap_Sorting();
 				Show_Heap_Array();
 			}
 			else
 			{
-				std::swap(Heap_Array[0], Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])]);
-				Heap_Sorted[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])] = Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])];
-				Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])].~_Heap_Element();
+				std::cout << Heap_Array[i] << ' ' << Heap_Array[0];
+				std::cin.get();
+				std::swap(Heap_Array[i], Heap_Array[0]);
+				std::cout << Heap_Array[i] << ' ' << Heap_Array[0];
+				std::cin.get();
+				//std::swap(Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])], Heap_Array[i]);
+			/*	Heap_Sorted[(this->Array_Size - i) - 1)] = Heap_Array[(this->Array_Size - i) - 1)];
+				Heap_Array[(this->Array_Size - i) - 1)].~_Heap_Element();*/
+				/*std::cout << Heap_Array[0] << ' ' << Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])];
+				std::cin.get();*/
 				Heap_Sorting();
 			}
+		/*	else
+			{
+				Heap_Sorted[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])] = Heap_Array[0];
+				Heap_Array[0].~_Heap_Element();
+			}*/
 		}
 	}
 

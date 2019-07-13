@@ -139,9 +139,8 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 				data_reader = 0;
 				number_amount--;
 			}
-			Object->Show_Heap_Array();
 			Object->Start_Sorting();
-			Object->Show_Heap_Array();
+			//Object->Show_Heap_Array();
 			Object->End_Sorting();
 			Object->Show_Heap_Sorted();
 			delete Object;
