@@ -1,15 +1,11 @@
 #include <iostream>
 #include <windows.h>
-#include <string>
 #include <fstream>
 
 #include "Algorithms_Library.hpp"
 
-using namespace std;
+using namespace ::std;
 using namespace Algorithms;
-using namespace Algorithms::Algorithms_Hash_Table;
-using namespace Algorithms::Algorithms_Heap_Sort;
-//using namespace Algorithms::
 
 //const bool comparator(const void * left, const void * right)
 //{
@@ -22,22 +18,22 @@ using namespace Algorithms::Algorithms_Heap_Sort;
 //	return false;
 //}
 
-void inserter_HASH_TABLE(const std::string & file_in_path);
-void inserter_HEAP_SORT(const std::string & file_in_path);
-void inserter_MST(const std::string & file_in_path);
+void inserter_HASH_TABLE(const ::std::string & file_in_path);
+void inserter_HEAP_SORT(const ::std::string & file_in_path);
+void inserter_MST(const ::std::string & file_in_path);
 
 int main(int argc, char * argv[])
 {
-	//std::vector<int> a();
+	//::std::vector<int> a();
 	//int a = 5;
 	//int b = 5;
 	//decltype(b) c = 5;
-	//std::cout << typeid(c).name() << endl;
+	//::std::cout << typeid(c).name() << endl;
 	////a ^= b;
 	////b ^= a;
 	////b = a;
 	////a = b;
-	//std::cout << std::boolalpha << (a == b) << std::endl;
+	//::std::cout << ::std::boolalpha << (a == b) << ::std::endl;
 	using Algorithms::Bubble_Sort;
 	using Algorithms::Shake_Sort;
 	using Algorithms::Euqlides_Algorithm;
@@ -46,22 +42,22 @@ int main(int argc, char * argv[])
 	using Algorithms::Binary_Serach;
 	//inserter_HASH_TABLE("hashtable.in");
 	//inserter_HEAP_SORT("heapsort.in");
-	inserter_MST("heapsort.in");
+	inserter_MST("mst.in");
 	system("pause");
 	return 0;
 }
 
 
-void inserter_HASH_TABLE(const std::string & file_in_path)
+void inserter_HASH_TABLE(const ::std::string & file_in_path)
 {
-	std::fstream file_in;
-	std::fstream file_out;
-	std::string data_reader = "";		//czyta dane z pliku
-	std::string Value = "";
+	::std::fstream file_in;
+	::std::fstream file_out;
+	::std::string data_reader = "";		//czyta dane z pliku
+	::std::string Value = "";
 	__int64 Element_Key = 0;
 	size_t Element_Key_Delete = 0;
-	file_in.open(file_in_path.c_str(), std::ios_base::in);
-	file_out.open("temp_Hash_Table.out", std::ios_base::out);
+	file_in.open(file_in_path.c_str(), ::std::ios_base::in);
+	file_out.open("temp_Hash_Table.out", ::std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -77,7 +73,7 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 			{
 				file_in >> data_reader;
 				const unsigned int object_array_size = static_cast<unsigned int>(stoi(data_reader));
-				Algorithms::Algorithms_Hash_Table::Hash_Table<std::string, NULL> Object;
+				Algorithms::Hash_Table<::std::string, NULL> Object;
 				Object.resize_array(object_array_size);
 				while (true)
 				{
@@ -93,7 +89,7 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 						//three types of out
 						//Object.show_elements(); //uncomment
 						Object.show_elements(file_out); //uncomment
-						//Object.show_elements(std::cout); //uncomment
+						//Object.show_elements(::std::cout); //uncomment
 					}
 					else if (data_reader == "delete")	//delete
 					{
@@ -115,15 +111,15 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 	}
 }
 
-void inserter_HEAP_SORT(const std::string & file_in_path)
+void inserter_HEAP_SORT(const ::std::string & file_in_path)
 {
-	std::fstream file_in;
-	std::fstream file_out;
+	::std::fstream file_in;
+	::std::fstream file_out;
 	__int64 N = 0;
 	__int64 number_amount = 0;
 	__int32 data_reader = 0;
-	file_in.open(file_in_path.c_str(), std::ios_base::in);
-	file_out.open("temp_Heap_Sort.out", std::ios_base::out);
+	file_in.open(file_in_path.c_str(), ::std::ios_base::in);
+	file_out.open("temp_Heap_Sort.out", ::std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -134,7 +130,7 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 		while (N > 0)
 		{
 			file_in >> number_amount;
-			Algorithms::Algorithms_Heap_Sort::Heap_Sort<int, NULL> * Object = new Algorithms::Algorithms_Heap_Sort::Heap_Sort<int, NULL>(number_amount);
+			Algorithms::Heap_Sort<int, NULL> * Object = new Algorithms::Heap_Sort<int, NULL>(number_amount);
 			while (number_amount > 0)
 			{
 				file_in >> data_reader;
@@ -149,13 +145,13 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 			Object->End_Sorting(file_out);
 			Object->Show_Heap_Sorted(file_out);
 			//To console out
-			//Object->Show_Heap_Array(std::cout);
-			//Object->End_Sorting(std::cout);
-			//Object->Show_Heap_Sorted(std::cout);
+			//Object->Show_Heap_Array(::std::cout);
+			//Object->End_Sorting(::std::cout);
+			//Object->Show_Heap_Sorted(::std::cout);
 			//To typical out console
-			//Object->Show_Heap_Array(std::cout);
-			//Object->End_Sorting(std::cout);
-			//Object->Show_Heap_Sorted(std::cout);
+			//Object->Show_Heap_Array(::std::cout);
+			//Object->End_Sorting(::std::cout);
+			//Object->Show_Heap_Sorted(::std::cout);
 			delete Object;
 			N--;
 			number_amount = 0;
@@ -165,10 +161,10 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 	file_out.close();
 }
 
-void inserter_MST(const std::string& file_in_path)
+void inserter_MST(const ::std::string & file_in_path)
 {
-	std::fstream file_in;
-	std::fstream file_out;
+	::std::fstream file_in;
+	::std::fstream file_out;
 	__int16 m = 0;			//amount of cities
 	__int16 d = 0;			//amount of ways
 	__int32 c1 = 0;			//number of city
@@ -177,8 +173,8 @@ void inserter_MST(const std::string& file_in_path)
 	__int32 s = 0;			//the beginning of way
 	__int32 e = 0;			//the end of way
 	__int32 t = 0;			//amount of max passengers to move by bus
-	file_in.open(file_in_path.c_str(), std::ios_base::in);
-	file_in.open("temp_MST.out", std::ios_base::out);
+	file_in.open(file_in_path.c_str(), ::std::ios_base::in);
+	file_in.open("temp_MST.out", ::std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -189,7 +185,7 @@ void inserter_MST(const std::string& file_in_path)
 		{
 			file_in >> m;
 			file_in >> d;
-			MST * MST_Object = new MST(m);
+			Algorithms::MST * MST_Object = new Algorithms::MST(m);
 			while (d > 0)
 			{
 				file_in >> c1;
@@ -216,7 +212,8 @@ void inserter_MST(const std::string& file_in_path)
 				{
 					//here call all needed functions for solve the problem cause if s and e will be equal to 0 problem will be stopped immediately
 					///////////////////////////////////////////////
-					MST_Object->get_results();
+					//MST_Object->get_results();
+					MST_Object->get_results(file_out);
 					///////////////////////////////////////////////
 					delete MST_Object;
 					system("pause");

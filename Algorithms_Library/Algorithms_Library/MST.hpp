@@ -15,9 +15,13 @@
 
 namespace Algorithms_MST
 {
-	using std::cerr;
-	using std::endl;
-	using std::cout;
+	using ::std::cerr;
+	using ::std::endl;
+	using ::std::cout;
+	using ::std::vector;
+	using ::std::pair;
+
+//	typedef ::std::Algorithms_MST::vector;
 
 
 	class MST
@@ -99,14 +103,14 @@ namespace Algorithms_MST
 		size_t _Q_lenght;
 		int _Q_counter;
 		/////////////////////////////////////////////////////////////////////////
-		std::vector<_MST_Element> F;
+		vector<MST::_MST_Element> F;
 		//////////////////////////////////////////////////////////////////////////////
-		std::vector<std::pair<std::pair<int, int>, int>> Destinations;
+		vector<pair<pair<int, int>, int>> Destinations;
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			FUNKCJE PRIVATE
 		*/
-		void find_way(const int from, const int to, const int way_lenght);
+		constexpr unsigned __int32 find_way(const int from, const int to, const int way_lenght);
 		//////////////////////////////////////////////////////////////////////////////
 	public:
 		//////////////////////////////////////////////////////////////////////////////
@@ -124,6 +128,7 @@ namespace Algorithms_MST
 		void push_directions(const int from, const int to, const int way_lenght);
 		void minimal_spanning_tree_creator(const int the_beginning);
 		void get_results();
+		void get_results(std::ostream & cout);
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			SETTERY PUBLIC

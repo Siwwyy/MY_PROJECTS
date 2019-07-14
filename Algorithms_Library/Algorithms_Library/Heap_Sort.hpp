@@ -15,9 +15,9 @@
 namespace Algorithms_Heap_Sort
 {
 
-	using std::cerr;
-	using std::endl;
-	using std::cout;
+	using ::std::cerr;
+	using ::std::endl;
+	using ::std::cout;
 
 	template<typename _Ty, size_t _Size>
 	class Heap_Sort
@@ -116,11 +116,11 @@ namespace Algorithms_Heap_Sort
 		void __fastcall push(const _Ty & Value);
 		void Start_Sorting();
 		void End_Sorting();
-		void End_Sorting(std::ostream& out);
+		void End_Sorting(::std::ostream& out);
 		void Show_Heap_Sorted() const;
-		void Show_Heap_Sorted(std::ostream & out) const;
+		void Show_Heap_Sorted(::std::ostream & out) const;
 		void Show_Heap_Array() const;
-		void Show_Heap_Array(std::ostream& out) const;
+		void Show_Heap_Array(::std::ostream& out) const;
 		void Resize_Arrays(const size_t & size);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -360,7 +360,7 @@ namespace Algorithms_Heap_Sort
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline void Heap_Sort<_Ty, _Size>::End_Sorting(std::ostream& out)
+	__forceinline void Heap_Sort<_Ty, _Size>::End_Sorting(::std::ostream& out)
 	{
 		for (size_t i{}; i < this->Array_Size; ++i)
 		{
@@ -396,7 +396,7 @@ namespace Algorithms_Heap_Sort
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Sorted(std::ostream& out) const
+	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Sorted(::std::ostream& out) const
 	{
 		if (this->Array_Size > 1)
 		{
@@ -431,7 +431,7 @@ namespace Algorithms_Heap_Sort
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Array(std::ostream& out) const
+	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Array(::std::ostream& out) const
 	{
 		size_t counter = {};
 		if (this->Array_Size > 1)

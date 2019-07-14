@@ -15,9 +15,9 @@
 namespace Algorithms_Hash_Table
 {
 	
-	using std::cerr;
-	using std::endl;
-	using std::cout;
+	using ::std::cerr;
+	using ::std::endl;
+	using ::std::cout;
 
 	template<typename _Ty, size_t _Size>
 	class Hash_Table
@@ -118,7 +118,7 @@ namespace Algorithms_Hash_Table
 		void __fastcall push(const _Ty & Value, const __int64 Key);
 		void delete_element(const __int64 Key);
 		void show_elements() const;
-		void show_elements(std::ostream & out) const;
+		void show_elements(::std::ostream & out) const;
 		void resize_array(const size_t new_size);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -431,7 +431,7 @@ namespace Algorithms_Hash_Table
 	}
 
 	template<typename _Ty, size_t _Size>
-	__forceinline void Hash_Table<_Ty, _Size>::show_elements(std::ostream & out) const
+	__forceinline void Hash_Table<_Ty, _Size>::show_elements(::std::ostream & out) const
 	{
 		for (size_t i{}; i < this->Hash_Table_Size; ++i)
 		{
@@ -523,34 +523,34 @@ namespace Algorithms_Hash_Table
 
 //PREDEFINED Objects
 
-typedef Algorithms_Hash_Table::Hash_Table<int, 10> int_10;
-typedef Algorithms_Hash_Table::Hash_Table<int, 20> int_20;
-typedef Algorithms_Hash_Table::Hash_Table<int, 30> int_30;
-typedef Algorithms_Hash_Table::Hash_Table<int, 40> int_40;
-
-typedef Algorithms_Hash_Table::Hash_Table<float, 10> float_10;
-typedef Algorithms_Hash_Table::Hash_Table<float, 20> float_20;
-typedef Algorithms_Hash_Table::Hash_Table<float, 30> float_30;
-typedef Algorithms_Hash_Table::Hash_Table<float, 40> float_40;
-
-typedef Algorithms_Hash_Table::Hash_Table<char, 10> char_10;
-typedef Algorithms_Hash_Table::Hash_Table<char, 20> char_20;
-typedef Algorithms_Hash_Table::Hash_Table<char, 30> char_30;
-typedef Algorithms_Hash_Table::Hash_Table<char, 40> char_40;
-
-typedef Algorithms_Hash_Table::Hash_Table<const char, 10> const_char_10;
-typedef Algorithms_Hash_Table::Hash_Table<const char, 20> const_char_20;
-typedef Algorithms_Hash_Table::Hash_Table<const char, 30> const_char_30;
-typedef Algorithms_Hash_Table::Hash_Table<const char, 40> const_char_40;
-
-typedef Algorithms_Hash_Table::Hash_Table<const char *, 10> const_char_astrix_10;
-typedef Algorithms_Hash_Table::Hash_Table<const char *, 20> const_char_astrix_20;
-typedef Algorithms_Hash_Table::Hash_Table<const char *, 30> const_char_astrix_30;
-typedef Algorithms_Hash_Table::Hash_Table<const char *, 40> const_char_astrix_40;
-
-typedef Algorithms_Hash_Table::Hash_Table<std::string, 10> string_10;
-typedef Algorithms_Hash_Table::Hash_Table<std::string, 20> string_20;
-typedef Algorithms_Hash_Table::Hash_Table<std::string, 30> string_30;
-typedef Algorithms_Hash_Table::Hash_Table<std::string, 40> string_40;
+//typedef Hash_Table<int, 10> int_10;
+//typedef Hash_Table<int, 20> int_20;
+//typedef Hash_Table<int, 30> int_30;
+//typedef Hash_Table<int, 40> int_40;
+//
+//typedef Hash_Table<float, 10> float_10;
+//typedef Hash_Table<float, 20> float_20;
+//typedef Hash_Table<float, 30> float_30;
+//typedef Hash_Table<float, 40> float_40;
+//
+//typedef Hash_Table<char, 10> char_10;
+//typedef Hash_Table<char, 20> char_20;
+//typedef Hash_Table<char, 30> char_30;
+//typedef Hash_Table<char, 40> char_40;
+//
+//typedef Hash_Table<const char, 10> const_char_10;
+//typedef Hash_Table<const char, 20> const_char_20;
+//typedef Hash_Table<const char, 30> const_char_30;
+//typedef Hash_Table<const char, 40> const_char_40;
+//
+//typedef Hash_Table<const char *, 10> const_char_astrix_10;
+//typedef Hash_Table<const char *, 20> const_char_astrix_20;
+//typedef Hash_Table<const char *, 30> const_char_astrix_30;
+//typedef Hash_Table<const char *, 40> const_char_astrix_40;
+//
+//typedef Hash_Table<std::string, 10> string_10;
+//typedef Hash_Table<std::string, 20> string_20;
+//typedef Hash_Table<std::string, 30> string_30;
+//typedef Hash_Table<std::string, 40> string_40;
 
 #endif /* _ALGORITHMS_LIBRARY_HASH_TABLE_HPP_ */

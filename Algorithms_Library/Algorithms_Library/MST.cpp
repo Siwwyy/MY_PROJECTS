@@ -1,4 +1,4 @@
-#include "MST.h"
+#include "MST.hpp"
 
 using namespace Algorithms_MST;
 
@@ -286,11 +286,19 @@ void MST::get_results()
 	}
 }
 
-void MST::find_way(const int from, const int to, const int way_lenght)
+void MST::get_results(std::ostream & out)
+{
+	for (typename std::vector<std::pair<std::pair<int, int>, int>>::const_iterator vec_iterator = Destinations.begin(); vec_iterator != Destinations.end(); ++vec_iterator)
+	{
+		out << find_way(vec_iterator->first.first, vec_iterator->first.second, vec_iterator->second) << '\n';
+	}
+}
+
+constexpr unsigned __int32 MST::find_way(const int from, const int to, const int way_lenght)
 {
 	if (from == to)
 	{
-		std::cout << '0' << '\n';
+		return 0;
 	}
 	else
 	{
@@ -351,9 +359,10 @@ void MST::find_way(const int from, const int to, const int way_lenght)
 		the_smallest_way *= -1;
 		the_smallest_way -= 1;
 		double result = ceil(static_cast<double>(((static_cast<double>(way_lenght) / (the_smallest_way)))));
-		std::cout << result << '\n';
 		delete[] visited;
+		return static_cast<unsigned __int32>(result);
 	}
+	return static_cast<unsigned __int32>(0);
 }
 
 MST& MST::operator=(const MST& Object)

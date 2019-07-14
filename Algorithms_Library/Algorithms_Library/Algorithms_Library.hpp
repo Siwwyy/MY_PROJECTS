@@ -10,19 +10,24 @@
 #include <windows.h>
 #include <string>
 
+/*
+	LIBRARY CONNECTED HEADERS
+*/
+#include "Hash_Table.hpp"
+#include "Heap_Sort.hpp"
+#include "MST.hpp"
+//////////////////////////////////////////////
+
 namespace Algorithms
 {
-	/*
-		LIBRARY CONNECTED HEADERS
-	*/
-	#include "Hash_Table.hpp"
-	#include "Heap_Sort.hpp"
-	//#include "MST.hpp"
-	//////////////////////////////////////////////
+	
+	using ::std::cerr;
+	using ::std::cout;
+	using ::std::endl;
 
-	using std::cerr;
-	using std::cout;
-	using std::endl;
+	using namespace Algorithms_Hash_Table;
+	using namespace Algorithms_Heap_Sort;
+	using namespace Algorithms_MST;
 
 	/*
 		FUNCTIONS CASE
@@ -245,7 +250,7 @@ namespace Algorithms
 		}
 		else
 		{
-			std::cerr << "ERROR::FIRST PARAM OR SECOND IS SMALLER OR EQUAL TO 0! A and B have to be greater than 0 ! \n";
+			::std::cerr << "ERROR::FIRST PARAM OR SECOND IS SMALLER OR EQUAL TO 0! A and B have to be greater than 0 ! \n";
 		}
 		return a;
 	}
