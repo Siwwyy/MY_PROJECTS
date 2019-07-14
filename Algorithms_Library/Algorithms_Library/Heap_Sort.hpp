@@ -116,8 +116,11 @@ namespace Algorithms_Heap_Sort
 		void __fastcall push(const _Ty & Value);
 		void Start_Sorting();
 		void End_Sorting();
+		void End_Sorting(std::ostream& out);
 		void Show_Heap_Sorted() const;
+		void Show_Heap_Sorted(std::ostream & out) const;
 		void Show_Heap_Array() const;
+		void Show_Heap_Array(std::ostream& out) const;
 		void Resize_Arrays(const size_t & size);
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -357,6 +360,29 @@ namespace Algorithms_Heap_Sort
 	}
 
 	template<typename _Ty, size_t _Size>
+	__forceinline void Heap_Sort<_Ty, _Size>::End_Sorting(std::ostream& out)
+	{
+		for (size_t i{}; i < this->Array_Size; ++i)
+		{
+			if (Distance_Between(&Heap_Array[0], &Heap_Array[(this->Array_Size - i) - 1]) > 1)
+			{
+				Heap_Sorted[(this->Array_Size - i) - 1] = Heap_Array[0];
+				Heap_Array[0].~_Heap_Element();
+				std::swap(Heap_Array[0], Heap_Array[((this->Array_Size - 1) - i)]);
+				Heap_Sorting();
+				Show_Heap_Array(out);
+			}
+			else
+			{
+				Heap_Sorted[(this->Array_Size - i) - 1] = Heap_Array[0];
+				Heap_Array[0].~_Heap_Element();
+				std::swap(Heap_Array[0], Heap_Array[((this->Array_Size - 1) - i)]);
+				Heap_Sorting();
+			}
+		}
+	}
+
+	template<typename _Ty, size_t _Size>
 	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Sorted() const
 	{
 		if (this->Array_Size > 1)
@@ -366,6 +392,20 @@ namespace Algorithms_Heap_Sort
 				std::cout << this->Heap_Sorted[i];
 			}
 			std::cout << '\n';
+		}
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Sorted(std::ostream& out) const
+	{
+		if (this->Array_Size > 1)
+		{
+			for (size_t i{}; i < this->Array_Size; ++i)
+			{
+				out << this->Heap_Sorted[i];
+			}
+			out << '\n';
+			out << '\n';
 		}
 	}
 
@@ -387,6 +427,27 @@ namespace Algorithms_Heap_Sort
 		if (counter < this->Array_Size - 1)
 		{
 			std::cout << '\n';
+		}
+	}
+
+	template<typename _Ty, size_t _Size>
+	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Array(std::ostream& out) const
+	{
+		size_t counter = {};
+		if (this->Array_Size > 1)
+		{
+			for (size_t i{}; i < this->Array_Size; ++i)
+			{
+				out << this->Heap_Array[i];
+				if (Heap_Array[i].Get_Value() == 0)
+				{
+					++counter;
+				}
+			}
+		}
+		if (counter < this->Array_Size - 1)
+		{
+			out << '\n';
 		}
 	}
 

@@ -43,7 +43,7 @@ int main(int argc, char * argv[])
 	using Algorithms::Quick_Sort;
 	using Algorithms::Linear_Serach;
 	using Algorithms::Binary_Serach;
-	//inserter_HASH_TABLE("hashtable.in");
+	inserter_HASH_TABLE("hashtable.in");
 	inserter_HEAP_SORT("heapsort.in");
 	system("pause");
 	return 0;
@@ -59,7 +59,7 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 	__int64 Element_Key = 0;
 	size_t Element_Key_Delete = 0;
 	file_in.open(file_in_path.c_str(), std::ios_base::in);
-	file_out.open("temp.out", std::ios_base::out);
+	file_out.open("temp_Hash_Table.out", std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -89,8 +89,8 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 					else if (data_reader == "print")	//print
 					{
 						//three types of out
-						Object.show_elements(); //uncomment
-						//Object.show_elements(file_out); //uncomment
+						//Object.show_elements(); //uncomment
+						Object.show_elements(file_out); //uncomment
 						//Object.show_elements(std::cout); //uncomment
 					}
 					else if (data_reader == "delete")	//delete
@@ -116,10 +116,12 @@ void inserter_HASH_TABLE(const std::string & file_in_path)
 void inserter_HEAP_SORT(const std::string & file_in_path)
 {
 	std::fstream file_in;
+	std::fstream file_out;
 	__int64 N = 0;
 	__int64 number_amount = 0;
 	__int32 data_reader = 0;
 	file_in.open(file_in_path.c_str(), std::ios_base::in);
+	file_out.open("temp_Heap_Sort.out", std::ios_base::out);
 	if (file_in.good() == false)
 	{
 		exit(0);
@@ -139,14 +141,24 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 				number_amount--;
 			}
 			Object->Start_Sorting();
-			Object->Show_Heap_Array();
-			Object->End_Sorting();
-			Object->Show_Heap_Sorted();
+			//Three types of Out
+			//To file
+			Object->Show_Heap_Array(file_out);
+			Object->End_Sorting(file_out);
+			Object->Show_Heap_Sorted(file_out);
+			//To console out
+			//Object->Show_Heap_Array(std::cout);
+			//Object->End_Sorting(std::cout);
+			//Object->Show_Heap_Sorted(std::cout);
+			//To typical out console
+			//Object->Show_Heap_Array(std::cout);
+			//Object->End_Sorting(std::cout);
+			//Object->Show_Heap_Sorted(std::cout);
 			delete Object;
-			std::cout << '\n';
 			N--;
 			number_amount = 0;
 		}
 	}
 	file_in.close();
+	file_out.close();
 }
