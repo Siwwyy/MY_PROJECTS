@@ -17,6 +17,7 @@ namespace Algorithms
 	*/
 	#include "Hash_Table.hpp"
 	#include "Heap_Sort.hpp"
+	//#include "MST.hpp"
 	//////////////////////////////////////////////
 
 	using std::cerr;

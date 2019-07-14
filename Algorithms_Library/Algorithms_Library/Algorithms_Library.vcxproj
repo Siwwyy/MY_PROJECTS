@@ -119,11 +119,13 @@
   <ItemGroup>
     <ClCompile Include="Hash_Table.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms_Library.hpp" />
     <ClInclude Include="Hash_Table.hpp" />
     <ClInclude Include="Heap_Sort.hpp" />
+    <ClInclude Include="MST.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

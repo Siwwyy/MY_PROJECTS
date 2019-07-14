@@ -4,12 +4,12 @@
 #include <fstream>
 
 #include "Algorithms_Library.hpp"
-#include "Algorithms_Library.hpp"
 
 using namespace std;
 using namespace Algorithms;
 using namespace Algorithms::Algorithms_Hash_Table;
 using namespace Algorithms::Algorithms_Heap_Sort;
+//using namespace Algorithms::
 
 //const bool comparator(const void * left, const void * right)
 //{
@@ -24,6 +24,7 @@ using namespace Algorithms::Algorithms_Heap_Sort;
 
 void inserter_HASH_TABLE(const std::string & file_in_path);
 void inserter_HEAP_SORT(const std::string & file_in_path);
+void inserter_MST(const std::string & file_in_path);
 
 int main(int argc, char * argv[])
 {
@@ -43,8 +44,9 @@ int main(int argc, char * argv[])
 	using Algorithms::Quick_Sort;
 	using Algorithms::Linear_Serach;
 	using Algorithms::Binary_Serach;
-	inserter_HASH_TABLE("hashtable.in");
-	inserter_HEAP_SORT("heapsort.in");
+	//inserter_HASH_TABLE("hashtable.in");
+	//inserter_HEAP_SORT("heapsort.in");
+	inserter_MST("heapsort.in");
 	system("pause");
 	return 0;
 }
@@ -157,6 +159,75 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 			delete Object;
 			N--;
 			number_amount = 0;
+		}
+	}
+	file_in.close();
+	file_out.close();
+}
+
+void inserter_MST(const std::string& file_in_path)
+{
+	std::fstream file_in;
+	std::fstream file_out;
+	__int16 m = 0;			//amount of cities
+	__int16 d = 0;			//amount of ways
+	__int32 c1 = 0;			//number of city
+	__int32 c2 = 0;			//number of city
+	__int32 p = 0;			//amount of max passengers between one course
+	__int32 s = 0;			//the beginning of way
+	__int32 e = 0;			//the end of way
+	__int32 t = 0;			//amount of max passengers to move by bus
+	file_in.open(file_in_path.c_str(), std::ios_base::in);
+	file_in.open("temp_MST.out", std::ios_base::out);
+	if (file_in.good() == false)
+	{
+		exit(0);
+	}
+	else
+	{
+		while (true)
+		{
+			file_in >> m;
+			file_in >> d;
+			MST * MST_Object = new MST(m);
+			while (d > 0)
+			{
+				file_in >> c1;
+				file_in >> c2;
+				file_in >> p;
+				//both times cause each road is in both ways
+				MST_Object->push(c1, c2, (-1) * p);
+				MST_Object->push(c2, c1, (-1) * p);
+				--d;
+				c1 = 0;
+				c2 = 0;
+				p = 0;
+			}
+			while (true)
+			{
+				file_in >> s;
+				file_in >> e;
+				if (s != 0 && e != 0)
+				{
+					file_in >> t;
+					MST_Object->push_directions(s, e, t);
+				}
+				else
+				{
+					//here call all needed functions for solve the problem cause if s and e will be equal to 0 problem will be stopped immediately
+					///////////////////////////////////////////////
+					MST_Object->get_results();
+					///////////////////////////////////////////////
+					delete MST_Object;
+					system("pause");
+					exit(0);
+				}
+				s = 0;
+				e = 0;
+				t = 0;
+			}
+			d = 0;
+			m = 0;
 		}
 	}
 	file_in.close();
