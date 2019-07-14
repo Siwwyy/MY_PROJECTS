@@ -130,7 +130,6 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 		while (N > 0)
 		{
 			file_in >> number_amount;
-			//std::cout << &number_amount << endl;
 			Algorithms::Algorithms_Heap_Sort::Heap_Sort<int, NULL> * Object = new Algorithms::Algorithms_Heap_Sort::Heap_Sort<int, NULL>(number_amount);
 			while (number_amount > 0)
 			{
@@ -140,10 +139,11 @@ void inserter_HEAP_SORT(const std::string & file_in_path)
 				number_amount--;
 			}
 			Object->Start_Sorting();
-			//Object->Show_Heap_Array();
+			Object->Show_Heap_Array();
 			Object->End_Sorting();
 			Object->Show_Heap_Sorted();
 			delete Object;
+			std::cout << '\n';
 			N--;
 			number_amount = 0;
 		}

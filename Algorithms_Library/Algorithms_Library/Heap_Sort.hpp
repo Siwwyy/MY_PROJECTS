@@ -67,11 +67,11 @@ namespace Algorithms_Heap_Sort
 			constexpr bool operator==(const _Heap_Element & Object) const; // to compare(if the key is the same)
 			friend std::ostream & operator<<(std::ostream & lhs, const typename Algorithms_Heap_Sort::Heap_Sort<_Ty, _Size>::_Heap_Element & rhs)
 			{
-			/*	if (rhs.Get_Value() != 0)
+				if (rhs.Get_Value() != 0)
 				{
 					lhs << rhs.Get_Value() << ' ';
-				}*/
-				lhs << rhs.Get_Value() << ' ';
+				}
+				//lhs << rhs.Get_Value() << ' ';
 				return lhs;
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +254,7 @@ namespace Algorithms_Heap_Sort
 	{
 		for (size_t i{}; i < this->Array_Size; ++i)
 		{
-			if (Heap_Array[i].Get_Value() == 0)
+			if (Heap_Array[i].Get_Value() == NULL)
 			{
 				continue;
 			}
@@ -280,7 +280,7 @@ namespace Algorithms_Heap_Sort
 	template<typename _Ty, size_t _Size>
 	__forceinline const size_t Heap_Sort<_Ty, _Size>::Distance_Between(const _Heap_Element * _Left, const _Heap_Element * _Right)
 	{
-		return static_cast<size_t>((_Left - _Right));
+		return static_cast<size_t>(abs(_Left - _Right));
 	}
 
 	template<typename _Ty, size_t _Size>
@@ -336,42 +336,23 @@ namespace Algorithms_Heap_Sort
 	template<typename _Ty, size_t _Size>
 	__forceinline void Heap_Sort<_Ty, _Size>::End_Sorting()
 	{
-		for (__int32 i{ static_cast<__int32>(this->Array_Size) - 1}; i >= 0; --i)
+		for (size_t i{}; i < this->Array_Size; ++i)
 		{
-	/*		std::cout << i << ' ' <<(this->Array_Size - i) - 1; 
-			std::cin.get();*/
-			if (Heap_Array[i].Get_Value() == 0)
+			if (Distance_Between(&Heap_Array[0], &Heap_Array[(this->Array_Size - i) - 1]) > 1)
 			{
-				continue;
-			}
-			else if (Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1]) > 1)
-			{
-				std::swap(Heap_Array[i], Heap_Array[0]);
-				//std::swap(Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])], Heap_Array[i]);
-			/*	Heap_Sorted[(this->Array_Size - i) - 1)] = Heap_Array[(this->Array_Size - i) - 1)];
-				Heap_Array[(this->Array_Size - i) - 1)].~_Heap_Element();*/
+				Heap_Sorted[(this->Array_Size - i) - 1] = Heap_Array[0];
+				Heap_Array[0].~_Heap_Element();
+				std::swap(Heap_Array[0], Heap_Array[((this->Array_Size - 1) - i)]);
 				Heap_Sorting();
 				Show_Heap_Array();
 			}
 			else
 			{
-				std::cout << Heap_Array[i] << ' ' << Heap_Array[0];
-				std::cin.get();
-				std::swap(Heap_Array[i], Heap_Array[0]);
-				std::cout << Heap_Array[i] << ' ' << Heap_Array[0];
-				std::cin.get();
-				//std::swap(Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])], Heap_Array[i]);
-			/*	Heap_Sorted[(this->Array_Size - i) - 1)] = Heap_Array[(this->Array_Size - i) - 1)];
-				Heap_Array[(this->Array_Size - i) - 1)].~_Heap_Element();*/
-				/*std::cout << Heap_Array[0] << ' ' << Heap_Array[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])];
-				std::cin.get();*/
+				Heap_Sorted[(this->Array_Size - i) - 1] = Heap_Array[0];
+				Heap_Array[0].~_Heap_Element();
+				std::swap(Heap_Array[0], Heap_Array[((this->Array_Size - 1) - i)]);
 				Heap_Sorting();
 			}
-		/*	else
-			{
-				Heap_Sorted[Distance_Between(&Heap_Array[i], &Heap_Array[(this->Array_Size - i) - 1])] = Heap_Array[0];
-				Heap_Array[0].~_Heap_Element();
-			}*/
 		}
 	}
 
@@ -391,12 +372,20 @@ namespace Algorithms_Heap_Sort
 	template<typename _Ty, size_t _Size>
 	__forceinline void Heap_Sort<_Ty, _Size>::Show_Heap_Array() const
 	{
+		size_t counter = {};
 		if (this->Array_Size > 1)
 		{
 			for (size_t i{}; i < this->Array_Size; ++i)
 			{
 				std::cout << this->Heap_Array[i];
+				if (Heap_Array[i].Get_Value() == 0)
+				{
+					++counter;
+				}
 			}
+		}
+		if (counter < this->Array_Size - 1)
+		{
 			std::cout << '\n';
 		}
 	}
