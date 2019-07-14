@@ -282,7 +282,7 @@ void MST::get_results()
 {
 	for (typename std::vector<std::pair<std::pair<int, int>, int>>::const_iterator vec_iterator = Destinations.begin(); vec_iterator != Destinations.end(); ++vec_iterator)
 	{
-		find_way(vec_iterator->first.first, vec_iterator->first.second, vec_iterator->second);
+		std::cout << find_way(vec_iterator->first.first, vec_iterator->first.second, vec_iterator->second) << '\n';
 	}
 }
 
