@@ -70,7 +70,7 @@ public class Server implements Runnable
 					}
 					//String new_string = new String(packet.getData());
 					process(packet);
-					Clients_List.add(new ServerClient("Ja", packet.getAddress(), packet.getPort(), 50));
+					Clients_List.add(new ServerClient("Siwy", packet.getAddress(), packet.getPort(), 50));
 					System.out.println(Clients_List.get(0).address.toString() + ":" + Clients_List.get(0).port);
 					//System.out.println(new_string);
 				}
@@ -108,6 +108,14 @@ public class Server implements Runnable
 				}
 			}
 		};
+		send_thread.start();
+	}
+	
+	
+	private void Send(String message, InetAddress address, int port)
+	{
+		message += "/e/";	//terminate, means the end of string message
+		send(message.getBytes(), address, port);
 	}
 	
 	
@@ -127,6 +135,8 @@ public class Server implements Runnable
 			//Clients_List.add(new ServerClient(from_packet.substring(3,from_packet.length()), packet.getAddress(), packet.getPort(), Integer.parseInt(id.toString())));
 			Clients_List.add(new ServerClient(from_packet.substring(3,from_packet.length()), packet.getAddress(), packet.getPort(), id));
 			System.out.println(from_packet.substring(3,from_packet.length()));
+			String ID = "/c/" + id;
+			Send(ID,packet.getAddress(),packet.getPort());
 		}
 		else if(from_packet.startsWith("/m/") == true)
 		{

@@ -25,7 +25,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 
-public class ClientWindow extends JFrame
+public class ClientWindow extends JFrame implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -35,8 +35,11 @@ public class ClientWindow extends JFrame
 	private DefaultCaret caret;
 	
 	private boolean is_clear_txtrHistory;
+	private Thread listen_thread, run_thread;
+	private boolean running = false;
 	
 	private Client client;
+	
 	
 	public ClientWindow(String name, String address, int port) 
 	{
@@ -55,6 +58,9 @@ public class ClientWindow extends JFrame
 			Console("Remember about be kind and never insult anyone! \n" + " Great FUN!!");
 			String connection = "/c/" + name;
 			client.Send(connection.getBytes());
+			run_thread = new Thread(this, "Running Thread");
+			running = true;
+			run_thread.start();
 		}
 	}
 	
@@ -195,6 +201,28 @@ public class ClientWindow extends JFrame
 	}
 	
 	
+	public void Listen()
+	{	
+		listen_thread = new Thread("Listen Thread")
+		{
+			public void run()
+			{
+				while(running)
+				{
+					String message = client.Receive();
+					if(message.startsWith("/c/"))
+					{
+						//client.Set_ID(Integer.parseInt(message.substring(3, message.length())));
+						
+						// message contains -> "/c/8543/e/ and the rest of the message 
+						client.Set_ID(Integer.parseInt(message.split("/c/|/e/")[1]));
+						Console("Succesfully connected to server!! ID: " + client.Get_ID());
+					}
+				}
+			}
+		};
+		listen_thread.start();
+	}
 	
 	
 	public void Console(String Message)
@@ -217,4 +245,22 @@ public class ClientWindow extends JFrame
 		}
 	}
 	
+	
+	
+	public void run()
+	{
+		Listen();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
+
+
+

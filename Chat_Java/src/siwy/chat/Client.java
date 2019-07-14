@@ -25,6 +25,7 @@ public class Client
 	private DatagramSocket socket;
 	private InetAddress ip;	//IP Address
 	private Thread send_thread; //Thread for sending
+	private int ID = -1;
 	
 	///////////////////////////////////////////////////////////////////////
 	
@@ -71,7 +72,7 @@ public class Client
 		{
 			e.printStackTrace();
 		}
-		String message = new  String(packet.getData());
+		String message = new String(packet.getData());
 		return message;
 	}
 	
@@ -98,6 +99,12 @@ public class Client
 	}
 	
 	
+	public void Set_ID(int ID)
+	{
+		this.ID = ID;
+	}
+	
+	
 	public String Get_Name()
 	{
 		return this.username;
@@ -113,5 +120,10 @@ public class Client
 	public int Get_Port()
 	{
 		return this.port;
+	}
+	
+	public int Get_ID()
+	{
+		return this.ID;
 	}
 }
