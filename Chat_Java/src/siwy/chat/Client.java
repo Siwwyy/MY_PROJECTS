@@ -63,7 +63,6 @@ public class Client
 	{
 		byte[] data = new byte[1024];
 		DatagramPacket packet = new DatagramPacket(data,data.length);
-		
 		try 
 		{
 			socket.receive(packet);
@@ -96,6 +95,22 @@ public class Client
 			}
 		};
 		send_thread.start();
+	}
+	
+	
+	
+	public void close() 
+	{
+		new Thread()
+		{
+			public void run()
+			{
+				synchronized (socket)
+				{
+					socket.close();
+				}
+			}
+		}.start();
 	}
 	
 	

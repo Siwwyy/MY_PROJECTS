@@ -25,6 +25,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 public class ClientWindow extends JFrame implements Runnable
 {
 	private static final long serialVersionUID = 1L;
@@ -67,6 +70,18 @@ public class ClientWindow extends JFrame implements Runnable
 	
 	private void Create_Window()
 	{
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) 
+			{
+				System.out.println("CLOSED!");
+				String disconnected = "/d/" + client.Get_ID() + "/e/";
+				Send(disconnected, false);
+				client.close();
+				running = false;
+			}
+		});
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage("E:\\!!Projects VS\\!!C++&JAVA\\!MY_PROJECTS\\Chat_Java\\GRAPHICS\\logo_dym.png"));
 		//this try catch block is for avoid problems connected with the vary platforms
 		try 
@@ -158,7 +173,7 @@ public class ClientWindow extends JFrame implements Runnable
 //						txtrHistory.setText("");
 //						is_clear_txtrHistory = true;
 //					}
-					Send(txtMessage.getText());
+					Send(txtMessage.getText(), true);
 				}
 			}
 		});
@@ -182,7 +197,7 @@ public class ClientWindow extends JFrame implements Runnable
 					history.setText("");
 					is_clear_txtrHistory = true;
 				}
-				Send(txtMessage.getText());
+				Send(txtMessage.getText(), true);
 			}
 		});
 		btnSend.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -193,13 +208,12 @@ public class ClientWindow extends JFrame implements Runnable
 		gbc_btnSend.gridy = 1;
 		contentPane.add(btnSend, gbc_btnSend);
 		
-		
 		//requestFocus();
 		//txtMessage.requestFocus();
 		txtMessage.requestFocusInWindow();
 		setVisible(true);
 	}
-	
+
 	
 	public void Listen()
 	{	
@@ -218,6 +232,15 @@ public class ClientWindow extends JFrame implements Runnable
 						client.Set_ID(Integer.parseInt(message.split("/c/|/e/")[1]));
 						Console("Succesfully connected to server!! ID: " + client.Get_ID());
 					}
+					else if(message.startsWith("/m/"))
+					{
+//						if(client.Get_ID() == message.)
+//						{
+//							continue;
+//						}
+						String text = message.split("/m/|/e/")[1];
+						Console(text);
+					}
 				}
 			}
 		};
@@ -233,13 +256,15 @@ public class ClientWindow extends JFrame implements Runnable
 	}
 	
 	
-	public void Send(String message)
+	public void Send(String message, boolean text)
 	{
 		if(message.length() > 0) //or message.equals("") == true | my idea is easier :))
 		{
-			message = client.Get_Name() + ": " + message;
-			Console(message);
-			message = "/m/" + message;	//cause m means a message from client
+			if(text == true)
+			{
+				message = client.Get_Name() + ": " + message;			
+				message = "/m/" + message;	//cause m means a message from client
+			}
 			client.Send(message.getBytes());
 			txtMessage.setText("");
 		}
@@ -253,13 +278,7 @@ public class ClientWindow extends JFrame implements Runnable
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
+
 }
 
 

@@ -1,26 +1,25 @@
 package siwy.chat;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.Image;
-
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.JTextField;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+
+
 
 public class Login extends JFrame 
 {
@@ -60,6 +59,9 @@ public class Login extends JFrame
 
 	public Login() 
 	{
+	
+	
+	
 		setIconImage(Toolkit.getDefaultToolkit().getImage("E:\\!!Projects VS\\!!C++&JAVA\\!MY_PROJECTS\\Chat_Java\\GRAPHICS\\logo_dym.png"));
 		//this try catch block is for avoid problems connected with the vary platforms
 		try 
@@ -180,7 +182,14 @@ public class Login extends JFrame
 		lblImage.setIcon(new ImageIcon(newImage));
 		lblImage.setBounds(0, 0, 334, 421);
 		contentPane.add(lblImage);
-		
+
+//		addWindowListener(new WindowAdapter() 
+//		{
+//			public void windowClosed(WindowEvent e) 
+//			{
+//				System.out.println("CLOSED!");
+//			}
+//		});
 	}
 	
 	/*

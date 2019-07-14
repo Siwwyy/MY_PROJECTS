@@ -70,8 +70,8 @@ public class Server implements Runnable
 					}
 					//String new_string = new String(packet.getData());
 					process(packet);
-					Clients_List.add(new ServerClient("Siwy", packet.getAddress(), packet.getPort(), 50));
-					System.out.println(Clients_List.get(0).address.toString() + ":" + Clients_List.get(0).port);
+					//Clients_List.add(new ServerClient("Siwy", packet.getAddress(), packet.getPort(), 50));
+					//System.out.println(Clients_List.get(0).address.toString() + ":" + Clients_List.get(0).port);
 					//System.out.println(new_string);
 				}
 			}
@@ -143,10 +143,43 @@ public class Server implements Runnable
 			//String message = from_packet.substring(3,from_packet.length());
 			SendToAll(from_packet);
 		}
+		else if(from_packet.startsWith("/d/") == true)
+		{
+			String ID = from_packet.split("/d/|/e/")[1];
+			System.out.println("in /d/ here");
+			Disconnect(Integer.parseInt(ID),true);
+		}
 		else
 		{
 			System.out.println(from_packet);
 		}
+		System.out.println(from_packet);
+	}
+	
+	
+	private void Disconnect(int ID, boolean status)
+	{
+		ServerClient c = null;
+		for(int i = 0; i < Clients_List.size(); ++i)
+		{
+			if(Clients_List.get(i).Get_ID() == ID)
+			{
+				c = Clients_List.get(i);
+				Clients_List.remove(i);
+				break;
+			}
+		}
+		
+		String message = "";
+		if(status == true)
+		{
+			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) @ " + c.address.toString() + " Port: " + c.port + " disconnected! \n";
+		}
+		else
+		{
+			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) @ " + c.address.toString() + " Port: " + c.port + " timed out! \n";
+		}
+		System.out.println(message);
 	}
 	
 	
