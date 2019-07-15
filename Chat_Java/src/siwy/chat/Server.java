@@ -13,11 +13,14 @@ import java.util.UUID;
 public class Server implements Runnable
 {
 	private List<ServerClient> Clients_List = new ArrayList<ServerClient>();
+	private List<Integer> clientResponse = new ArrayList<Integer>();
 	
 	private int port;
 	private DatagramSocket socket;
 	private Thread run_thread, manage_thread, send_thread, receive_thread;
 	private boolean running = false;
+	
+	private final int MAX_ATTEMPTS = 5;
 	
 	public Server(int port)
 	{
@@ -149,6 +152,10 @@ public class Server implements Runnable
 			System.out.println("in /d/ here");
 			Disconnect(Integer.parseInt(ID),true);
 		}
+		else if(from_packet.startsWith("/i/") == true)
+		{
+			clientResponse.add(Integer.parseInt(from_packet.split("/i/|/e/")[1]));
+		}
 		else
 		{
 			System.out.println(from_packet);
@@ -171,6 +178,10 @@ public class Server implements Runnable
 		}
 		
 		String message = null;
+		if(c.name.length() > 50)
+		{
+			c.name = c.name.substring(0, 10);
+		}
 		if(status == true)
 		{
 			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) " + c.address.toString() + " Port: " + c.port + " disconnected! \n";
@@ -181,7 +192,7 @@ public class Server implements Runnable
 		}
 		System.out.println(message);
 		//trim the message
-		System.out.println("Size: "+message.length());
+		//System.out.println("Size: "+message.length());
 	}
 	
 	
@@ -194,7 +205,42 @@ public class Server implements Runnable
 			{
 				while(running)
 				{
+					SendToAll("/i/server");
+					
+					try 
+					{
+						Thread.sleep(2000);
+					} 
+					catch (InterruptedException e) 
+					{
+						e.printStackTrace();
+					}
 					//Managing something
+//					for(ServerClient c : Clients_List)
+//					{
+//						c.
+//					}
+					
+					for(int i = 0; i < Clients_List.size(); i++)
+					{
+						ServerClient c = Clients_List.get(i);
+						if(!clientResponse.contains(Clients_List.get(i).Get_ID()))
+						{
+							if(c.attempt >= MAX_ATTEMPTS)
+							{
+								Disconnect(c.Get_ID(), false);
+							}
+							else
+							{
+								c.attempt++;
+							}
+						}
+						else
+						{
+							clientResponse.remove(new Integer(c.Get_ID()));
+							c.attempt = 0;
+						}
+					}
 				}
 			}
 		};

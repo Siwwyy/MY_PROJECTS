@@ -241,6 +241,11 @@ public class ClientWindow extends JFrame implements Runnable
 						text = text.split("/e/")[0];
 						Console(text);
 					}
+					else if(message.startsWith("/i/"))		
+					{
+						String text = "/i/"+ client.Get_ID() + "/e/";
+						Send(text,false);
+					}	
 				}
 			}
 		};

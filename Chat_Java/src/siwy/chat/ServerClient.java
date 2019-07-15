@@ -11,7 +11,7 @@ public class ServerClient
 	private final int ID;
 	public int attempt = 0;
 	
-	
+
 	public ServerClient(String name, InetAddress address, int port, final int ID)
 	{
 		this.name = name;
@@ -19,7 +19,7 @@ public class ServerClient
 		this.port = port;
 		this.ID = ID;
 		
-		StringBuilder my_string = new StringBuilder(name);
+		//StringBuilder my_string = new StringBuilder(name);
 		
 //		for(int i = 0; i < my_string.length(); ++i)
 //		{
@@ -30,6 +30,10 @@ public class ServerClient
 //		}
 		//System.out.println("Size: " +my_string);
 		//this.name = my_string.toString();
+		if(name.length() > 40)
+		{
+			name = name.substring(3, 40);
+		}
 	}
 	
 	public int Get_ID()
