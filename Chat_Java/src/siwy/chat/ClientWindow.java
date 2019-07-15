@@ -74,7 +74,6 @@ public class ClientWindow extends JFrame implements Runnable
 			@Override
 			public void windowClosing(WindowEvent e) 
 			{
-				System.out.println("CLOSED!");
 				String disconnected = "/d/" + client.Get_ID() + "/e/";
 				Send(disconnected, false);
 				client.close();
@@ -238,7 +237,8 @@ public class ClientWindow extends JFrame implements Runnable
 //						{
 //							continue;
 //						}
-						String text = message.split("/m/|/e/")[1];
+						String text = message.substring(3);
+						text = text.split("/e/")[0];
 						Console(text);
 					}
 				}

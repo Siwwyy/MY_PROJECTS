@@ -18,6 +18,18 @@ public class ServerClient
 		this.address = address;
 		this.port = port;
 		this.ID = ID;
+		
+		StringBuilder my_string = new StringBuilder(name);
+		
+//		for(int i = 0; i < my_string.length(); ++i)
+//		{
+//			if(my_string.charAt(i) == ' ')
+//			{
+//				my_string.
+//			}
+//		}
+		//System.out.println("Size: " +my_string);
+		//this.name = my_string.toString();
 	}
 	
 	public int Get_ID()

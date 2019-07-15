@@ -170,16 +170,18 @@ public class Server implements Runnable
 			}
 		}
 		
-		String message = "";
+		String message = null;
 		if(status == true)
 		{
-			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) @ " + c.address.toString() + " Port: " + c.port + " disconnected! \n";
+			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) " + c.address.toString() + " Port: " + c.port + " disconnected! \n";
 		}
 		else
 		{
-			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) @ " + c.address.toString() + " Port: " + c.port + " timed out! \n";
+			message = "Client: " + c.name + " ( " + c.Get_ID() + " ) " + c.address.toString() + " Port: " + c.port + " timed out! \n";
 		}
 		System.out.println(message);
+		//trim the message
+		System.out.println("Size: "+message.length());
 	}
 	
 	
