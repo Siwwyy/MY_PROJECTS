@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{9DFDAA98-153F-4757-B1B4-8D75E07B4E8B}</ProjectGuid>
-    <RootNamespace>SecondASIO</RootNamespace>
+    <ProjectGuid>{329C3BB2-3876-4B16-8DD1-9E5EF341F38E}</ProjectGuid>
+    <RootNamespace>ThirdASIO</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
