@@ -9,6 +9,9 @@
 Algorithms_Library/
 Algorithms_Library/*
 Algorithms_Library
+\!C++/*
+\!C++/
+\!C++
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
