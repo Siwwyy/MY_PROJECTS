@@ -1,9 +1,12 @@
+//STEADY TIMER!
+
 #include <iostream>
 #include <string>
-#include <windows.h>
+//#include <windows.h>	//struggle between asio and windows dot h
+#include <boost/asio.hpp>
 
-#define NEW_LINE { '\n' }
-#define BOLD { '\e' }
+#define NEW_LINE '\n'
+#define BOLD_LINE '\e'
 
 int main(int argc, char* argv[])
 {
@@ -11,7 +14,14 @@ int main(int argc, char* argv[])
 	using std::endl;
 	using std::cin;
 
-	system("pause");
+
+	boost::asio::io_context io;
+	boost::asio::steady_timer t(io, boost::asio::chrono::seconds(5));
+	t.wait();
+	std::cout << "Hello, world!" << NEW_LINE;
+	//system("pause");
+	std::cout << "Press space to close the window..." << NEW_LINE;
+	cin.get();
 	return 0;
 }
 
