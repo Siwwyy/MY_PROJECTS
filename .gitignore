@@ -6,7 +6,12 @@
 *.user
 *.userosscache
 *.sln.docstates
+Chat_Java/*
 Chat_Java/
+Chat_Java
+\!C++/*
+\!C++/
+\!C++
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
