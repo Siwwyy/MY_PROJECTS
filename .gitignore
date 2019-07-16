@@ -10,11 +10,11 @@ Algorithms_Library/
 Algorithms_Library/*
 Algorithms_Library
 Chat_Java
-LIBRARIES
+\!LIBRARIES
 Chat_Java/*
-LIBRARIES/*
+\!LIBRARIES/*
 Chat_Java/
-LIBRARIES/
+\!LIBRARIES/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
