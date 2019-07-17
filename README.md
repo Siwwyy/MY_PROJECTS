@@ -43,6 +43,13 @@ application. Maybe in future I will add some extra features.
 
 ------------------------------------------------------
 
+4. BOOST ASIO -> My learning path. I am working on ASIO, Exactly
+BOOST ASIO library. I have in my plans to create own server, for 
+example to holding my files (typical cloud server) and other
+similar things with TCP and UDP protocols.
+
+------------------------------------------------------
+
 
 *README is updating all the time
 
