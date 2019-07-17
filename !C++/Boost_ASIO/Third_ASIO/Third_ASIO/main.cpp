@@ -3,12 +3,13 @@
 //#include <windows.h>	//struggle between asio and windows dot h
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #define NEW_LINE '\n'
 #define BOLD_LINE '\e'
 
 
-void print(const boost::system::error_code& /*e*/, boost::asio::steady_timer* t, int* count)
+void print(const boost::system::error_code& value, boost::asio::steady_timer* t, int* count)
 {
 	if (*count < 5)
 	{

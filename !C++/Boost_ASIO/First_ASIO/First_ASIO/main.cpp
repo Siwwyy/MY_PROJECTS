@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	t.wait();
 	std::cout << "Hello, world!" << NEW_LINE;
 	//system("pause");
-	std::cout << "Press space to close the window..." << NEW_LINE;
+	std::cout << "Press enter to close the window..." << NEW_LINE;
 	cin.get();
 	return 0;
 }

@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	//print(boost::system::error_code());
 	io.run();
 	//system("pause");
-	std::cout << "Press space to close the window..." << NEW_LINE;
+	std::cout << "Press enter to close the window..." << NEW_LINE;
 	cin.get();
 	return 0;
 }
