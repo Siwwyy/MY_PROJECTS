@@ -91,13 +91,13 @@ void My_Class::Multiply_Counter(const int multiply_by)
 
 void My_Class::Divide_Counter(const int divide_by)
 {
-	if (expires == false)
-	{
+//	if (expires == false)
+//	{
 		std::cout << "DIVIDI " << counter << ' ' << divide_by << NEW_LINE;
 		this->counter /= divide_by;
 		timer2.expires_at(timer2.expires_at() + boost::posix_time::seconds(1));
 		timer2.async_wait(boost::asio::bind_executor(strand, boost::bind(&My_Class::Divide_Counter, this, counter)));
-	}
+//	}
 }
 
 int My_Class::Get_Counter()
@@ -110,20 +110,20 @@ int My_Class::Get_Counter()
 
 void My_Class::Print()
 {
-	if (expires == false)
-	{
+//	if (expires == false)
+	//{
 		std::cout << "PRINT " << Get_Counter() << NEW_LINE;
 		timer3.expires_at(timer3.expires_at() + boost::posix_time::seconds(1));
 		timer3.async_wait(boost::bind(&My_Class::Print, this));
 		std::cout << NEW_LINE;
-	}
-	else
-	{
+	//}
+	//else
+	//{
 		timer1.expires_from_now();
 		timer2.expires_from_now();
 		timer3.expires_from_now();
 		timer4.expires_from_now();
-	}
+	//}
 }
 
 My_Class::~My_Class()
