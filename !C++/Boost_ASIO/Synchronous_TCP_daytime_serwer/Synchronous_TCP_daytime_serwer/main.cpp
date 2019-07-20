@@ -22,9 +22,11 @@ int main(int argc, char* argv[])
 	{
 		// Any program that uses asio need to have at least one io_service object
 		boost::asio::io_service io_service;
-
+		//std::cout <<
+		tcp::endpoint endpoint_ip(tcp::v4(), 13);
+		std::cout << "Endpoint IP: " << endpoint_ip.address() << " Endpoint Port: " << endpoint_ip.port() << NEW_LINE;
 		// acceptor object needs to be created to listen for new connections
-		tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), 13));
+		tcp::acceptor acceptor(io_service, endpoint_ip);
 
 		for (;;)
 		{
@@ -45,7 +47,7 @@ int main(int argc, char* argv[])
 			{
 				break;
 			}
-			std::cout << 'D' << NEW_LINE;
+			std::cout << "Connection occured" << NEW_LINE;
 		}
 	}
 	catch (std::exception& e)

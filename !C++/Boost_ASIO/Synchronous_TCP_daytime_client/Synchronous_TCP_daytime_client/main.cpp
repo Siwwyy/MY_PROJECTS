@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 		// This keeps the client program independent of a specific IP version. 
 		// The boost::asio::connect() function does this for us automatically.
 		tcp::socket socket(io_service);
+		//boost::asio::connect(socket, endpoint_iterator);
 		boost::asio::connect(socket, endpoint_iterator);
 
 		// The connection is open. All we need to do now is read the response from the daytime service.
