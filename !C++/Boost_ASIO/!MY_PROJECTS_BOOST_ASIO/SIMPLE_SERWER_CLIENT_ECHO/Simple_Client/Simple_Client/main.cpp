@@ -39,6 +39,8 @@ int main(int argc, char* argv[])
 		tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 
 		tcp::socket socket(io_service);
+		boost::asio::connect(socket, endpoint_iterator);
+		//boost::asio::basic_socket<tcp, socket.get_executor()> a;
 		for (;;)
 		{
 			int option{};
@@ -57,11 +59,11 @@ int main(int argc, char* argv[])
 				std::cin.get();
 				message += '\0';
 				std::cout << "Your message: " << message << NEW_LINE;
-				boost::asio::connect(socket, endpoint_iterator);
+				//socket.connect()
 
-				socket.write_some(boost::asio::buffer(message));
-				//socket.send(boost::asio::buffer(message));
-				socket.close();
+				//socket.write_some(boost::asio::buffer(message));
+				socket.send(boost::asio::buffer(message));
+				
 			}
 			else if (option == 4)
 			{

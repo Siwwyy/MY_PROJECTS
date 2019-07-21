@@ -34,27 +34,30 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		boost::container::list<int> Clients;
+	//	boost::container::list<int> Clients;
 		boost::asio::io_context io_context;
 		//boost::asio::steady_timer timer(io_context, boost::asio::chrono::seconds(5));
 		tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
 		//io_context.run();
+		tcp::socket socket(io_context);
+		io_context.run();
 		for (;;)
 		{
-			tcp::socket socket(io_context);
+	
 			acceptor.accept(socket);
 
 			const size_t message_size = 1024;
 			char message[message_size] = {};
 			//boost::asio::async_read(socket, boost::asio::buffer(message), boost::bind(Show_Received_Message, boost::asio::placeholders::error, message, boost::ref(message_size)));
 			//boost::asio::read(socket, boost::asio::buffer(message));//, boost::bind(Show_Received_Message, boost::asio::placeholders::error, message, boost::ref(message_size)));
-			socket.read_some(boost::asio::buffer(message));
+			socket.receive(boost::asio::buffer(message));
 			//socket.async_read_some(boost::asio::buffer(message), boost::bind(Show_Received_Message, boost::asio::placeholders::error,message, boost::ref(message_size)));
 			_STD cout << "|-----------------------------------------------|" << NEW_LINE;
-			Clients.push_back(socket.remote_endpoint().port());
+		//	Clients.push_back(socket.remote_endpoint().port());
 			_STD cout << socket.remote_endpoint() << " connects to " << socket.local_endpoint() << NEW_LINE;
 			_STD cout << message << NEW_LINE;
 			_STD cout << "|-----------------------------------------------|" << NEW_LINE;
+			//socket.close();
 		}
 	}
 	catch (_STD exception& e)
