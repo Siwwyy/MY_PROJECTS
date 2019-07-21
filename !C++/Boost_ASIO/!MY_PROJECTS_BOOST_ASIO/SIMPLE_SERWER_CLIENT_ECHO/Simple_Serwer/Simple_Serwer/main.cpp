@@ -46,8 +46,10 @@ int main(int argc, char* argv[])
 
 			const size_t message_size = 1024;
 			char message[message_size] = {};
-			//socket.read_some(boost::asio::buffer(message));
-			socket.async_read_some(boost::asio::buffer(message), boost::bind(Show_Received_Message, boost::asio::placeholders::error,message, boost::ref(message_size)));
+			//boost::asio::async_read(socket, boost::asio::buffer(message), boost::bind(Show_Received_Message, boost::asio::placeholders::error, message, boost::ref(message_size)));
+			//boost::asio::read(socket, boost::asio::buffer(message));//, boost::bind(Show_Received_Message, boost::asio::placeholders::error, message, boost::ref(message_size)));
+			socket.read_some(boost::asio::buffer(message));
+			//socket.async_read_some(boost::asio::buffer(message), boost::bind(Show_Received_Message, boost::asio::placeholders::error,message, boost::ref(message_size)));
 			_STD cout << "|-----------------------------------------------|" << NEW_LINE;
 			Clients.push_back(socket.remote_endpoint().port());
 			_STD cout << socket.remote_endpoint() << " connects to " << socket.local_endpoint() << NEW_LINE;

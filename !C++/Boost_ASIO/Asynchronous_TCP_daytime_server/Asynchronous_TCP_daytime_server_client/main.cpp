@@ -35,9 +35,13 @@ public:
 
 	void start()
 	{
-		message_ = make_daytime_string();
+	//	message_ = make_daytime_string();
 
-		boost::asio::async_write(socket_, boost::asio::buffer(message_),boost::bind(&tcp_connection::handle_write, shared_from_this(),boost::asio::placeholders::error,boost::asio::placeholders::bytes_transferred));
+		//boost::asio::async_write(socket_, boost::asio::buffer(message_),boost::bind(&tcp_connection::handle_write, shared_from_this(),boost::asio::placeholders::error,boost::asio::placeholders::bytes_transferred));
+		//boost::asio::async_read(socket_, boost::asio::buffer(message_),boost::bind(&tcp_connection::handle_write, shared_from_this(),boost::asio::placeholders::error,boost::asio::placeholders::bytes_transferred));
+		boost::asio::async_read(socket_, boost::asio::buffer(message_, message_.size()), (boost::bind(&tcp_connection::handle_read, shared_from_this(), boost::asio::placeholders::error)));
+		_STD cout << "Message: " << this->message_ << NEW_LINE;
+		message_ = "";
 	}
 
 
@@ -56,7 +60,17 @@ private:
 	void handle_write(const boost::system::error_code& e,
 		size_t bytes_transferred)
 	{
+		//std::cout << "BYTES: " << bytes_transferred << NEW_LINE;
+	}
 
+	void handle_read(const boost::system::error_code& error)
+	{
+		//std::cout << "BYTES: " << bytes_transferred << NEW_LINE;
+
+		if (!error)
+		{
+			boost::asio::async_read(socket_, boost::asio::buffer(message_, message_.size()), (boost::bind(&tcp_connection::handle_read, shared_from_this(), boost::asio::placeholders::error)));
+		}
 	}
 
 	tcp::socket socket_;
@@ -70,8 +84,8 @@ public:
 		: io_context_(io_context),
 		acceptor_(io_context, tcp::endpoint(tcp::v4(), 13))
 	{
-		static int a;
-		std::cout << a++ << NEW_LINE;
+		//static int a;
+		std::cout << "WELCOME TO THE SIWY's SERVER!!" << NEW_LINE;
 		start_accept();
 	}
 
@@ -87,7 +101,7 @@ private:
 	{
 		tcp_connection::pointer new_connection = tcp_connection::create(io_context_);
 		//Clients.push_back(new_connection);
-		//std::cout << "IP address: " << new_connection->Get_Message() << NEW_LINE;
+		//_STD cout << "IP address: " << new_connection->Get_Message() << NEW_LINE;
 		/*char a{};
 		std::cin >> a;
 		if (a == '1')
