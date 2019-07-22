@@ -27,7 +27,9 @@ namespace MY_HANDLE
 		*/
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		_STD thread handle_thread;
+		_STD unique_lock<_STD mutex> unique_mu_locker;
 		_STD mutex mu_locker;
+		_STD once_flag flag;
 		_Ty * pointer_to_handler;
 		bool if_deleted;
 		/////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +58,9 @@ namespace MY_HANDLE
 		void Lock_Mutex();
 		void Unlock_Mutex();
 		void Lock_Guard();
+		void Unique_Lock();
+		void Unique_Unlock();
+		void Call_Once();
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 			SETTERS
@@ -94,26 +99,31 @@ namespace MY_HANDLE
 	template<typename _Ty>
 	inline _HANDLER<_Ty>::_HANDLER():
 		mu_locker(),
+		flag(),
+		unique_mu_locker(mu_locker,_STD defer_lock),
 		handle_thread(),
 		if_deleted(false),
 		pointer_to_handler(new _Ty)
 	{
-		//this->pointer_to_handler = new _Ty;
+		//NOTHING HERE
 	}
 
 	template<typename _Ty>
 	inline _HANDLER<_Ty>::_HANDLER(const _Ty & pointer_to_handle) :
 		pointer_to_handler(new _Ty(pointer_to_handle)),
+		flag(),
+		unique_mu_locker(mu_locker, _STD defer_lock),
 		handle_thread(pointer_to_handle), 
 		mu_locker(),
 		if_deleted(false)
 	{
-
+		//NOTHING HERE
 	}
 
 	template<typename _Ty>
 	inline _HANDLER<_Ty>::_HANDLER(_HANDLER&& Object) noexcept :
 		handle_thread(std::move(Object.handle_thread)),
+		unique_mu_locker(std::move(Object.unique_mu_locker)),	//transfering the ownership of mutex mu_locker
 		pointer_to_handler(nullptr)
 	{
 		this->pointer_to_handler = new _Ty(Object.Get_Reference_To_Handler());
@@ -157,6 +167,24 @@ namespace MY_HANDLE
 	}
 
 	template<typename _Ty>
+	__forceinline void _HANDLER<_Ty>::Unique_Lock()
+	{
+		unique_mu_locker.lock();
+	}
+
+	template<typename _Ty>
+	__forceinline void _HANDLER<_Ty>::Unique_Unlock()
+	{
+		unique_mu_locker.unlock();
+	}
+
+	template<typename _Ty>
+	__forceinline void _HANDLER<_Ty>::Call_Once()
+	{
+		_STD call_once(flag, [&](){*pointer_to_handler;} );
+	}
+
+	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Set_Pointer_To_Handler(const _Ty& new_pointer_to_handle)
 	{
 		delete pointer_to_handler;
@@ -182,6 +210,8 @@ namespace MY_HANDLE
 		if (this != _STD addressof(Object))
 		{
 			this->pointer_to_handler = new _Ty(Object.Get_Reference_To_Handler());
+			this->handle_thread = std::move(Object.handle_thread);
+			this->unique_mu_lock = std::move(Object.unique_mu_lock); //transfering the ownership of mutex mu_locker
 			Object.Delete_Handle_Pointer();
 		}
 		return *this;
@@ -194,8 +224,9 @@ namespace MY_HANDLE
 		{
 			delete pointer_to_handler;
 		}	
-		pointer_to_handler = nullptr;
-		handle_thread.~thread();
+		//pointer_to_handler = nullptr;
+	//	handle_thread.~thread();
+		//unique_mu_locker.~unique_lock();
 	}
 }
 
