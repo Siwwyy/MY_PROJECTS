@@ -2,12 +2,17 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string>
-#include <thread>
-#include <mutex>
 
 #include "_HANDLER.hpp"
 
 void fun();
+/*
+	TEST CASE FOR CONDITION VARIABLE
+*/
+constexpr __int32 Get_Result();
+void Increase_By(__int32 & value);
+///////////////////////////////////////////////
+
 
 int main(int argc, char* argv[])
 {
@@ -16,11 +21,21 @@ int main(int argc, char* argv[])
 	using std::cout;
 	using MY_HANDLE::_HANDLER;
 
+	__int32 value = 0;
 	//	  Address of fun	Address of pointer to fun	Address of fun
 	//_STD cout << ptr_fun << ' ' << &ptr_fun << ' ' << *ptr_fun << NEW_LINE;
 	_HANDLER<void(*)()> Test(fun);
 	Test.Join_Synchronously();
-	Test.Call_Once();
+	MY_HANDLE::Cond<void(*)()>::Notify_One();
+	//_HANDLER<void(*)()>::Notify_One();
+	//while (true)
+	//{
+	//	value = Get_Result();
+	//	Increase_By(value);
+	//	//Test::Notify_One();
+	//	std::cin.get();
+	//}
+	//Test.Call_Once();
 	//_HANDLER<void(*)()> Test1(std::move(Test));
 	//Test1.Join_Synchronously();
 	//_HANDLER<void> Test(fun);
@@ -47,4 +62,19 @@ void fun()
 	//_STD cout << NEW_LINE;
 	_STD cout << "HELLO WORD" << NEW_LINE;
 	//return 0;
+}
+
+constexpr __int32 Get_Result()
+{
+	__int32 result{};
+	for (size_t i = 0; i < 100000000; ++i)
+	{
+		result = (i - (100000));
+	}
+	return result;
+}
+
+void Increase_By(__int32 & value)
+{
+	value += 10;
 }

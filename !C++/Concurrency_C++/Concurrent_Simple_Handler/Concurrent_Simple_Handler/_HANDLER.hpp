@@ -8,6 +8,7 @@
 #include <thread>
 #include <mutex>
 #include <memory>
+#include <functional>
 
 namespace MY_HANDLE
 {
@@ -17,6 +18,23 @@ namespace MY_HANDLE
 
 	#define NEW_LINE '\n'
 
+
+	template<typename _Ty = void>
+	class Cond
+	{
+	/////////////////////////////////////////////////////////////////////////////
+	public: Cond() {}
+	public:	~Cond() {}
+	/////////////////////////////////////////////////////////////////////////////
+	private : static _STD condition_variable cond_variable;
+	public  : static void Notify_One();
+	public  : static void Notify_All();
+	public  : static void Condition_Variable_Wait(_STD unique_lock<_STD mutex>& unique_mu_locker_ref);
+	public  : static void Condition_Variable_Wait(_STD unique_lock<_STD mutex>& unique_mu_locker_ref, _STD function<_Ty> function);
+	/////////////////////////////////////////////////////////////////////////////
+	};
+	template<typename _Ty>
+	_STD condition_variable Cond<_Ty>::cond_variable{};
 
 	template<typename _Ty = void>
 	class _HANDLER
@@ -72,8 +90,9 @@ namespace MY_HANDLE
 			GETTERS
 		*/
 		/////////////////////////////////////////////////////////////////////////////////////////////
-		constexpr _Ty* Get_Pointer_To_Handler() const;
+		constexpr _Ty * Get_Pointer_To_Handler() const;
 		constexpr _Ty & Get_Reference_To_Handler() const;
+		constexpr _STD unique_lock<_STD mutex> & Get_Unique_Lock();
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 			OPERATORS
@@ -144,20 +163,20 @@ namespace MY_HANDLE
 	{
 		if (handle_thread.joinable())
 		{
-			handle_thread.join();
+			this->handle_thread.join();
 		}
 	}
 
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Lock_Mutex()
 	{
-		mu_locker.lock();
+		this->mu_locker.lock();
 	}
 
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Unlock_Mutex()
 	{
-		mu_locker.unlock();
+		this->mu_locker.unlock();
 	}
 
 	template<typename _Ty>
@@ -169,20 +188,43 @@ namespace MY_HANDLE
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Unique_Lock()
 	{
-		unique_mu_locker.lock();
+		this->unique_mu_locker.lock();
 	}
 
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Unique_Unlock()
 	{
-		unique_mu_locker.unlock();
+		this->unique_mu_locker.unlock();
 	}
 
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Call_Once()
 	{
-		_STD call_once(flag, [&](){*pointer_to_handler;} );
+		_STD call_once(this->flag, [&](){*this->pointer_to_handler;} );
 	}
+
+	/*template<typename _Ty>
+	inline void _HANDLER<_Ty>::Notify_One()
+	{
+	}*/
+
+	//template<typename _Ty>
+	//static void _HANDLER<_Ty>::Notify_One()
+	//{
+	//	//cond_variable.notify_one();
+	//}
+
+	/*template<typename _Ty>
+	static void _HANDLER<_Ty>::Condition_Variable_Wait()
+	{
+		this->cond_variable.wait(this->unique_mu_locker);
+	}
+
+	template<typename _Ty>
+	static void _HANDLER<_Ty>::Condition_Variable_Wait(_STD function<_Ty> function)
+	{
+	
+	}*/
 
 	template<typename _Ty>
 	__forceinline void _HANDLER<_Ty>::Set_Pointer_To_Handler(const _Ty& new_pointer_to_handle)
@@ -205,6 +247,12 @@ namespace MY_HANDLE
 	}
 
 	template<typename _Ty>
+	__forceinline constexpr _STD unique_lock<::std::mutex> & _HANDLER<_Ty>::Get_Unique_Lock()
+	{
+		return this->unique_mu_locker;
+	}
+
+	template<typename _Ty>
 	__forceinline _HANDLER<_Ty>& _HANDLER<_Ty>::operator=(_HANDLER&& Object)
 	{
 		if (this != _STD addressof(Object))
@@ -223,10 +271,33 @@ namespace MY_HANDLE
 		if (if_deleted == false)
 		{
 			delete pointer_to_handler;
-		}	
-		//pointer_to_handler = nullptr;
-	//	handle_thread.~thread();
-		//unique_mu_locker.~unique_lock();
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
+	template<typename _Ty>
+	__forceinline void Cond<_Ty>::Notify_One()
+	{
+		cond_variable.notify_one();
+	}
+
+	template<typename _Ty>
+	__forceinline void Cond<_Ty>::Notify_All()
+	{
+		cond_variable.notify_all();
+	}
+
+	template<typename _Ty>
+	__forceinline void Cond<_Ty>::Condition_Variable_Wait(_STD unique_lock<_STD mutex>& unique_mu_locker_ref)
+	{
+		cond_variable.wait(unique_mu_locker_ref);
+	}
+
+	template<typename _Ty>
+	__forceinline void Cond<_Ty>::Condition_Variable_Wait(_STD unique_lock<_STD mutex>& unique_mu_locker_ref, _STD function<_Ty> function)
+	{
+		cond_variable.wait(unique_mu_locker_ref, function);
 	}
 }
 
