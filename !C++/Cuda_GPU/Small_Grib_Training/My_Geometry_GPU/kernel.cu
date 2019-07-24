@@ -15,7 +15,7 @@ using namespace std;
 ////////////////////////////////////////////////////
 //GPU
 
-#define DIM 100
+#define DIM 1000
 #define OBJECT_SIZE (DIM/2)
 
 class _Point
@@ -42,8 +42,8 @@ public:
 	/*
 		SETTERY PUBLIC
 	*/
-	__device__ void Set_X(const float* new_X);
-	__device__ void Set_Y(const float* new_Y);
+	__device__ void Set_X(const float new_X);
+	__device__ void Set_Y(const float new_Y);
 	//////////////////////////////////////////////////////////////////////////////
 	/*
 		GETTERY PUBLIC
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 	HANDLE_ERROR(cudaMalloc((void**)& dev_bitmap, bitmap.image_size()));
 	dim3 grid(DIM, DIM);
 
-	Kernel<<<grid, 1 >>>(dev_bitmap);
+	Kernel<<<grid, 1>>>(dev_bitmap);
 
 	HANDLE_ERROR(cudaMemcpy(bitmap.get_ptr(), dev_bitmap, bitmap.image_size(), cudaMemcpyDeviceToHost));
 
@@ -97,14 +97,14 @@ __device__ _Point::_Point(const float x, const float y):
 
 }
 
-__device__ void _Point::Set_X(const float* new_X)
+__device__ void _Point::Set_X(const float new_X)
 {
-	this->x = (*new_X);
+	this->x = (new_X);
 }
 
-__device__ void _Point::Set_Y(const float* new_Y)
+__device__ void _Point::Set_Y(const float new_Y)
 {
-	this->y = (*new_Y);
+	this->y = (new_Y);
 }
 
 __device__ constexpr float _Point::Get_X() const
@@ -151,29 +151,32 @@ __global__ void Kernel(unsigned char* ptr)
 	// Odwzorowanie z blockldx na współrzędne piksela
 	int x = blockIdx.x;
 	int y = blockIdx.y;
-	int offset = x + y * gridDim.x;
+	int offset = (x + (y * gridDim.x));
 	// Obliczenie wartości dla tego punktu
 	int my_value = Create_Square(x, y);
 	ptr[offset * 4 + 0] = 255 * my_value;
 	ptr[offset * 4 + 1] = 0;
 	ptr[offset * 4 + 2] = 0;
 	ptr[offset * 4 + 3] = 255;
+	
 }
 
 __device__ int Create_Square(int x, int y)
 {
-	const float scale = 1.5;
+	const float scale = 1.5f;
 	float jx = scale * (float)(DIM / 2 - x) / (DIM / 2);
 	float jy = scale * (float)(DIM / 2 - y) / (DIM / 2);
+	_Point Object(jx,jy);
 
-	_Point Object(jx, jy);
+	//Object *= Temp;
 
-	for (size_t i = 0; i < 200; i++)
+	/*for (size_t i = 0; i < 2; i++)
 	{
-		if (Object.Get_X() > OBJECT_SIZE)
+		Object.Set_Y(Object.Get_Y() + (i));
+		if (Object.Get_Y() > DIM)
 		{
 			return 0;
 		}
-	}
+	}*/
 	return 1;
 }
