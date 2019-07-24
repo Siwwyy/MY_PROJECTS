@@ -50,6 +50,10 @@ constexpr size_t array_size = 10;
 //	}
 //}
 
+/*
+	ON GPU
+*/
+
 __global__ void addition(__int32* array_1, __int32* array_2, __int32* array_3);
 
 int main(int argc, char * argv[])

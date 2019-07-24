@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Small_Grib_Training", "Small_Grib_Training\Small_Grib_Training.vcxproj", "{3389F31B-66F3-4217-A05C-9380BC01B4CF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Funny_Example", "Funny_Example\Funny_Example.vcxproj", "{40183447-B3C5-4B8B-A035-55AEA09892A1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "My_Geometry_GPU", "My_Geometry_GPU\My_Geometry_GPU.vcxproj", "{F0796E04-FF12-4AC7-A4E6-7AEFC94891E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +19,14 @@ Global
 		{3389F31B-66F3-4217-A05C-9380BC01B4CF}.Debug|x64.Build.0 = Debug|x64
 		{3389F31B-66F3-4217-A05C-9380BC01B4CF}.Release|x64.ActiveCfg = Release|x64
 		{3389F31B-66F3-4217-A05C-9380BC01B4CF}.Release|x64.Build.0 = Release|x64
+		{40183447-B3C5-4B8B-A035-55AEA09892A1}.Debug|x64.ActiveCfg = Debug|x64
+		{40183447-B3C5-4B8B-A035-55AEA09892A1}.Debug|x64.Build.0 = Debug|x64
+		{40183447-B3C5-4B8B-A035-55AEA09892A1}.Release|x64.ActiveCfg = Release|x64
+		{40183447-B3C5-4B8B-A035-55AEA09892A1}.Release|x64.Build.0 = Release|x64
+		{F0796E04-FF12-4AC7-A4E6-7AEFC94891E4}.Debug|x64.ActiveCfg = Debug|x64
+		{F0796E04-FF12-4AC7-A4E6-7AEFC94891E4}.Debug|x64.Build.0 = Debug|x64
+		{F0796E04-FF12-4AC7-A4E6-7AEFC94891E4}.Release|x64.ActiveCfg = Release|x64
+		{F0796E04-FF12-4AC7-A4E6-7AEFC94891E4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

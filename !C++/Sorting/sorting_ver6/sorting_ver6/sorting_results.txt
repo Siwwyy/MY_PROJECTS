@@ -1,0 +1,5 @@
+bubble -> 123
+quick -> 128
+merge -> 108
+
+for chart 100x30
