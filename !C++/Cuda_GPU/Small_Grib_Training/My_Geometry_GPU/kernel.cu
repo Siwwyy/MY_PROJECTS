@@ -164,8 +164,8 @@ __global__ void Kernel(unsigned char* ptr)
 __device__ int Create_Square(int x, int y)
 {
 	const float scale = 1.5f;
-	float jx = scale * (float)(DIM / 2 - x) / (DIM / 2);
-	float jy = scale * (float)(DIM / 2 - y) / (DIM / 2);
+	float jx = (float)(DIM / 2 - x) / (DIM / 2);
+	float jy = (float)(DIM / 2 - y) / (DIM / 2);
 	_Point Object(jx,jy);
 
 	//Object *= Temp;
@@ -178,5 +178,9 @@ __device__ int Create_Square(int x, int y)
 			return 0;
 		}
 	}*/
+	if ((Object.Get_X() >= 100 && Object.Get_X() <= 900))// && (Object.Get_X() >= 100 && Object.Get_X() <= 900))
+	{
+		return 0;
+	}
 	return 1;
 }
