@@ -102,7 +102,7 @@ __global__ void addition(__int32* array_1, __int32* array_2, __int32* array_3)
 	while(id < N) 
 	{
 		array_3[id] = array_1[id] + array_2[id];
-		id += blockDim.x;
+		id += blockDim.x * gridDim.x;
 		//id = threadIdx.x + blockIdx.x * blockDim.x;
 	}
 	/*
