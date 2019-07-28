@@ -16,8 +16,8 @@
 #define DeviceToHost cudaMemcpyDeviceToHost
 #define OK cudaSuccess
 #define NEW_LINE '\n'
-//#define N 10
-#define N (33 * 1024)
+#define N 50000
+//#define N (33 * 1024)
 
 __global__ void addition(__int32* array_1, __int32* array_2, __int32* array_3);
 
@@ -35,14 +35,15 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < N; i++)
 	{
 		a[i] = i;
-		b[i] = i + i;
+		b[i] = i*2;
 	}
 	//Kopiowanie tablic a i b do GPU
 	//_STD cout << ((N + (N - 1)) / 2) << NEW_LINE;
 	HANDLE_ERROR(cudaMemcpy(dev_a, a, N * sizeof(int), cudaMemcpyHostToDevice));
 	HANDLE_ERROR(cudaMemcpy(dev_b, b, N * sizeof(int), cudaMemcpyHostToDevice));
 	//addition <<<((N + (N-1))/2),N>>> (dev_a, dev_b, dev_c);
-	addition <<<128,128>>> (dev_a, dev_b, dev_c);
+	//addition <<<128,128>>> (dev_a, dev_b, dev_c);
+	addition <<<1000,1000>>> (dev_a, dev_b, dev_c);
 	// Kopiowanie tablicy c z GPU do CPU
 	HANDLE_ERROR(cudaMemcpy(c, dev_c, N * sizeof(int), cudaMemcpyDeviceToHost));
 	// Wyświetlenie wyniku
@@ -103,7 +104,7 @@ __global__ void addition(__int32* array_1, __int32* array_2, __int32* array_3)
 	{
 		array_3[id] = array_1[id] + array_2[id];
 		id += blockDim.x * gridDim.x;
-		//id = threadIdx.x + blockIdx.x * blockDim.x;
+		//id = blockDim.x;
 	}
 	/*
 		It means that when we are invoking this function (less than N - 1 off course,

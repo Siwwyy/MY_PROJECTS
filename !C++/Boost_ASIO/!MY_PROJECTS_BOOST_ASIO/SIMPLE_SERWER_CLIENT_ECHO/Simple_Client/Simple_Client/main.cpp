@@ -15,15 +15,7 @@ int main(int argc, char* argv[])
 	using std::cin;
 	using boost::asio::ip::tcp;	//namespace for tcp
 
-
-//	std::cout << argv[0] << ' ' << argv[1] << NEW_LINE;
-
 	const size_t message_size = 1024;
-
-
-
-	/*std::cout << message << NEW_LINE;
-	std::cin.get();*/
 
 	try
 	{
@@ -54,16 +46,11 @@ int main(int argc, char* argv[])
 			{
 				_STD cout << "Type a message (then press enter): " << NEW_LINE;
 				std::string message{};
-				//std::getline(_STD cin, message);
 				cin >> message;
 				std::cin.get();
 				message += '\0';
 				std::cout << "Your message: " << message << NEW_LINE;
-				//socket.connect()
-
-				//socket.write_some(boost::asio::buffer(message));
 				socket.send(boost::asio::buffer(message));
-				
 			}
 			else if (option == 4)
 			{
@@ -74,14 +61,6 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
-		// The connection is open.
-	/*	for (;;)
-		{
-			std::string message{};
-			std::getline(_STD cin, message);
-			boost::system::error_code error;
-			socket.write_some(boost::asio::buffer(message));
-		}*/
 	}
 	// handle any exceptions that may have been thrown.
 	catch (std::exception& e)
