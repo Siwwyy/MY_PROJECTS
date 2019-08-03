@@ -4,10 +4,13 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "thrust/device_vector.h"
+#include "thrust/host_vector.h"
 
 #include "..//..//common/book.h"
 
 #include "..//..//Operations_On_Arrays/Operations_On_Arrays/Pixel.hpp"
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,20 +29,31 @@
 #define NEW_LINE '\n'
 
 
-
-void Fill_Array(const _STD string& file_path, _STD vector<RGB::Pixel> & Pixel_array);
-__global__ void Counting_Unique_Colors(_STD vector<RGB::Pixel> & Pixel_array);
+void Fill_Array(const _STD string& file_path, thrust::host_vector<RGB::Pixel> & Pixel_array);
+//void Fill_Array(const _STD string& file_path, _STD vector<RGB::Pixel>& Pixel_array);
+__global__ void Counting_Unique_Colors(thrust::device_vector<RGB::Pixel> & Pixel_Array);
 
 int main(int argc, char* argv[])
 {
-	_STD vector<RGB::Pixel> Pixel_array{};		//vector klasy Pixel
+	//_STD vector<RGB::Pixel> Pixel_array_CPU{};		//vector class Pixel
+	thrust::host_vector<RGB::Pixel> Pixel_array_CPU{};		//vector class Pixel
 
-	Fill_Array("Lena.ppm", Pixel_array);
+	Fill_Array("Lena.ppm", Pixel_array_CPU);
+
+	thrust::device_vector<RGB::Pixel> Pixel_Array_GPU = Pixel_array_CPU;
+
+	//thrust::copy(Pixel_array_CPU.begin(),Pixel_array_CPU.end(), Pixel_Array_GPU.begin());
+
+	_STD cout << Pixel_Array_GPU.size() << NEW_LINE;
+
+	Counting_Unique_Colors <<<1, 1 >>> (Pixel_Array_GPU);
+
 	system("pause");
 	return 0;
 }
 
-void Fill_Array(const _STD string & file_path, _STD vector<RGB::Pixel>& Pixel_array)
+//void Fill_Array(const _STD string & file_path, _STD vector<RGB::Pixel>& Pixel_array)
+void Fill_Array(const _STD string & file_path, thrust::host_vector<RGB::Pixel>& Pixel_array)
 {
 	_STD fstream file;
 	file.open(file_path.c_str(), std::ios_base::in);
@@ -86,7 +100,8 @@ void Fill_Array(const _STD string & file_path, _STD vector<RGB::Pixel>& Pixel_ar
 						counter++;
 					}
 					height = stoi(line_second);
-					Pixel_array.reserve(width * height);
+					//Pixel_array.reserve(width * height);
+					Pixel_array.reserve(static_cast<size_t>(width * height));
 				}
 				else if (a == 4)
 				{
@@ -105,7 +120,7 @@ void Fill_Array(const _STD string & file_path, _STD vector<RGB::Pixel>& Pixel_ar
 				file >> color;
 				Temporary_Pixel.Set_B(color);
 				color = 0;
-				Pixel_array.emplace_back(Temporary_Pixel);
+				Pixel_array.push_back(Temporary_Pixel);
 			}
 			line = "";
 			a++;
@@ -123,7 +138,7 @@ void Fill_Array(const _STD string & file_path, _STD vector<RGB::Pixel>& Pixel_ar
 	file.close();
 }
 
-__global__ void Counting_Unique_Colors(::std::vector<RGB::Pixel>& Pixel_array)
+__global__ void Counting_Unique_Colors(thrust::device_vector<RGB::Pixel>& Pixel_Array)
 {
 	
 }

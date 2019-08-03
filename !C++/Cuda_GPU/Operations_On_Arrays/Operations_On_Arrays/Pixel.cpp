@@ -17,7 +17,7 @@ RGB::Pixel::Pixel(const unsigned char R, const unsigned char G, const unsigned c
 	//
 }
 
-RGB::Pixel::Pixel(const Pixel& Object) :
+__device__ RGB::Pixel::Pixel(const Pixel& Object) :
 	R(Object.R),
 	G(Object.G),
 	B(Object.B)
@@ -62,7 +62,7 @@ constexpr char RGB::Pixel::Get_B() const
 	return this->B;
 }
 
-RGB::Pixel& RGB::Pixel::operator=(const Pixel& Object)
+__device__ RGB::Pixel& RGB::Pixel::operator=(const Pixel& Object)
 {
 	if (this != _STD addressof(Object))
 	{

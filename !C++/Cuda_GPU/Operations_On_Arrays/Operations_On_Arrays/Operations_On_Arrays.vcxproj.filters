@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="Pixel_GPU.cu">
+      <Filter>Sources</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -13,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pixel.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pixel_GPU.cuh">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

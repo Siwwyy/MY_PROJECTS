@@ -38,7 +38,7 @@ namespace RGB
 		*/
 		Pixel();
 		explicit Pixel(const unsigned char R, const unsigned char G, const unsigned char B);
-		Pixel(const Pixel & Object);
+		__device__ Pixel(const Pixel & Object);
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			FUNKCJE PUBLIC
@@ -63,7 +63,8 @@ namespace RGB
 			OPERATORY
 		*/
 		//JEDNOARGUMENTOWE
-		Pixel& operator=(const Pixel& Object);
+		//Pixel& operator=(const Pixel& Object);
+		__device__ Pixel& operator=(const Pixel& Object);
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			DESTRUKTOR

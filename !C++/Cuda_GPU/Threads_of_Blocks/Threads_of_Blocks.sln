@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Threads_of_Blocks", "Threads_of_Blocks\Threads_of_Blocks.vcxproj", "{1231538D-8853-4C69-A094-5E7930524E8B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Small_Remind", "Small_Remind\Small_Remind.vcxproj", "{198B3807-BC65-4A94-B868-1219C0FE7DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{1231538D-8853-4C69-A094-5E7930524E8B}.Debug|x64.Build.0 = Debug|x64
 		{1231538D-8853-4C69-A094-5E7930524E8B}.Release|x64.ActiveCfg = Release|x64
 		{1231538D-8853-4C69-A094-5E7930524E8B}.Release|x64.Build.0 = Release|x64
+		{198B3807-BC65-4A94-B868-1219C0FE7DDE}.Debug|x64.ActiveCfg = Debug|x64
+		{198B3807-BC65-4A94-B868-1219C0FE7DDE}.Debug|x64.Build.0 = Debug|x64
+		{198B3807-BC65-4A94-B868-1219C0FE7DDE}.Release|x64.ActiveCfg = Release|x64
+		{198B3807-BC65-4A94-B868-1219C0FE7DDE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
