@@ -1,9 +1,38 @@
 ﻿//#define __cplusplus
 //#define __CUDACC__
 //#define __CUDACC_RTC__
+//#ifdef __INTELLISENSE___
+//
+//__syncthreads();
+//
+//#endif
 
+//#ifndef __CUDACC__ 
+//#define __CUDACC__
+//#endif
+
+//
+//#define __cplusplus
+//#define __DEVICE_FUNCTIONS_DECL__
+//#define __DEVICE_FUNCTIONS_STATIC_DECL__
+//#define __CUDACC__
+
+
+//#ifdef __CUDACC__
+//#define cuda_SYNCTHREADS() __syncthreads()
+//#else
+//#define cuda_SYNCTHREADS()
+//#endif
+
+#include "cuda.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#ifndef __CUDACC__
+#define __CUDACC__
+#endif
+#include "device_functions.h"
+
+
 
 #include "..//..//common/book.h"
 
@@ -11,6 +40,13 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <iostream>
+
+
+//#pragma once
+//#ifdef __INTELLISENSE__
+//void __syncthreads();
+//
+//#endif
 
 ////////////////////////////////////////////////////
 //GPU
@@ -30,11 +66,11 @@ const int blocksPerGrid = imin(32, (N + threadsPerBlock - 1) / threadsPerBlock);
 
 __global__ void dot(float* a, float* b, float* c) 
 {
-	__shared__ float cache[threadsPerBlock]{};
+	__shared__ float cache[threadsPerBlock];
 	int tid = threadIdx.x + blockIdx.x * blockDim.x;
 	int cacheIndex = threadIdx.x;
 
-	float temp{};
+	float temp = 0.0f;
 	while (tid < N) 
 	{
 		temp += a[tid] * b[tid];
@@ -46,6 +82,7 @@ __global__ void dot(float* a, float* b, float* c)
 
 	// Synchronizacja w¹tków w tym bloku
 	__syncthreads();
+	//__device_builtin__ __syncthreads();
 
 	// W przypadku redukcji threadsPerBlock musi byæ potêg¹ 2,
 	// ze wzglêdu na poni¿szy kod
@@ -55,8 +92,10 @@ __global__ void dot(float* a, float* b, float* c)
 		if (cacheIndex < i)
 		{
 			cache[cacheIndex] += cache[cacheIndex + i];
+			__syncthreads();
 		}
-		__syncthreads();
+
+		//__device_builtin__ __syncthreads();
 		i /= 2;
 	}
 
@@ -92,8 +131,8 @@ int main(int argc, char* argv[])
 	HANDLE_ERROR(cudaMemcpy(dev_a, a, N * sizeof(float), cudaMemcpyHostToDevice));
 	HANDLE_ERROR(cudaMemcpy(dev_b, b, N * sizeof(float), cudaMemcpyHostToDevice));
 
-	dot<<<blocksPerGrid, threadsPerBlock>>> (dev_a, dev_b,dev_partial_c);
 
+	dot<<<blocksPerGrid, threadsPerBlock>>> (dev_a, dev_b,dev_partial_c);
 	// Skopiowanie tablicy c z powrotem z GPU do CPU
 	HANDLE_ERROR(cudaMemcpy(partial_c, dev_partial_c, blocksPerGrid * sizeof(float), cudaMemcpyDeviceToHost));
 

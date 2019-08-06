@@ -24,13 +24,13 @@ __global__ void Multiply(__int64* array_1, __int64* array_2, __int64* array_3);
 
 int main(int argc, char* argv[])
 {
-	//__int64 * a_CPU{}, * b_CPU{}, * c_CPU{};
-	__int64 a_CPU[N][N], b_CPU[N][N], c_CPU[N*N];
+	//__int64** a_CPU{}, ** b_CPU{}, c_CPU[N][N];//* c_CPU{};
+	__int64 a_CPU[N][N], b_CPU[N][N], c_CPU[N][N];
 	__int64 * a_GPU{}, * b_GPU{}, * c_GPU{};
 
-	/*a_CPU = (__int64*)malloc(N * sizeof(__int64));
-	b_CPU = (__int64*)malloc(N * sizeof(__int64));
-	c_CPU = (__int64*)malloc(N * sizeof(__int64));*/
+	//a_CPU = (__int64**)malloc(N * sizeof(__int64*));
+	//b_CPU = (__int64**)malloc(N * sizeof(__int64*));
+	//c_CPU = (__int64**)malloc(N * sizeof(__int64));
 
 	cudaMalloc((void**)& a_GPU, N * N * sizeof(__int64));
 	cudaMalloc((void**)& b_GPU, N * N * sizeof(__int64));
@@ -38,11 +38,13 @@ int main(int argc, char* argv[])
 
 	//for (size_t i = 0; i < N; ++i)
 	//{
-	//	*(a_CPU + i) = static_cast<__int64>(i);
-	//	*(b_CPU + i) = static_cast<__int64>(i * i);
+	//	//*(a_CPU + i) = static_cast<__int64>(i);
+	//	*(a_CPU + i) = (__int64*)malloc(N * sizeof(__int64));
+	////	*(b_CPU + i) = static_cast<__int64>(i);
+	//	*(b_CPU + i) = (__int64*)malloc(N * sizeof(__int64));
 	///*	a_CPU[i] = static_cast<__int64>(i);
 	//	b_CPU[i] = static_cast<__int64>(i*i);*/
-	//	*(c_CPU + i) = 0;
+	//	//*(c_CPU + i) = 0;
 	//}
 
 	__int64 value = 0;
@@ -54,11 +56,22 @@ int main(int argc, char* argv[])
 			a_CPU[i][j] = static_cast<__int64>(1);
 			//b_CPU[i][j] = static_cast<__int64>(i*j);
 			b_CPU[i][j] = static_cast<__int64>(2);
-			//*(*(c_CPU + i) + j) = 0;
-			*(c_CPU + i+j) = 0;
+			*(*(c_CPU + i) + j) = 0;
+			//*(c_CPU + i+j) = 0;
 			value++;
 		}
 	}
+
+
+	//for (size_t i = 0; i < N; ++i)
+	//{
+	//	for (size_t j = 0; j < N; ++j)
+	//	{
+	//		//a_CPU[i][j] = static_cast<__int64>(j+i);
+	//		_STD cout << *(*(a_CPU + i) + j) << ' ';
+	//	}
+	//	_STD cout << NEW_LINE;
+	//}
 
 	cudaMemcpy(a_GPU, a_CPU, N * N * sizeof(__int64), HostToDevice);
 	cudaMemcpy(b_GPU, b_CPU, N * N * sizeof(__int64), HostToDevice);
@@ -79,18 +92,18 @@ int main(int argc, char* argv[])
 	//	_STD cout << NEW_LINE;
 	//}
 
-	for (size_t i = 0; i < N*N; ++i)
+	for (size_t i = 0; i < N; ++i)
 	{
-		if (i % (N) == 0 && i > 1)
+		/*if (i % (N) == 0 && i > 1)
 		{
 			_STD cout << NEW_LINE;
 		}
-		_STD cout << *(c_CPU+i) << ' ';
-		//for (size_t j = 0; j < N; ++j)
-		//{
-		////	_STD cout << *(*(c_CPU+i) + j) << ' ';
-		//}
-		////_STD cout << NEW_LINE;
+		_STD cout << *(c_CPU+i) << ' ';*/
+		for (size_t j = 0; j < N; ++j)
+		{
+			_STD cout << *(*(c_CPU+i) + j) << ' ';
+		}
+		_STD cout << NEW_LINE;
 	
 	}
 	_STD cout << NEW_LINE;
@@ -109,9 +122,10 @@ int main(int argc, char* argv[])
 __global__ void Multiply(__int64* array_1, __int64* array_2, __int64* array_3)
 {
 	size_t index = threadIdx.x + blockIdx.x * blockDim.x;
-	if (index < N+index)
+	if (index < N*N)
 	{
 		array_3[index] = array_1[index] + array_2[index];
+		//index += blockDim.x * gridDim.x;
 	}
 
 	/*size_t index_x = blockIdx.x;
