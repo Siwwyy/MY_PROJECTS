@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{87855266-8BA9-3148-B48A-F853095CFA8B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

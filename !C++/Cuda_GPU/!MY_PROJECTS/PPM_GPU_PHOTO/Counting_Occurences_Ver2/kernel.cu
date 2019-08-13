@@ -1,4 +1,4 @@
-﻿
+
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #ifndef __CUDACC__
@@ -23,9 +23,9 @@
 #define DeviceToHost cudaMemcpyDeviceToHost
 #define OK cudaSuccess
 #define NEW_LINE '\n'
-#define N 10000
+#define N 100
 
-#define BlocksPerGrid (N/1000)
+#define BlocksPerGrid N
 #define ThreadsPerBlock (N/10)
 
 ////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@
 */
 
 auto start = _STD chrono::system_clock::now();
-_STD random_device random_engine;							
+_STD random_device random_engine;
 _STD mt19937 generator(random_engine());
 
 ////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ void Show_Array_and_Occurences(const __int32* array_integer, const __int32* arra
 /*
 	GPU FUNCTIONS
 */
-__global__ void Count_Occurences(const __int32 * array_integer, __int32* array_occurences, const size_t& size);
+__global__ void Count_Occurences(const __int32* array_integer, __int32* array_occurences, const size_t& size);
 ////////////////////////////////////////////////////////
 
 int main(int argc, char* argv[])
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	HANDLE_ERROR(cudaMemcpy(integer_array_GPU, integer_array, array_size * sizeof(__int32), HostToDevice));
 
 	//Counting the occurence of the numbers in these arrays
-	Count_Occurences <<< BlocksPerGrid, 1000 >>> (integer_array_GPU, integer_array_GPU_occurences, array_size);
+	Count_Occurences << < N, 1 >> > (integer_array_GPU, integer_array_GPU_occurences, array_size);
 
 
 	HANDLE_ERROR(cudaMemcpy(integer_array_occurences, integer_array_GPU_occurences, array_size * sizeof(__int32), DeviceToHost));
@@ -156,7 +156,7 @@ void Show_Array_and_Occurences(const __int32* array_integer, const __int32* arra
 {
 	for (size_t i = 0; i < size; ++i)
 	{
-		_STD cout << array_integer[i] << " -> " << array_occurences[i] << NEW_LINE;
+		_STD cout << array_integer[i] << " Occured per -> " << array_occurences[i] << " times" << NEW_LINE;
 	}
 	_STD cout << NEW_LINE;
 }
@@ -170,7 +170,6 @@ __global__ void Count_Occurences(const __int32* array_integer, __int32* array_oc
 	size_t occurence{};
 	__shared__ size_t cache_array_of_occurences[ThreadsPerBlock];//change it into array of occurented already
 	int cache_index = threadIdx.x;
-
 	while (id < N)
 	{
 		int id_j = id + 1;
@@ -192,6 +191,7 @@ __global__ void Count_Occurences(const __int32* array_integer, __int32* array_oc
 	__syncthreads();
 
 	array_occurences[threadIdx.x + blockIdx.x * blockDim.x] = cache_array_of_occurences[cache_index];
-	
+
 	__syncthreads();
+
 }

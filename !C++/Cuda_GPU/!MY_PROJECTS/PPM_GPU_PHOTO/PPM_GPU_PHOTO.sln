@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PPM_GPU_PHOTO", "PPM_GPU_PH
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Counting_Occurences", "Counting_Occurences\Counting_Occurences.vcxproj", "{C1EA1E3A-D60D-4E61-A1C5-4D4962EE18DB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Counting_Occurences_Ver2", "Counting_Occurences_Ver2\Counting_Occurences_Ver2.vcxproj", "{83233227-064B-4488-83E2-125B05AB763E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{C1EA1E3A-D60D-4E61-A1C5-4D4962EE18DB}.Debug|x64.Build.0 = Debug|x64
 		{C1EA1E3A-D60D-4E61-A1C5-4D4962EE18DB}.Release|x64.ActiveCfg = Release|x64
 		{C1EA1E3A-D60D-4E61-A1C5-4D4962EE18DB}.Release|x64.Build.0 = Release|x64
+		{83233227-064B-4488-83E2-125B05AB763E}.Debug|x64.ActiveCfg = Debug|x64
+		{83233227-064B-4488-83E2-125B05AB763E}.Debug|x64.Build.0 = Debug|x64
+		{83233227-064B-4488-83E2-125B05AB763E}.Release|x64.ActiveCfg = Release|x64
+		{83233227-064B-4488-83E2-125B05AB763E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

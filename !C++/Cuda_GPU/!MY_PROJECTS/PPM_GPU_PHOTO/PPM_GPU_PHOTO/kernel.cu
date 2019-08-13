@@ -3,6 +3,11 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
+#ifndef __CUDACC__
+#define __CUDACC__
+#endif
+#include "device_functions.h"
+
 
 #include "..//..//..//common/book.h"
 
@@ -33,6 +38,7 @@ private:
 	unsigned char R;
 	unsigned char G;
 	unsigned char B;
+	int color_range;
 	//////////////////////////////////////////////////////////////////////////////
 protected:
 	/*
@@ -51,7 +57,7 @@ public:
 	/*
 		FUNKCJE PUBLIC
 	*/
-	__host__ __device__ void Show_Object() const;
+	__host__ void Show_Object() const;
 	//////////////////////////////////////////////////////////////////////////////
 	/*
 		SETTERY
@@ -59,6 +65,7 @@ public:
 	__host__ __device__ void Set_R(const unsigned char R);
 	__host__ __device__ void Set_G(const unsigned char G);
 	__host__ __device__ void Set_B(const unsigned char B);
+	__host__ __device__ void Set_Color_Range(const int Color_Range);
 	//////////////////////////////////////////////////////////////////////////////
 	/*
 		GETTERY
@@ -66,6 +73,7 @@ public:
 	__host__ __device__ const unsigned char Get_R() const;
 	__host__ __device__ const unsigned char Get_G() const;
 	__host__ __device__ const unsigned char Get_B() const;
+	__host__ __device__ const int Get_Color_Range() const;
 	//__host__ __device__ Pixel_GPU * Get_Pointer() const;
 	//////////////////////////////////////////////////////////////////////////////
 	/*
@@ -85,47 +93,83 @@ Pixel_GPU* Host_Array{};
 size_t global_size{};
 
 void Fill_Array(const _STD string& file_path);
-__global__ void Counting_Unique_Colors(Pixel_GPU * Pixel_array, __int64 & unique_colors, const size_t & size);
+void Show_Array(Pixel_GPU* Pixel_array, const size_t& size);
+__global__ void Counting_Unique_Colors(Pixel_GPU * Pixel_array, __int64 * unique_colors, const size_t * size);
 
 int main(int argc, char* argv[])
 {
-	__int64 unique_colors{};
-	__int64 unique{};
-	size_t size{};
+	//__int64 * unique_colors{};
+	//__int64 unique{};
+	//size_t * size{};
 
-	HANDLE_ERROR(cudaMalloc((void**)& unique_colors, sizeof(__int64)));
-	HANDLE_ERROR(cudaMalloc((void**)& size, sizeof(size_t)));
+	//HANDLE_ERROR(cudaMalloc((void**)& unique_colors, sizeof(__int64)));
+	//HANDLE_ERROR(cudaMalloc((void**)& size, sizeof(size_t)));
 
-	unique_colors = 0;
-	unique = 0;
-	size = 0;
+	////unique_colors = 0;
+	////unique = 0;
+	////size = 0;
 
-	Fill_Array("Lena.ppm");
+	//Fill_Array("Lena.ppm");
 
+	////Show_Array(Host_Array, global_size);
 
-	Pixel_GPU* Device_Array{};
-	cudaMalloc((void**)& Device_Array, global_size * sizeof(Pixel_GPU));
-
-
-	cudaMemcpy(Device_Array, Host_Array, global_size * sizeof(Pixel_GPU), HostToDevice);
-	//cudaMemcpy(&global_size, &size, sizeof(size_t), HostToDevice);
-	//cudaMemcpy(&size, &global_size, sizeof(size_t), HostToDevice);
-	size = global_size;
-
-	Counting_Unique_Colors <<<655,1024>>> (Device_Array, unique_colors, size);
-	//Counting_Unique_Colors <<<1,1024>>> (Device_Array, unique_colors, size);
+	//Pixel_GPU* Device_Array{};
+	//cudaMalloc((void**)& Device_Array, global_size * sizeof(Pixel_GPU));
 
 
+	//cudaMemcpy(Device_Array, Host_Array, global_size * sizeof(Pixel_GPU), HostToDevice);
+	////cudaMemcpy(&global_size, &size, sizeof(size_t), HostToDevice);
+	//cudaMemcpy(size, &global_size, sizeof(size_t), HostToDevice);
+	////size = global_size;
 
-	//cudaMemcpy(&unique, &unique_colors, sizeof(__int64), DeviceToHost);
-	unique = unique_colors;
-	_STD cout << unique << NEW_LINE;
+	//Counting_Unique_Colors <<<655,1024>>> (Device_Array, unique_colors, size);
+	////Counting_Unique_Colors <<<1,1024>>> (Device_Array, unique_colors, size);
 
-	cudaFree(&unique_colors);
-	cudaFree(&size);
-	cudaFree(Device_Array);
 
-	free(Host_Array);
+
+	//cudaMemcpy(Host_Array, Device_Array, global_size * sizeof(Pixel_GPU), DeviceToHost);
+	//Show_Array(Host_Array, global_size);
+
+	//cudaMemcpy(&unique, unique_colors, sizeof(__int64), DeviceToHost);
+	////unique = unique_colors;
+	//_STD cout << unique << NEW_LINE;
+
+	//cudaFree(unique_colors);
+	//cudaFree(size);
+	//cudaFree(Device_Array);
+
+	//free(Host_Array);
+
+	char abc[4][4][4]{};// = { 1,2,3,4 };
+
+	int cos{97};
+	for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++)
+		{
+			for (size_t k = 0; k < 4; k++)
+			{
+				abc[i][j][k] = (char)(cos++);
+			}
+		
+		}
+	}
+
+
+
+	/*for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++)
+		{
+			for (size_t k = 0; k < 4; k++)
+			{
+				_STD cout << abc[i][j][k] << ' ';
+			}
+			_STD cout << NEW_LINE;
+		}
+		_STD cout << NEW_LINE;
+	}*/
+	_STD cout << abc[0][1][3] << ' ';
 
 	system("pause");
 	return 0;
@@ -196,6 +240,7 @@ void Fill_Array(const _STD string& file_path)
 				color = 0;
 				file >> color;
 				Temporary_Pixel.Set_B(color);
+				//Temporary_Pixel.Set_Color_Range(color_range);
 				color = 0;
 				Host_Array[i++] = Temporary_Pixel;
 			}
@@ -216,38 +261,63 @@ void Fill_Array(const _STD string& file_path)
 	file.close();
 }
 
-__global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 & unique_colors, const size_t& size)
+void Show_Array(Pixel_GPU* Pixel_array, const size_t& size)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		if (Pixel_array[i].Get_Color_Range() > 255)
+		{
+			Pixel_array[i].Show_Object();
+			_STD cin.get();
+		}
+	/*	Pixel_array[i].Show_Object();
+		_STD cin.get();*/
+	}
+}
+
+__global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_colors, const size_t * size)
 {
 	int id = threadIdx.x + blockIdx.x * blockDim.x;
+	int j = threadIdx.y + blockIdx.y * blockDim.y;
 	bool is_unique = true;
-	//int j = id + 1;
-	while (id < size)
+	const int color_range = Pixel_array[0].Get_Color_Range();
+	if (id < *size)
 	{
-		is_unique = true;
-		for (int j = id + 1; j < size; j += blockDim.x * gridDim.x)
-		{
-			if (Pixel_array[id].Get_R() == Pixel_array[j].Get_R() && Pixel_array[id].Get_G() == Pixel_array[j].Get_G() && Pixel_array[id].Get_B() == Pixel_array[j].Get_B())
-			{
-				is_unique = false;
-				break;
-			}
-		}
-		if (is_unique == true)
-		{
-			
-		}
-		//if (Pixel_array[id].Get_R() == Pixel_array[j].Get_R() && Pixel_array[id].Get_G() == Pixel_array[j].Get_G() && Pixel_array[id].Get_B() == Pixel_array[j].Get_B())
+		//if (Pixel_array[id].Get_Color_Range() > color_range)
 		//{
-		//	is_unique = false;
-		////	break;
+		//	continue;
 		//}
-		else
+		//else
+		//{
+		
+		//}
+		//__syncthreads();
+		while (j < *size)
 		{
-			++unique_colors;
+			/*	Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+				Pixel_array[j].Set_R(static_cast<int>(color_range + 100));*/
+		/*	if (Pixel_array[id].Get_R() == Pixel_array[j].Get_R() && Pixel_array[id].Get_G() == Pixel_array[j].Get_G() && Pixel_array[id].Get_B() == Pixel_array[j].Get_B())
+			{
+				Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+			}*/
+			Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+			j++;
 		}
-		//unique_colors = id;
-		id += blockDim.x * gridDim.x;
+		//__syncthreads();
+		//Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
+		//__syncthreads();
+		/*Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
+		Pixel_array[id].Set_R(static_cast<int>(color_range + 100));
+		id += blockDim.x * gridDim.x;*/
 	}
+
+	id = threadIdx.x + blockIdx.x * blockDim.x;
+	if (Pixel_array[id].Get_Color_Range() == color_range)
+	{
+		++(*unique_colors);
+	}
+	//(*unique_colors) = 1000;
+
 }
 
 ////////////////////////////////////////////////////////
@@ -262,7 +332,8 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 & unique_
 __host__ __device__ Pixel_GPU::Pixel_GPU() :
 	R(NULL),
 	G(NULL),
-	B(NULL)
+	B(NULL),
+	color_range(255)
 {
 	//Nothing here
 }
@@ -270,7 +341,8 @@ __host__ __device__ Pixel_GPU::Pixel_GPU() :
 __host__ __device__  Pixel_GPU::Pixel_GPU(const unsigned char R, const unsigned char G, const unsigned char B) :
 	R(R),
 	G(G),
-	B(B)
+	B(B),
+	color_range(255)
 {
 	//Nothing here
 }
@@ -278,14 +350,15 @@ __host__ __device__  Pixel_GPU::Pixel_GPU(const unsigned char R, const unsigned 
 __host__ __device__  Pixel_GPU::Pixel_GPU(const Pixel_GPU& Object) :
 	R(Object.R),
 	G(Object.G),
-	B(Object.B)
+	B(Object.B),
+	color_range(Object.color_range)
 {
 	//Nothing here
 }
 
-__host__ __device__ void Pixel_GPU::Show_Object() const
+__host__ void Pixel_GPU::Show_Object() const
 {
-	//_STD cout << "Red: [" << this->R << " ] " << "Green: [" << this->G << " ] " << "Blue: [" << this->B << " ] " << NEW_LINE;
+	_STD cout << "Red: [" << static_cast<int>(this->R) << " ] " << "Green: [" << static_cast<int>(this->G) << " ] " << "Blue: [" << static_cast<int>(this->B) << " ] " << "Color range: " << this->color_range << NEW_LINE;
 }
 
 __host__ __device__ void Pixel_GPU::Set_R(const unsigned char R)
@@ -303,6 +376,11 @@ __host__ __device__ void Pixel_GPU::Set_B(const unsigned char B)
 	this->B = B;
 }
 
+__host__ __device__  void Pixel_GPU::Set_Color_Range(const int Color_Range)
+{
+	this->color_range = Color_Range;
+}
+
 __host__ __device__ const unsigned char Pixel_GPU::Get_R() const
 {
 	return this->R;
@@ -318,6 +396,11 @@ __host__ __device__ const unsigned char Pixel_GPU::Get_B() const
 	return this->B;
 }
 
+__host__ __device__ const int Pixel_GPU::Get_Color_Range() const
+{
+	return this->color_range;
+}
+
 //__host__ __device__ Pixel_GPU * Pixel_GPU::Get_Pointer() const
 //{
 //	return ;
@@ -331,6 +414,7 @@ __host__ __device__ Pixel_GPU& Pixel_GPU::operator=(const Pixel_GPU& Object)
 		this->R = Object.R;
 		this->G = Object.G;
 		this->B = Object.B;
+		this->color_range = Object.color_range;
 	}
 	return *this;
 }

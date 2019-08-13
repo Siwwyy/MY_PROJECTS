@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Win32-MSBuild"
+	BuildStamp="20190813-1018-Continuous"
+	Name="DESKTOP-M7RNUEI"
+	Generator="ctest-3.15.2"
+	CompilerName="C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe"
+	CompilerVersion="19.22.27905.0"
+	OSName="Windows"
+	Hostname="DESKTOP-M7RNUEI"
+	OSRelease=" Professional"
+	OSVersion=" (Build 18362)"
+	OSPlatform="AMD64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="14"
+	ProcessorCacheSize="-1"
+	NumberOfLogicalCPU="8"
+	NumberOfPhysicalCPU="4"
+	TotalVirtualMemory="17235"
+	TotalPhysicalMemory="16211"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="2592"
+	>
+	<Testing>
+		<StartDateTime>Aug 13 12:18 Central European Daylight Time</StartDateTime>
+		<StartTestTime>1565691529</StartTestTime>
+		<TestList>
+			<Test>./first_app_test</Test>
+			<Test>./second_app_test</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>first_app_test</Name>
+			<Path>.</Path>
+			<FullName>./first_app_test</FullName>
+			<FullCommandLine>"E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\Debug\Cmake_Second.exe"</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.0229995</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>"E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\Debug\Cmake_Second.exe"</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value>Press any key to continue . . . 
+Hello Cmake Cross Platform Builder !
+</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<Test Status="failed">
+			<Name>second_app_test</Name>
+			<Path>.</Path>
+			<FullName>./second_app_test</FullName>
+			<FullCommandLine>"E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\Debug\Cmake_Second.exe" "somekindofparameter"</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="text/string" name="Exit Code">
+					<Value>Failed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Exit Value">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.0092978</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>"E:\!!Projects VS\!!C++&amp;JAVA\!MY_PROJECTS\!C++\Just_C++_Projects\CMake\CMake_Second\Debug\Cmake_Second.exe" "somekindofparameter"</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value></Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Aug 13 12:18 Central European Daylight Time</EndDateTime>
+		<EndTestTime>1565691529</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

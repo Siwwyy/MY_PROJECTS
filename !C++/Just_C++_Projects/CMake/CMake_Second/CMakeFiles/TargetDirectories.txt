@@ -1,0 +1,9 @@
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/Cmake_Second.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/NightlyMemoryCheck.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/Experimental.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/Continuous.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/Nightly.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/INSTALL.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/RUN_TESTS.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/ALL_BUILD.dir
+E:/!!Projects VS/!!C++&JAVA/!MY_PROJECTS/!C++/Just_C++_Projects/CMake/CMake_Second/CMakeFiles/ZERO_CHECK.dir
