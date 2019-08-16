@@ -28,6 +28,7 @@
 #define DeviceToHost cudaMemcpyDeviceToHost
 #define OK cudaSuccess
 #define NEW_LINE '\n'
+#define N 100
 
 class Pixel_GPU
 {
@@ -95,12 +96,14 @@ size_t global_size{};
 void Fill_Array(const _STD string& file_path);
 void Show_Array(Pixel_GPU* Pixel_array, const size_t& size);
 __global__ void Counting_Unique_Colors(Pixel_GPU * Pixel_array, __int64 * unique_colors, const size_t * size);
+__global__ void Increase(__int64 *& counter);
 
 int main(int argc, char* argv[])
 {
-	//__int64 * unique_colors{};
-	//__int64 unique{};
-	//size_t * size{};
+	/*__int64 * unique_colors{};
+	__int64 unique{};
+
+	size_t * size{};*/
 
 	//HANDLE_ERROR(cudaMalloc((void**)& unique_colors, sizeof(__int64)));
 	//HANDLE_ERROR(cudaMalloc((void**)& size, sizeof(size_t)));
@@ -140,36 +143,25 @@ int main(int argc, char* argv[])
 
 	//free(Host_Array);
 
-	char abc[4][4][4]{};// = { 1,2,3,4 };
+	
 
-	int cos{97};
-	for (size_t i = 0; i < 4; i++)
-	{
-		for (size_t j = 0; j < 4; j++)
-		{
-			for (size_t k = 0; k < 4; k++)
-			{
-				abc[i][j][k] = (char)(cos++);
-			}
-		
-		}
-	}
+	__int64 *counter_CPU;
+	__int64 *counter_GPU;
+
+	counter_CPU = (__int64*)malloc(sizeof(__int64));
+	HANDLE_ERROR(cudaMalloc((void**)&counter_GPU, sizeof(__int64)));
 
 
+	Increase <<<10, 10 >>> (counter_GPU);
 
-	/*for (size_t i = 0; i < 4; i++)
-	{
-		for (size_t j = 0; j < 4; j++)
-		{
-			for (size_t k = 0; k < 4; k++)
-			{
-				_STD cout << abc[i][j][k] << ' ';
-			}
-			_STD cout << NEW_LINE;
-		}
-		_STD cout << NEW_LINE;
-	}*/
-	_STD cout << abc[0][1][3] << ' ';
+	HANDLE_ERROR(cudaMemcpy(counter_CPU, counter_GPU, sizeof(__int64) , DeviceToHost));
+
+
+	_STD cout << *counter_CPU << NEW_LINE;
+
+
+	HANDLE_ERROR(cudaFree(counter_GPU));
+	free(counter_CPU);
 
 	system("pause");
 	return 0;
@@ -320,6 +312,17 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_
 
 }
 
+__global__ void Increase(__int64 *& counter)
+{
+	int id = threadIdx.x + blockIdx.x * blockDim.x;
+	if (id < N)
+	{
+		__syncthreads();
+		++((counter));
+		__syncthreads();
+	}
+}
+
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 /*
@@ -429,3 +432,40 @@ Pixel_GPU::~Pixel_GPU()
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
+
+
+
+
+
+
+//RUBBISH
+//char abc[4][4][4]{};// = { 1,2,3,4 };
+
+	//int cos{97};
+	//for (size_t i = 0; i < 4; i++)
+	//{
+	//	for (size_t j = 0; j < 4; j++)
+	//	{
+	//		for (size_t k = 0; k < 4; k++)
+	//		{
+	//			abc[i][j][k] = (char)(cos++);
+	//		}
+	//	
+	//	}
+	//}
+
+
+
+	/*for (size_t i = 0; i < 4; i++)
+	{
+		for (size_t j = 0; j < 4; j++)
+		{
+			for (size_t k = 0; k < 4; k++)
+			{
+				_STD cout << abc[i][j][k] << ' ';
+			}
+			_STD cout << NEW_LINE;
+		}
+		_STD cout << NEW_LINE;
+	}*/
+	//_STD cout << abc[0][1][3] << ' ';
