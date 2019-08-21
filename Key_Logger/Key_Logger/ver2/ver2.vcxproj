@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{205CD972-5030-4FD6-BC93-34C4E8072D64}</ProjectGuid>
-    <RootNamespace>KeyLogger</RootNamespace>
+    <ProjectGuid>{E055ED20-725D-4499-837E-F5FF3A4111CA}</ProjectGuid>
+    <RootNamespace>ver2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,16 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Active_Window.cpp" />
-    <ClCompile Include="Detect_Action.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Active_Window.hpp" />
-    <ClInclude Include="Detect_Action.hpp" />
-    <ClInclude Include="Engine.hpp" />
-    <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

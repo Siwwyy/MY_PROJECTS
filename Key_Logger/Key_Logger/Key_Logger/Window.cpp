@@ -4,8 +4,8 @@ Window::Window::Window():
 	width(0),
 	height(0)
 {
-	this->window_name = new char[4]();
-
+	this->window_name = new char[5];
+	strcpy_s(window_name,5, "NULL");
 	_STD cout << window_name;
 	_STD cin.get();
 }

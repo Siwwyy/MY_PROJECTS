@@ -1,18 +1,16 @@
 
-#ifndef ACTIVE_WINDOW_HPP_
-#define ACTIVE_WINDOW_HPP_
+#ifndef ENGINE_HPP_
+#define ENGINE_HPP_
 #pragma once
 
 #include <iostream>
 #include <windows.h>
 #include <string>
 
-#include "Window.hpp"
-
 #define NEW_LINE '\n'
 
 
-namespace Window
+namespace Engine
 {
 	using _STD endl;
 	using _STD cout;
@@ -20,14 +18,13 @@ namespace Window
 
 
 
-	class Active_Window:
-		public Window
+	class Engine
 	{
 	private:
 		/*
 			ZMIENNE PRIVATE
 		*/
-	
+
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			KONSTRUKTORY PRIVATE
@@ -59,7 +56,7 @@ namespace Window
 		/*
 			ZMIENNE PROTECTED
 		*/
-
+		
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			KONSTRUKTORY PROTECTED
@@ -96,7 +93,7 @@ namespace Window
 		/*
 			KONSTRUKTORY PUBLIC
 		*/
-		Active_Window();
+		Engine();
 		//////////////////////////////////////////////////////////////////////////////
 		/*
 			FUNKCJE PUBLIC
@@ -122,10 +119,10 @@ namespace Window
 		/*
 			DESTRUKTOR
 		*/
-		virtual ~Active_Window();		//wirtualny destruktor
+		virtual ~Engine();		//wirtualny destruktor
 		//////////////////////////////////////////////////////////////////////////////
 	};
 
 }
 
-#endif /* ACTIVE_WINDOW_HPP_ */
+#endif /* ENGINE_HPP_ */

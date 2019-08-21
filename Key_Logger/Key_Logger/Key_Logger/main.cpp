@@ -10,7 +10,6 @@ int main(int argc, char * argv[])
 	Window Win;
 
 
-
 	system("pause");
 	return 0;
 }
