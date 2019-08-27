@@ -130,8 +130,8 @@ void Fill_Matrix_CPU(__int32 Matrix[][SIZE])
 	{
 		for (size_t j = 0; j < SIZE; ++j)
 		{
-			*(*(Matrix + i) + j) = value++;
-			//Matrix[i][j] = NULL;
+			//*(*(Matrix + i) + j) = value++;
+			Matrix[i][j] = 1;
 		}
 	}
 }
@@ -166,45 +166,20 @@ void Show_Matrix_CPU(__int32 Matrix[][SIZE])
 
 __global__ void Multiply_Matrix(__int32* Matrix)
 {
-	//int i = threadIdx.x + blockIdx.x * blockDim.x;
-	//int j = threadIdx.y + blockIdx.y * blockDim.y;
-	//if (i < SIZE && j < SIZE)
-	//{
-	//	// each thread computes one element of the block sub-matrix
-	//	//for (int i = 0; i < SIZE; i++)
-	//	//{
-	//	//	/*tmpSum += A[ROW * N + i] * B[i * N + COL];*/
-	//	//	//printf("A[%d][%d]=%d\n", ROW, COL, Matrix[blockIdx.x * SIZE + blockIdx.y]);
-	//	//	//printf("A[%d][%d]=%d\n", ROW, COL, Matrix[ROW * SIZE + i]);
-	//	//
-	//	//	__syncthreads();
-	//	//}
-	//	for (int k = 0; k < SIZE; k++)
-	//	{
-	//		printf("A[%d][%d]", i, j);
-	//		printf("\n");
-	//	}
-	//
-	//}
 	int id_x = threadIdx.x + blockIdx.x * blockDim.x;
 	int id_y = threadIdx.y + blockIdx.y * blockDim.y;
 
 	while (id_x < SIZE)
 	{
-		//for (int i = 0; i < SIZE; i++) 
-		//{
-		//	//tmpSum += A[ROW * N + i] * B[i * N + COL];
-		//	//printf("A[%d][%d]\n", ROW * SIZE + i, i * SIZE + COL);
-		//	
-		//	//printf("");
-		//}
 		while (id_y < SIZE)
 		{
-			printf("A[%d][%d]\n", id_y, id_x);
+			//printf("A[%d][%d]\n", id_y, id_x);
+			//printf("A[%d][%d]\n", id_y * SIZE + id_x);
+			//Matrix[id_y+ id_x] *= 2;
+			Matrix[id_y * SIZE + id_x] *= 2;
 			id_y += blockDim.y * gridDim.y;
-			printf("\n");
+			//printf("\n");
 		}
 		id_x += blockDim.x * gridDim.x;
-		//__syncthreads();
 	}
 }
