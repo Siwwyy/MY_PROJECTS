@@ -97,13 +97,14 @@ void Fill_Array(const _STD string& file_path);
 void Show_Array(Pixel_GPU* Pixel_array, const size_t& size);
 __global__ void Counting_Unique_Colors(Pixel_GPU * Pixel_array, __int64 * unique_colors, const size_t * size);
 __global__ void Increase(__int64 *& counter);
+__global__ void Show_Device_Variables(const size_t * size);
 
 int main(int argc, char* argv[])
 {
-	/*__int64 * unique_colors{};
-	__int64 unique{};
+	//__int64 * unique_colors{};
+	//__int64 unique{};
 
-	size_t * size{};*/
+	//size_t * size{};
 
 	//HANDLE_ERROR(cudaMalloc((void**)& unique_colors, sizeof(__int64)));
 	//HANDLE_ERROR(cudaMalloc((void**)& size, sizeof(size_t)));
@@ -145,7 +146,7 @@ int main(int argc, char* argv[])
 
 	
 
-	__int64 *counter_CPU;
+	/*__int64 *counter_CPU;
 	__int64 *counter_GPU;
 
 	counter_CPU = (__int64*)malloc(sizeof(__int64));
@@ -161,7 +162,35 @@ int main(int argc, char* argv[])
 
 
 	HANDLE_ERROR(cudaFree(counter_GPU));
-	free(counter_CPU);
+	free(counter_CPU);*/
+
+
+
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
+
+
+	Fill_Array("Lena.ppm");
+
+
+	Pixel_GPU* Device_Array{};
+	//__device__ size_t size{};
+	size_t size{};
+	cudaMalloc((void**)& Device_Array, global_size * sizeof(Pixel_GPU));
+//	cudaMalloc((void**) size, sizeof(size_t));
+	cudaMemset(&size, 0, sizeof(size_t));
+
+	cudaMemcpy(Device_Array, Host_Array, global_size * sizeof(Pixel_GPU), HostToDevice);
+	cudaMemcpy(&size, &global_size, sizeof(size_t), HostToDevice);
+	_STD cout << global_size << NEW_LINE;
+	Show_Device_Variables <<<2, 1>>>(&size);
+
+	cudaFree(&size);
+	cudaFree(Device_Array);
+
+	free(Host_Array);
 
 	system("pause");
 	return 0;
@@ -321,6 +350,13 @@ __global__ void Increase(__int64 *& counter)
 		++((counter));
 		__syncthreads();
 	}
+}
+
+__global__ void Show_Device_Variables(const size_t * size)
+{
+	printf("The Size is following: %u \n", &size);
+	printf("The Size is following: %d \n", 1000);
+	printf("The Size is following: %d \n", 1000);
 }
 
 ////////////////////////////////////////////////////////

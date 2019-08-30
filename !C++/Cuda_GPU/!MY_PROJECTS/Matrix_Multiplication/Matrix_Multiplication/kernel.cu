@@ -43,15 +43,15 @@ int main(int argc, char* argv[])
 	/*
 		ALLOCATING NEEDED MEMORY ON CPU (exactly in RAM)
 	*/
-	//__int32** Matrix_CPU;
-	__int32 Matrix_CPU[SIZE][SIZE]{};
-	//Matrix_CPU = (__int32**)malloc(SIZE * sizeof(__int32*));
+	__int32** Matrix_CPU;
+	//__int32 Matrix_CPU[SIZE][SIZE]{};
+	Matrix_CPU = (__int32**)malloc(SIZE * sizeof(__int32*));
 
-	//for (size_t i = 0; i < SIZE; ++i)
-	//{
-	//	*(Matrix_CPU + i) = (__int32*)malloc(SIZE * sizeof(__int32));
-	//	//Matrix_CPU[i] = (__int32*)malloc(SIZE * sizeof(__int32));
-	//}
+	for (size_t i = 0; i < SIZE; ++i)
+	{
+		*(Matrix_CPU + i) = (__int32*)malloc(SIZE * sizeof(__int32));
+		//Matrix_CPU[i] = (__int32*)malloc(SIZE * sizeof(__int32));
+	}
 	////////////////////////////////////////////////////
 
 	//FILL MATRIX WITH RANDOM VALUES
@@ -76,13 +76,27 @@ int main(int argc, char* argv[])
 
 
 	//COPY CPU ARRAY TO GPU
-	HANDLE_ERROR(cudaMemcpy(Matrix_GPU, Matrix_CPU, (SIZE * SIZE) * sizeof(__int32), HostToDevice));
+	//HANDLE_ERROR(cudaMemcpy(Matrix_GPU, Matrix_CPU, (SIZE * SIZE) * sizeof(__int32), HostToDevice));	//only for statics array from HOST's!
+
+	for (size_t i = 0; i < SIZE; ++i)
+	{
+		cudaMemcpy(Matrix_GPU + i * SIZE, *(Matrix_CPU + i), sizeof(__int32) * SIZE, HostToDevice);
+	}
+
+	////////////////////////////////////////////////////
 
 	Multiply_Matrix<<<SIZE,SIZE>>>(Matrix_GPU);
 
 
 	//COPY FROM GPU TO CPU
-	HANDLE_ERROR(cudaMemcpy(Matrix_CPU, Matrix_GPU, (SIZE * SIZE) * sizeof(__int32), DeviceToHost));
+	//HANDLE_ERROR(cudaMemcpy(Matrix_CPU, Matrix_GPU, (SIZE * SIZE) * sizeof(__int32), DeviceToHost));	//only for statics array
+
+	for (size_t i = 0; i < SIZE; ++i)
+	{
+		cudaMemcpy(*(Matrix_CPU + i), Matrix_GPU + i * SIZE, sizeof(__int32) * SIZE, DeviceToHost);	//for dynamic allocation
+	}
+	////////////////////////////////////////////////////
+
 
 	//SHOW RESULTS
 	Show_Matrix_CPU(Matrix_CPU);
@@ -91,11 +105,11 @@ int main(int argc, char* argv[])
 		FREEING PREVIOUSLY ALOCATED MEMORY
 	*/
 	//ON CPU
-	/*for (size_t i = 0; i < SIZE; ++i)
+	for (size_t i = 0; i < SIZE; ++i)
 	{
 		free(*(Matrix_CPU + i));
-	}*/
-	//free(Matrix_CPU);
+	}
+	free(Matrix_CPU);
 
 	////ON GPU
 	/*for (size_t i = 0; i < SIZE; ++i)
