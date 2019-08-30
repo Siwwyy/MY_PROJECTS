@@ -92,12 +92,13 @@ public:
 
 Pixel_GPU* Host_Array{};
 size_t global_size{};
+__int64 unique{};
 
 void Fill_Array(const _STD string& file_path);
 void Show_Array(Pixel_GPU* Pixel_array, const size_t& size);
 __global__ void Counting_Unique_Colors(Pixel_GPU * Pixel_array, __int64 * unique_colors, const size_t * size);
 __global__ void Increase(__int64 *& counter);
-__global__ void Show_Device_Variables(const size_t * size);
+__global__ void Show_Device_Variables(size_t * size);
 
 int main(int argc, char* argv[])
 {
@@ -175,20 +176,44 @@ int main(int argc, char* argv[])
 	Fill_Array("Lena.ppm");
 
 
+	///////////////////////////////////////////////////////////////
 	Pixel_GPU* Device_Array{};
-	//__device__ size_t size{};
-	size_t size{};
 	cudaMalloc((void**)& Device_Array, global_size * sizeof(Pixel_GPU));
-//	cudaMalloc((void**) size, sizeof(size_t));
-	cudaMemset(&size, 0, sizeof(size_t));
+	///////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////
+	size_t* size{};
+	cudaMalloc((void**)& size, sizeof(size_t));
+	cudaMemset(size, 0, sizeof(size_t));
+	///////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////
+	__int64* unique_colors{};
+	cudaMalloc((void**)& unique_colors, sizeof(__int64));
+	cudaMemset(unique_colors, 0, sizeof(__int64));
+	///////////////////////////////////////////////////////////////
+
 
 	cudaMemcpy(Device_Array, Host_Array, global_size * sizeof(Pixel_GPU), HostToDevice);
-	cudaMemcpy(&size, &global_size, sizeof(size_t), HostToDevice);
+	cudaMemcpy(size, &global_size, sizeof(size_t), HostToDevice);
 	_STD cout << global_size << NEW_LINE;
-	Show_Device_Variables <<<2, 1>>>(&size);
+	Show_Device_Variables <<<1, 1>>>(size);
+	cudaMemcpy(&global_size, size, sizeof(size_t), DeviceToHost);
+	_STD cout << global_size << NEW_LINE;
 
-	cudaFree(&size);
+	Counting_Unique_Colors <<<655, 1024>>> (Device_Array, unique_colors, size);
+
+	cudaMemcpy(&unique, unique_colors, sizeof(__int64), DeviceToHost);
+
+	_STD cout << unique << NEW_LINE;
+
+
+	//Delete the allocated memory
+	cudaFree(size);
 	cudaFree(Device_Array);
+	cudaFree(unique_colors);
 
 	free(Host_Array);
 
@@ -298,46 +323,62 @@ void Show_Array(Pixel_GPU* Pixel_array, const size_t& size)
 
 __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_colors, const size_t * size)
 {
-	int id = threadIdx.x + blockIdx.x * blockDim.x;
-	int j = threadIdx.y + blockIdx.y * blockDim.y;
-	bool is_unique = true;
+	//int id = threadIdx.x + blockIdx.x * blockDim.x;
+	//int j = threadIdx.y + blockIdx.y * blockDim.y;
+	//bool is_unique = true;
+	//const int color_range = Pixel_array[0].Get_Color_Range();
+	//if (id < *size)
+	//{
+	//	//if (Pixel_array[id].Get_Color_Range() > color_range)
+	//	//{
+	//	//	continue;
+	//	//}
+	//	//else
+	//	//{
+	//	
+	//	//}
+	//	//__syncthreads();
+	//	while (j < *size)
+	//	{
+	//		/*	Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+	//			Pixel_array[j].Set_R(static_cast<int>(color_range + 100));*/
+	//	/*	if (Pixel_array[id].Get_R() == Pixel_array[j].Get_R() && Pixel_array[id].Get_G() == Pixel_array[j].Get_G() && Pixel_array[id].Get_B() == Pixel_array[j].Get_B())
+	//		{
+	//			Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+	//		}*/
+	//		Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
+	//		j++;
+	//	}
+	//	//__syncthreads();
+	//	//Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
+	//	//__syncthreads();
+	//	/*Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
+	//	Pixel_array[id].Set_R(static_cast<int>(color_range + 100));
+	//	id += blockDim.x * gridDim.x;*/
+	//}
+	int id_x = threadIdx.x + blockIdx.x * blockDim.x;
+	int id_y = threadIdx.y + blockIdx.y * blockDim.y;
 	const int color_range = Pixel_array[0].Get_Color_Range();
-	if (id < *size)
-	{
-		//if (Pixel_array[id].Get_Color_Range() > color_range)
-		//{
-		//	continue;
-		//}
-		//else
-		//{
-		
-		//}
-		//__syncthreads();
-		while (j < *size)
-		{
-			/*	Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
-				Pixel_array[j].Set_R(static_cast<int>(color_range + 100));*/
-		/*	if (Pixel_array[id].Get_R() == Pixel_array[j].Get_R() && Pixel_array[id].Get_G() == Pixel_array[j].Get_G() && Pixel_array[id].Get_B() == Pixel_array[j].Get_B())
-			{
-				Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
-			}*/
-			Pixel_array[j].Set_Color_Range(static_cast<int>(color_range + 100));
-			j++;
-		}
-		//__syncthreads();
-		//Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
-		//__syncthreads();
-		/*Pixel_array[id].Set_Color_Range(static_cast<int>(color_range + 100));
-		Pixel_array[id].Set_R(static_cast<int>(color_range + 100));
-		id += blockDim.x * gridDim.x;*/
-	}
 
-	id = threadIdx.x + blockIdx.x * blockDim.x;
-	if (Pixel_array[id].Get_Color_Range() == color_range)
+	while (id_x < *size)
 	{
-		++(*unique_colors);
+		while (id_y < *size)
+		{
+			if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
+			{
+				Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + 100));
+			}
+			id_y += blockDim.y * gridDim.y;
+		}
+		__syncthreads();
+		if (Pixel_array[id_x].Get_Color_Range() == color_range)
+		{
+			++(*unique_colors);
+		}
+		id_x += blockDim.x * gridDim.x;
 	}
-	//(*unique_colors) = 1000;
+	
+	(*unique_colors) = 1000;
 
 }
 
@@ -352,11 +393,10 @@ __global__ void Increase(__int64 *& counter)
 	}
 }
 
-__global__ void Show_Device_Variables(const size_t * size)
+__global__ void Show_Device_Variables(size_t * size)
 {
-	printf("The Size is following: %u \n", &size);
-	printf("The Size is following: %d \n", 1000);
-	printf("The Size is following: %d \n", 1000);
+	printf("The Size is following: %u \n", *size);
+	*size = 100;
 }
 
 ////////////////////////////////////////////////////////
