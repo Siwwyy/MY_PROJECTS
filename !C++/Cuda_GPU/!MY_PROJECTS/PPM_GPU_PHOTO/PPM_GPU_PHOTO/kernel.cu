@@ -198,16 +198,21 @@ int main(int argc, char* argv[])
 
 	cudaMemcpy(Device_Array, Host_Array, global_size * sizeof(Pixel_GPU), HostToDevice);
 	cudaMemcpy(size, &global_size, sizeof(size_t), HostToDevice);
-	_STD cout << global_size << NEW_LINE;
-	Show_Device_Variables <<<1, 1>>>(size);
-	cudaMemcpy(&global_size, size, sizeof(size_t), DeviceToHost);
-	_STD cout << global_size << NEW_LINE;
 
-	Counting_Unique_Colors <<<655, 1024>>> (Device_Array, unique_colors, size);
+
+	//Case for tests only
+	//_STD cout << global_size << NEW_LINE;
+	//Show_Device_Variables <<<1, 1>>>(size);
+	//cudaMemcpy(&global_size, size, sizeof(size_t), DeviceToHost);
+	//_STD cout << global_size << NEW_LINE;
+	///////////////////////////////////////////////////////////////\
+
+
+	Counting_Unique_Colors <<<655, 1024 >>> (Device_Array, unique_colors, size);
 
 	cudaMemcpy(&unique, unique_colors, sizeof(__int64), DeviceToHost);
 
-	_STD cout << unique << NEW_LINE;
+	_STD cout << "Unique colors: " << unique << NEW_LINE;
 
 
 	//Delete the allocated memory
@@ -367,19 +372,21 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_
 			if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
 			{
 				Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + 100));
+				__syncthreads();
 			}
 			id_y += blockDim.y * gridDim.y;
 		}
-		__syncthreads();
+
 		if (Pixel_array[id_x].Get_Color_Range() == color_range)
 		{
 			++(*unique_colors);
+			//__syncthreads();
 		}
 		id_x += blockDim.x * gridDim.x;
 	}
-	
+	//__syncthreads();
 	(*unique_colors) = 1000;
-
+	//printf("Unique colors: %u \n", *unique_colors);
 }
 
 __global__ void Increase(__int64 *& counter)
@@ -396,7 +403,7 @@ __global__ void Increase(__int64 *& counter)
 __global__ void Show_Device_Variables(size_t * size)
 {
 	printf("The Size is following: %u \n", *size);
-	*size = 100;
+	//*size = 100;
 }
 
 ////////////////////////////////////////////////////////
