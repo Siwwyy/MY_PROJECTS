@@ -190,8 +190,8 @@ int main(int argc, char* argv[])
 	Pixel_GPU* Device_Array{};
 	cudaMalloc((void**)& Device_Array, global_size * sizeof(Pixel_GPU));
 
-	bool* Is_Unique_or_Not{};
-	cudaMalloc((void**)& Is_Unique_or_Not, global_size * sizeof(bool));
+	/*bool* Is_Unique_or_Not{};
+	cudaMalloc((void**)& Is_Unique_or_Not, global_size * sizeof(bool));*/
 	///////////////////////////////////////////////////////////////
 
 
@@ -228,7 +228,9 @@ int main(int argc, char* argv[])
 	///////////////////////////////////////////////////////////////
 
 
-	Counting_Unique_Colors <<<Amount_Of_Blocks, Amount_Of_Threads>>> (Device_Array, Is_Unique_or_Not, size);
+	Counting_Unique_Colors <<<1, 1>>> (Device_Array, unique_colors, size);
+	//Counting_Unique_Colors <<<Amount_Of_Blocks, Amount_Of_Threads>>> (Device_Array, unique_colors, size);
+	//Counting_Unique_Colors <<<Amount_Of_Blocks, Amount_Of_Threads>>> (Device_Array, Is_Unique_or_Not, size);
 
 	//cudaMemcpy(Host_Array, Device_Array, global_size * sizeof(Pixel_GPU), DeviceToHost);
 	cudaMemcpy(Host_Array, Device_Array, sizeof(Pixel_GPU)* global_size, DeviceToHost);
@@ -237,13 +239,13 @@ int main(int argc, char* argv[])
 	//	cudaMemcpy(Host_Array, Device_Array , sizeof(Pixel_GPU) * global_size, DeviceToHost);	//for dynamic allocation
 	//}
 
-	//cudaMemcpy(&unique, unique_colors, sizeof(__int64), DeviceToHost);
+	cudaMemcpy(&unique, unique_colors, sizeof(__int64), DeviceToHost);
 	//for (size_t i = 0; i < global_size; ++i)
 	//{
 	//	if()
 	//}
 
-	//_STD cout << "Unique colors: " << unique << NEW_LINE;
+	_STD cout << "Unique colors: " << unique << NEW_LINE;
 
 	//for (size_t i = 0; i < global_size; ++i)
 	//{
@@ -252,7 +254,7 @@ int main(int argc, char* argv[])
 	//		unique++;
 	//	}
 	//}
-	Show_Array_GPU <<< 1,1 >>> (Device_Array, size);
+	//Show_Array_GPU <<< 1,1 >>> (Device_Array, size);
 	/*Show_Array(Host_Array, global_size);
 	*///_STD cout << "Unique colors: " << unique << NEW_LINE;
 
@@ -268,7 +270,7 @@ int main(int argc, char* argv[])
 	//Delete the allocated memory
 	cudaFree(size);
 	cudaFree(Device_Array);
-	cudaFree(Is_Unique_or_Not);
+	//cudaFree(Is_Unique_or_Not);
 	cudaFree(unique_colors);
 
 	free(Host_Array);
@@ -432,30 +434,30 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_
 	//int id_y = threadIdx.y + blockIdx.y * blockDim.y;
 	//const int color_range = Pixel_array[0].Get_Color_Range();
 
-	printf("The Size is following: %u [%u] \n", *size);
-	if (id_x < *size)
-	{
-		/*while (id_y < *size)
-		{
-			if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
-			{
-				Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + 100));
-				__syncthreads();
-			}
-			id_y += blockDim.y * gridDim.y;
-		}
+	//printf("The Size is following: %u [%u] \n", *size);
+	//if (id_x < *size)
+	//{
+	//	/*while (id_y < *size)
+	//	{
+	//		if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
+	//		{
+	//			Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + 100));
+	//			__syncthreads();
+	//		}
+	//		id_y += blockDim.y * gridDim.y;
+	//	}
 
-		if (Pixel_array[id_x].Get_Color_Range() == color_range)
-		{
-			++(*unique_colors);
-			__syncthreads();
-		}*/
-		++(*unique_colors);
-		//__syncthreads();
-		//id_x += blockDim.x * gridDim.x;
-	}
+	//	if (Pixel_array[id_x].Get_Color_Range() == color_range)
+	//	{
+	//		++(*unique_colors);
+	//		__syncthreads();
+	//	}*/
+	//	++(*unique_colors);
+	//	//__syncthreads();
+	//	//id_x += blockDim.x * gridDim.x;
+	//}
 	
-	//(*unique_colors) = 1000;
+	(*unique_colors) = 1000;
 	//printf("Unique colors: %u \n", *unique_colors);
 }
 
@@ -466,32 +468,32 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, bool * Is_Unique_
 	const int color_range = Pixel_array[0].Get_Color_Range();
 
 	//printf("The Size is following: %u [%u] \n", *size);
-	while (id_x < *size)
-	{
-		if (Pixel_array[id_x].Get_Color_Range() > 255)
-		{
-			continue;
-		}
-		else
-		{
-			while ((id_y + 1) < *size)
-			{
-				if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && 
-					Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && 
-					Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
-				{
-					Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + (id_y * (*size) + id_x) + 1));
-					printf("Color range: %u \n", Pixel_array[id_x].Get_Color_Range());
-					//break;
-					__syncthreads();
-				}
-				id_y += blockDim.y * gridDim.y;
-			}
-		}
-		
-		//__syncthreads();
-		id_x += blockDim.x * gridDim.x;
-	}
+	//while (id_x < *size)
+	//{
+	//	if (Pixel_array[id_x].Get_Color_Range() > 255)
+	//	{
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		while ((id_y + 1) < *size)
+	//		{
+	//			if (Pixel_array[id_x].Get_R() == Pixel_array[id_y * (*size) + id_x].Get_R() && 
+	//				Pixel_array[id_x].Get_G() == Pixel_array[id_y * (*size) + id_x].Get_G() && 
+	//				Pixel_array[id_x].Get_B() == Pixel_array[id_y * (*size) + id_x].Get_B())
+	//			{
+	//				Pixel_array[id_x].Set_Color_Range(static_cast<int>(color_range + (id_y * (*size) + id_x) + 1));
+	//				printf("Color range: %u \n", Pixel_array[id_x].Get_Color_Range());
+	//				//break;
+	//				__syncthreads();
+	//			}
+	//			id_y += blockDim.y * gridDim.y;
+	//		}
+	//	}
+	//	
+	//	//__syncthreads();
+	//	id_x += blockDim.x * gridDim.x;
+	//}
 	//__syncthreads();
 
 	//if (Pixel_array[id_x].Get_Color_Range() == color_range)
