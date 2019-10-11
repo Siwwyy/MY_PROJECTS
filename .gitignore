@@ -12,9 +12,15 @@ Chat_Java
 \!C++/*
 \!C++/
 \!C++
+<<<<<<< HEAD
 Key_Logger/
 Key_Logger/*
 Key_Logger
+=======
+Algorithms_Library/*
+Algorithms_Library/
+Algorithms_Library
+>>>>>>> Key_Logger
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

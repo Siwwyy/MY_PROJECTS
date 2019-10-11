@@ -19,15 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-<<<<<<< HEAD:!C++/Sorting/sorting_ver7/sorting_ver7/sorting_ver7.vcxproj
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{7CE528B6-9A71-41C6-9CD0-E64CCF9BBF59}</ProjectGuid>
-    <RootNamespace>sortingver7</RootNamespace>
-=======
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{E055ED20-725D-4499-837E-F5FF3A4111CA}</ProjectGuid>
-    <RootNamespace>ver2</RootNamespace>
->>>>>>> Key_Logger:Key_Logger/Key_Logger/ver2/ver2.vcxproj
+    <ProjectGuid>{205CD972-5030-4FD6-BC93-34C4E8072D64}</ProjectGuid>
+    <RootNamespace>KeyLogger</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -82,10 +76,6 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-<<<<<<< HEAD:!C++/Sorting/sorting_ver7/sorting_ver7/sorting_ver7.vcxproj
-=======
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
->>>>>>> Key_Logger:Key_Logger/Key_Logger/ver2/ver2.vcxproj
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,22 +123,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Email_Server.cpp" />
+    <ClCompile Include="Active_Window.cpp" />
+    <ClCompile Include="Detect_Action.cpp" />
     <ClCompile Include="main.cpp" />
-<<<<<<< HEAD:!C++/Sorting/sorting_ver7/sorting_ver7/sorting_ver7.vcxproj
-    <ClCompile Include="Sorting_Template.cpp" />
-    <ClCompile Include="StopWatch.cpp" />
-    <ClCompile Include="Write_Chart.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sorting_Template.h" />
-    <ClInclude Include="StopWatch.h" />
-    <ClInclude Include="Write_Chart.h" />
-=======
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Email_Server.hpp" />
->>>>>>> Key_Logger:Key_Logger/Key_Logger/ver2/ver2.vcxproj
+    <ClInclude Include="Active_Window.hpp" />
+    <ClInclude Include="Detect_Action.hpp" />
+    <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
