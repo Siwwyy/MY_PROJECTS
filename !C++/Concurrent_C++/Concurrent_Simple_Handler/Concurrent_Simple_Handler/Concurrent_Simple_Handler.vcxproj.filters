@@ -18,12 +18,22 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD:!C++/Concurrent_C++/Concurrent_Simple_Handler/Concurrent_Simple_Handler/Concurrent_Simple_Handler.vcxproj.filters
     <ClCompile Include="_HANDLER.cpp">
+=======
+    <ClCompile Include="MST.cpp">
+>>>>>>> Algorithms_Library:Algorithms_Library/Algorithms_Library/Algorithms_Library.vcxproj.filters
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="_HANDLER.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap_Sort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MST.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
