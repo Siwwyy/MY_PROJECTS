@@ -215,6 +215,7 @@ public class Server implements Runnable
 					{
 						e.printStackTrace();
 					}
+					//hello
 					//Managing something
 //					for(ServerClient c : Clients_List)
 //					{
