@@ -228,7 +228,7 @@ int main(int argc, char* argv[])
 	///////////////////////////////////////////////////////////////
 
 
-	Counting_Unique_Colors <<<1, 1>>> (Device_Array, unique_colors, size);
+	Counting_Unique_Colors <<<100, 1>>> (Device_Array, unique_colors, size);
 	//Counting_Unique_Colors <<<Amount_Of_Blocks, Amount_Of_Threads>>> (Device_Array, unique_colors, size);
 	//Counting_Unique_Colors <<<Amount_Of_Blocks, Amount_Of_Threads>>> (Device_Array, Is_Unique_or_Not, size);
 
@@ -457,7 +457,7 @@ __global__ void Counting_Unique_Colors(Pixel_GPU* Pixel_array, __int64 * unique_
 	//	//id_x += blockDim.x * gridDim.x;
 	//}
 	
-	(*unique_colors) = 1000;
+	(*unique_colors)++;
 	//printf("Unique colors: %u \n", *unique_colors);
 }
 
